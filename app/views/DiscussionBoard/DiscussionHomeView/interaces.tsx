@@ -5,6 +5,7 @@ export enum DiscussionTabs {
 
 export type DiscussionHeaderProps = {
 	onTabChange: (tab: DiscussionTabs) => void;
+	selectedTab?: DiscussionTabs;
 };
 
 export type DiscussionBoardCardProps = {

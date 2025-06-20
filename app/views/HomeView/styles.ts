@@ -25,12 +25,22 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			flexWrap: 'wrap',
 			marginBottom: 40
 		},
+		sectionHeader: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			marginBottom: 16
+		},
 		sectionTitle: {
 			fontSize: 20,
 			lineHeight: 24,
 			fontWeight: '600',
-			color: '#191C20',
-			marginBottom: 16
+			color: '#191C20'
+		},
+		viewAllLink: {
+			fontSize: 14,
+			color: '#799A79',
+			fontWeight: '500'
 		},
 		sectionContainer: {
 			marginBottom: 32
@@ -88,6 +98,64 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			fontSize: 14,
 			color: '#799A79',
 			fontWeight: '500'
+		},
+		savedPostsContainer: {
+			backgroundColor: '#F8F9FA',
+			borderRadius: 8,
+			padding: 4
+		},
+		savedPostItem: {
+			backgroundColor: '#FFFFFF',
+			marginVertical: 4,
+			marginHorizontal: 4,
+			borderRadius: 6,
+			elevation: 1,
+			shadowColor: '#000',
+			shadowOffset: { width: 0, height: 1 },
+			shadowOpacity: 0.1,
+			shadowRadius: 2
+		},
+		savedPostContent: {
+			padding: 12
+		},
+		savedPostHeader: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			marginBottom: 6
+		},
+		savedPostAuthor: {
+			fontSize: 14,
+			fontWeight: '600',
+			color: '#191C20',
+			flex: 1,
+			marginRight: 8
+		},
+		savedPostDate: {
+			fontSize: 12,
+			color: '#6B7280',
+			fontWeight: '400'
+		},
+		savedPostText: {
+			fontSize: 14,
+			color: '#374151',
+			lineHeight: 18,
+			marginBottom: 8
+		},
+		savedPostStats: {
+			flexDirection: 'row',
+			justifyContent: 'flex-start'
+		},
+		savedPostStat: {
+			fontSize: 12,
+			color: '#6B7280',
+			marginRight: 16
+		},
+		viewMoreSavedPosts: {
+			padding: 12,
+			alignItems: 'center',
+			marginVertical: 4,
+			marginHorizontal: 4
 		},
 		profileImageContainer: {
 			marginRight: 20

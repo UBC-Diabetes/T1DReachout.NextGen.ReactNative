@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, View, Image } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { mainTiles } from './data';
@@ -14,9 +14,19 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { IApplicationState } from '../../definitions';
 import { getFetchedEventsSelector } from '../../selectors/event';
 import { getUpcomingEvents, formatEventDate } from './calendarHelpers';
+import { fetchEventRequest } from '../../actions/calendarEvents';
+import { 
+	observeSavedPosts, 
+	formatSavedPostDate, 
+	truncatePostContent, 
+	getPostAuthorName,
+	getPostReactionsCount,
+	getPostRepliesCount
+} from './savedPostsHelpers';
 
 const HomeView: React.FC = ({ theme }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
+	const dispatch = useDispatch();
 
 	const { createMainStyles, createTileStyles } = allStyles;
 	const styles = createMainStyles({ theme });
@@ -24,6 +34,29 @@ const HomeView: React.FC = ({ theme }) => {
 	// Get calendar events from Redux
 	const agendaItems = useSelector((state: IApplicationState) => getFetchedEventsSelector(state));
 	const upcomingEvents = getUpcomingEvents(agendaItems || []);
+
+	// Fetch calendar events when component mounts
+	useEffect(() => {
+		dispatch(fetchEventRequest());
+	}, [dispatch]);
+
+	// State for saved posts
+	const [savedPosts, setSavedPosts] = useState([]);
+
+	// Subscribe to saved posts updates when screen is focused
+	useFocusEffect(
+		React.useCallback(() => {
+			const subscription = observeSavedPosts(3, (posts) => {
+				setSavedPosts(posts);
+			});
+
+			return () => {
+				if (subscription?.unsubscribe) {
+					subscription.unsubscribe();
+				}
+			};
+		}, [])
+	);
 
 	// Header is now handled by BottomTabNavigator
 
@@ -73,7 +106,19 @@ const HomeView: React.FC = ({ theme }) => {
 				</View>
 
 				<View style={styles.sectionContainer}>
-					<Text style={styles.sectionTitle}>Upcoming Event(s)</Text>
+					<View style={styles.sectionHeader}>
+						<Text style={styles.sectionTitle}>
+							{upcomingEvents.length === 1 ? 'Upcoming Event' : 'Upcoming Events'}
+						</Text>
+						{upcomingEvents.length > 0 && (
+							<Touchable
+								onPress={() => navigation.navigate('CalendarView')}
+								activeOpacity={0.7}
+							>
+								<Text style={styles.viewAllLink}>View all</Text>
+							</Touchable>
+						)}
+					</View>
 					{upcomingEvents.length > 0 ? (
 						<View style={styles.eventsContainer}>
 							{upcomingEvents.slice(0, 3).map((event, index) => (
@@ -113,10 +158,69 @@ const HomeView: React.FC = ({ theme }) => {
 				</View>
 
 				<View style={styles.sectionContainer}>
-					<Text style={styles.sectionTitle}>Saved Posts</Text>
-					<View style={styles.emptySection}>
-						<Text style={styles.emptySectionText}>No saved posts</Text>
+					<View style={styles.sectionHeader}>
+						<Text style={styles.sectionTitle}>Saved Posts</Text>
+						{savedPosts.length > 0 && (
+							<Touchable
+								onPress={() => {
+									// Navigate to Discussion Boards with Saved Posts tab
+									navigation.navigate('BottomTabNavigator', { 
+										initialTab: 'DiscussionHomeView',
+										params: { selectedTab: 1 }, // SAVED_POSTS tab
+										key: `savedpost-${Date.now()}` // Force fresh navigation
+									});
+								}}
+								activeOpacity={0.7}
+							>
+								<Text style={styles.viewAllLink}>View all</Text>
+							</Touchable>
+						)}
 					</View>
+					{savedPosts.length > 0 ? (
+						<View style={styles.savedPostsContainer}>
+							{savedPosts.map((post, index) => (
+								<Touchable
+									key={post.id || index}
+									style={styles.savedPostItem}
+									onPress={() => {
+										// Navigate to Discussion Boards with Saved Posts tab
+										navigation.navigate('BottomTabNavigator', { 
+											initialTab: 'DiscussionHomeView',
+											params: { selectedTab: 1 }, // SAVED_POSTS tab
+											key: `savedpost-${Date.now()}` // Force fresh navigation
+										});
+									}}
+									activeOpacity={0.7}
+								>
+									<View style={styles.savedPostContent}>
+										<View style={styles.savedPostHeader}>
+											<Text style={styles.savedPostAuthor} numberOfLines={1}>
+												{getPostAuthorName(post)}
+											</Text>
+											<Text style={styles.savedPostDate}>
+												{formatSavedPostDate(post._raw?.ts || post.ts)}
+											</Text>
+										</View>
+										<Text style={styles.savedPostText} numberOfLines={2}>
+											{truncatePostContent(post._raw?.msg || post.msg, 100)}
+										</Text>
+										<View style={styles.savedPostStats}>
+											<Text style={styles.savedPostStat}>
+												❤️ {getPostReactionsCount(post)}
+											</Text>
+											<Text style={styles.savedPostStat}>
+												💬 {getPostRepliesCount(post)}
+											</Text>
+										</View>
+									</View>
+								</Touchable>
+							))}
+						</View>
+					) : (
+						<View style={styles.emptySection}>
+							<Text style={styles.emptySectionText}>No saved posts</Text>
+						</View>
+					)}
 				</View>
 			</ScrollView>
 		</View>
