@@ -11,7 +11,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { IApplicationState } from '../../definitions';
-import * as tileData from './data';
+import { mainTiles } from './data';
 import * as allStyles from './styles';
 import { Tileprops } from './interfaces';
 import { navToTechSupport, navigateTo247Chat, navigateToVirtualHappyHour } from './helpers';
@@ -26,7 +26,6 @@ const HomeView: React.FC = ({ theme }) => {
 	const userName = user?.username || '';
 	const userRealName = user?.name || '';
 
-	const { largeTiles, smallTiles } = tileData;
 	const { createMainStyles, createTileStyles } = allStyles;
 	const styles = createMainStyles({ theme });
 
@@ -49,10 +48,9 @@ const HomeView: React.FC = ({ theme }) => {
 	const homeViewTile = ({ icon, title, size, screen, color, disabled = false }: Tileprops, index: number) => {
 		const tileStyles = createTileStyles({
 			size,
-			color: themes[theme][color],
+			color: color,
 			theme
 		});
-		const imageStyle = size === 'large' ? tileStyles.largeImage : tileStyles.smallImage;
 
 		return (
 			<Touchable
@@ -75,7 +73,7 @@ const HomeView: React.FC = ({ theme }) => {
 				activeOpacity={0.6}>
 				<View style={tileStyles.tileContent}>
 					<View style={tileStyles.imageContainer}>
-						<Image source={icon} style={imageStyle} resizeMode='contain' />
+						<Image source={icon} style={tileStyles.image} resizeMode='contain' />
 					</View>
 					<Text style={tileStyles.text}>{title}</Text>
 				</View>
@@ -87,9 +85,25 @@ const HomeView: React.FC = ({ theme }) => {
 		<View style={styles.mainContainer} testID='home-view'>
 			<StatusBar />
 			<ScrollView style={styles.scrollContent}>
-				<Text style={styles.title}>{`Welcome ${userRealName},`}</Text>
-				<View style={styles.tileContainer}>{largeTiles.map((item, index) => homeViewTile(item, index))}</View>
-				<View style={styles.tileContainer}>{smallTiles.map((item, index) => homeViewTile(item, index))}</View>
+				<Text style={styles.title}>Explore</Text>
+				
+				<View style={styles.tileContainer}>
+					{mainTiles.map((item, index) => homeViewTile(item, index))}
+				</View>
+
+				<View style={styles.sectionContainer}>
+					<Text style={styles.sectionTitle}>Upcoming Event(s)</Text>
+					<View style={styles.emptySection}>
+						<Text style={styles.emptySectionText}>No upcoming events</Text>
+					</View>
+				</View>
+
+				<View style={styles.sectionContainer}>
+					<Text style={styles.sectionTitle}>Saved Posts</Text>
+					<View style={styles.emptySection}>
+						<Text style={styles.emptySectionText}>No saved posts</Text>
+					</View>
+				</View>
 			</ScrollView>
 			<BottomNavBar currentRoute='HomeView' />
 		</View>
