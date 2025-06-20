@@ -42,7 +42,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 	const { sortBy, showUnread, showFavorites, groupByType } = useSelector((state: IApplicationState) => state.sortPreferences);
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
 
-	const [selectedTab, setSelectedTab] = useState(DiscussionTabs.DISCUSSION_BOARDS);
+	const [selectedTab, setSelectedTab] = useState(route?.params?.selectedTab ?? DiscussionTabs.DISCUSSION_BOARDS);
 	const [searchCount, setSearchCount] = useState(0);
 	const [boards, setBoards] = useState([]);
 	const [starredPosts, setStarredPosts] = useState([]);
@@ -189,9 +189,19 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 		}
 	}, [selectedTab]);
 
+	// Handle route parameter changes
+	useEffect(() => {
+		if (route?.params?.selectedTab !== undefined && route.params.selectedTab !== selectedTab) {
+			setSelectedTab(route.params.selectedTab);
+		}
+	}, [route?.params?.selectedTab]);
+
 	return (
 		<View style={styles.mainContainer}>
-			<Header onTabChange={(tab: DiscussionTabs) => setSelectedTab(tab)} />
+			<Header 
+				selectedTab={selectedTab}
+				onTabChange={(tab: DiscussionTabs) => setSelectedTab(tab)} 
+			/>
 			<View style={{ width: '100%', flex: 1 }}>
 				{selectedTab === DiscussionTabs.DISCUSSION_BOARDS && (
 					<FlatList

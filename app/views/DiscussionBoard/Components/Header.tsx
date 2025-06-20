@@ -1,17 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native';
 
 import { withTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import { DiscussionTabs, DiscussionHeaderProps } from '../DiscussionHomeView/interaces';
 
-const DiscussionHeader: React.FC<DiscussionHeaderProps> = ({ onTabChange, theme }) => {
-	const [selectedTab, setSelectedTab] = useState(DiscussionTabs.DISCUSSION_BOARDS);
+const DiscussionHeader: React.FC<DiscussionHeaderProps> = ({ onTabChange, selectedTab: initialSelectedTab, theme }) => {
+	const [selectedTab, setSelectedTab] = useState(initialSelectedTab || DiscussionTabs.DISCUSSION_BOARDS);
 	const [headerWidth, setHeaderWidth] = useState(0);
 	const marginLeft = useRef(new Animated.Value(0)).current;
 
 	const themeColors = themes[theme];
 	const styles = makeStyles(themeColors);
+
+	// Update selected tab when prop changes
+	useEffect(() => {
+		if (initialSelectedTab !== undefined && initialSelectedTab !== selectedTab) {
+			setSelectedTab(initialSelectedTab);
+			moveTabHighlight(initialSelectedTab);
+		}
+	}, [initialSelectedTab]);
 
 	const moveTabHighlight = (tab: DiscussionTabs) => {
 		const animation = Animated.timing(marginLeft, {

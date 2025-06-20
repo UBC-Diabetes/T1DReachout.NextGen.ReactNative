@@ -192,7 +192,15 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 			<StatusBar />
 			{renderHeader()}
 			<View style={styles.content}>
-				<ActiveComponent navigation={navigation} theme={theme} {...props} />
+				<ActiveComponent 
+					navigation={navigation} 
+					theme={theme} 
+					route={{
+						...route,
+						params: route?.params?.params || {}
+					}}
+					{...props} 
+				/>
 			</View>
 			{renderTabBar()}
 		</View>
