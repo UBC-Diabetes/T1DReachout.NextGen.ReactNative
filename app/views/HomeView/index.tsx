@@ -1,49 +1,31 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView, Text, View, Image } from 'react-native';
-import { useSelector } from 'react-redux';
 import Touchable from 'react-native-platform-touchable';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-import { getUserSelector } from '../../selectors/login';
-import StatusBar from '../../containers/StatusBar';
-import * as HeaderButton from '../../containers/HeaderButton';
+import { useSelector } from 'react-redux';
 import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
-import { IApplicationState } from '../../definitions';
 import { mainTiles } from './data';
 import * as allStyles from './styles';
 import { Tileprops } from './interfaces';
 import { navToTechSupport, navigateTo247Chat, navigateToVirtualHappyHour } from './helpers';
-import Avatar from '../../containers/Avatar';
 import Navigation from '../../lib/navigation/appNavigation';
-import BottomNavBar from '../../containers/BottomNavBar';
+import { IApplicationState } from '../../definitions';
+import { getFetchedEventsSelector } from '../../selectors/event';
+import { getUpcomingEvents, formatEventDate } from './calendarHelpers';
 
 const HomeView: React.FC = ({ theme }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
-	const user = useSelector((state: IApplicationState) => getUserSelector(state));
-	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
-	const userName = user?.username || '';
-	const userRealName = user?.name || '';
 
 	const { createMainStyles, createTileStyles } = allStyles;
 	const styles = createMainStyles({ theme });
 
-	useEffect(() => {
-		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
-		if (!isMasterDetail) {
-			navigation.setOptions({
-				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />,
-				headerRight: () => (
-					<HeaderButton.Container>
-						<Touchable style={styles.profileImageContainer} onPress={() => navigation.navigate('ProfileView')}>
-							{userName ? <Avatar text={userName} style={styles.profileImage} size={24} borderRadius={12} /> : <></>}
-						</Touchable>
-					</HeaderButton.Container>
-				)
-			});
-		}
-	});
+	// Get calendar events from Redux
+	const agendaItems = useSelector((state: IApplicationState) => getFetchedEventsSelector(state));
+	const upcomingEvents = getUpcomingEvents(agendaItems || []);
+
+	// Header is now handled by BottomTabNavigator
 
 	const homeViewTile = ({ icon, title, size, screen, color, disabled = false }: Tileprops, index: number) => {
 		const tileStyles = createTileStyles({
@@ -83,7 +65,6 @@ const HomeView: React.FC = ({ theme }) => {
 
 	return (
 		<View style={styles.mainContainer} testID='home-view'>
-			<StatusBar />
 			<ScrollView style={styles.scrollContent}>
 				<Text style={styles.title}>Explore</Text>
 				
@@ -93,9 +74,42 @@ const HomeView: React.FC = ({ theme }) => {
 
 				<View style={styles.sectionContainer}>
 					<Text style={styles.sectionTitle}>Upcoming Event(s)</Text>
-					<View style={styles.emptySection}>
-						<Text style={styles.emptySectionText}>No upcoming events</Text>
-					</View>
+					{upcomingEvents.length > 0 ? (
+						<View style={styles.eventsContainer}>
+							{upcomingEvents.slice(0, 3).map((event, index) => (
+								<Touchable
+									key={event.id}
+									style={styles.eventItem}
+									onPress={() => navigation.navigate('CalendarView')}
+									activeOpacity={0.7}
+								>
+									<View style={styles.eventContent}>
+										<Text style={styles.eventTitle} numberOfLines={1}>
+											{event.title}
+										</Text>
+										<Text style={styles.eventDate}>
+											{formatEventDate(event.dateTime)}
+										</Text>
+									</View>
+								</Touchable>
+							))}
+							{upcomingEvents.length > 3 && (
+								<Touchable
+									style={styles.viewMoreEvents}
+									onPress={() => navigation.navigate('CalendarView')}
+									activeOpacity={0.7}
+								>
+									<Text style={styles.viewMoreText}>
+										View {upcomingEvents.length - 3} more events
+									</Text>
+								</Touchable>
+							)}
+						</View>
+					) : (
+						<View style={styles.emptySection}>
+							<Text style={styles.emptySectionText}>No upcoming events</Text>
+						</View>
+					)}
 				</View>
 
 				<View style={styles.sectionContainer}>
@@ -105,7 +119,6 @@ const HomeView: React.FC = ({ theme }) => {
 					</View>
 				</View>
 			</ScrollView>
-			<BottomNavBar currentRoute='HomeView' />
 		</View>
 	);
 };

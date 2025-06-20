@@ -48,6 +48,47 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			color: '#6B7280',
 			fontStyle: 'italic'
 		},
+		eventsContainer: {
+			backgroundColor: '#F8F9FA',
+			borderRadius: 8,
+			padding: 4
+		},
+		eventItem: {
+			backgroundColor: '#FFFFFF',
+			marginVertical: 4,
+			marginHorizontal: 4,
+			borderRadius: 6,
+			elevation: 1,
+			shadowColor: '#000',
+			shadowOffset: { width: 0, height: 1 },
+			shadowOpacity: 0.1,
+			shadowRadius: 2
+		},
+		eventContent: {
+			padding: 12
+		},
+		eventTitle: {
+			fontSize: 16,
+			fontWeight: '600',
+			color: '#191C20',
+			marginBottom: 4
+		},
+		eventDate: {
+			fontSize: 14,
+			color: '#6B7280',
+			fontWeight: '400'
+		},
+		viewMoreEvents: {
+			padding: 12,
+			alignItems: 'center',
+			marginVertical: 4,
+			marginHorizontal: 4
+		},
+		viewMoreText: {
+			fontSize: 14,
+			color: '#799A79',
+			fontWeight: '500'
+		},
 		profileImageContainer: {
 			marginRight: 20
 		},
