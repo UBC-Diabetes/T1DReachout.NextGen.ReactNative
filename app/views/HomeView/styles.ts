@@ -13,15 +13,40 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			padding: 20
 		},
 		title: {
-			fontSize: 24,
-			lineHeight: 29,
-			fontWeight: '600',
-			color: colors[theme].fontSecondaryInfo
+			fontSize: 28,
+			lineHeight: 32,
+			fontWeight: '400',
+			color: '#191C20',
+			marginBottom: 24
 		},
 		tileContainer: {
 			flexDirection: 'row',
 			justifyContent: 'space-around',
-			flexWrap: 'wrap'
+			flexWrap: 'wrap',
+			marginBottom: 40
+		},
+		sectionTitle: {
+			fontSize: 20,
+			lineHeight: 24,
+			fontWeight: '600',
+			color: '#191C20',
+			marginBottom: 16
+		},
+		sectionContainer: {
+			marginBottom: 32
+		},
+		emptySection: {
+			backgroundColor: '#F8F9FA',
+			padding: 20,
+			borderRadius: 8,
+			alignItems: 'center',
+			justifyContent: 'center',
+			minHeight: 80
+		},
+		emptySectionText: {
+			fontSize: 14,
+			color: '#6B7280',
+			fontStyle: 'italic'
 		},
 		profileImageContainer: {
 			marginRight: 20
@@ -53,7 +78,7 @@ export const createTileStyles = ({
 }) =>
 	StyleSheet.create({
 		tile: {
-			width: size === 'small' ? smallTileWidth : 130,
+			width: 100,
 			marginVertical: 16,
 			alignItems: 'center'
 		},
@@ -63,25 +88,21 @@ export const createTileStyles = ({
 		imageContainer: {
 			justifyContent: 'center',
 			alignItems: 'center',
-			width: size === 'small' ? 80 : 130,
-			height: size === 'small' ? 80 : 130,
-			borderRadius: size === 'small' ? 10 : 65,
+			width: 90,
+			height: 90,
+			borderRadius: 45,
 			backgroundColor: color
 		},
 		text: {
-			fontSize: 16,
-			lineHeight: 19,
+			fontSize: 14,
+			lineHeight: 18,
 			textAlign: 'center',
 			fontWeight: '500',
-			marginTop: size === 'small' ? 14 : 16,
-			color: colors[theme].fontSecondaryInfo
+			marginTop: 12,
+			color: '#191C20'
 		},
-		smallImage: {
-			width: 45,
-			height: 45
-		},
-		largeImage: {
-			width: 75,
-			height: 75
+		image: {
+			width: 50,
+			height: 50
 		}
 	});
