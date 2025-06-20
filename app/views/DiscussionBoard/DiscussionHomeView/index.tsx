@@ -20,7 +20,6 @@ import { getRoomAvatar, isGroupChat } from '../../../lib/methods/helpers';
 import { loadMissedMessages } from '../../../lib/methods';
 import moment from 'moment';
 import { handleStar } from '../helpers';
-import BottomNavBar from '../../../containers/BottomNavBar';
 
 // const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 // const CHATS_HEADER = 'Chats';
@@ -227,7 +226,6 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 					/>
 				)}
 			</View>
-			<BottomNavBar currentRoute='DiscussionHomeView' />
 		</View>
 	);
 };

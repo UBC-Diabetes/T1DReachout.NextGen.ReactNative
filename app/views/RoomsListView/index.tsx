@@ -47,7 +47,6 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import BottomNavBar from '../../containers/BottomNavBar';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -990,10 +989,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].surfaceRoom, flex: 1 }}>
 				<StatusBar />
 				{this.renderHeader()}
-				<View style={{ flex: 1 }}>
-					{this.renderScroll()}
-				</View>
-				<BottomNavBar currentRoute='RoomsListView' />
+				{this.renderScroll()}
 			</SafeAreaView>
 		);
 	};
