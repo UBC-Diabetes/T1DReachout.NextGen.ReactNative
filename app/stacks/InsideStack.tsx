@@ -95,6 +95,7 @@ import DiscussionHomeView from '../views/DiscussionBoard/DiscussionHomeView';
 import DiscussionNewPostView from '../views/DiscussionBoard/NewPostView';
 import DiscussionSearchView from '../views/DiscussionBoard/SearchView';
 import ConnectView from '../views/DiscussionBoard/ConnectView';
+import BottomTabNavigator from './BottomTabNavigator';
 
 import { HeaderBackButton } from '@react-navigation/elements';
 
@@ -113,14 +114,8 @@ const DisplayPrefStackNavigator = () => {
 };
 
 /**
-  MainStackNavigator includes all views from:
-  - HomeStackNavigator
-  - ChatsStackNavigator
-  - ProfileLibraryStackNavigator
-  - ProfileStackNavigator
-  - SettingsStackNavigator
-  - DiscussionStackNavigator
-  - AdminPanelStackNavigator
+  MainStackNavigator includes all views except the three main tab views
+  The three main tab views (Home, RoomsListView, DiscussionHomeView) are now in BottomTabNavigator
   **/
 const MainStack = createNativeStackNavigator();
 const MainStackNavigator = () => {
@@ -128,15 +123,15 @@ const MainStackNavigator = () => {
 
 	return (
 		<MainStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			{/* HomeStackNavigator */}
-			<MainStack.Screen name='HomeView' component={HomeView} />
+			{/* Tab Navigator for main screens */}
+			<MainStack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
+			
+			{/* Other screens */}
 			<MainStack.Screen name='RoomView' component={RoomView} />
 			<MainStack.Screen name='CalendarView' component={CalendarView} />
 			<MainStack.Screen name='CreateEventView' component={CreateEventView} />
 			<MainStack.Screen name='SearchPeersView' component={SearchPeersView} />
 			<MainStack.Screen name='EventDetailsView' component={EventDetailsView} />
-			{/* ChatsStackNavigator */}
-			<MainStack.Screen name='RoomsListView' component={RoomsListView} />
 			<MainStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 			<MainStack.Screen name='RoomInfoView' component={RoomInfoView} />
 			<MainStack.Screen name='ReportUserView' component={ReportUserView} />
@@ -185,7 +180,6 @@ const MainStackNavigator = () => {
 				options={ScreenLockConfigView.navigationOptions}
 			/>
 			{/* DiscussionStackNavigator */}
-			<MainStack.Screen name='DiscussionHomeView' component={DiscussionHomeView} options={DiscussionHomeView.navigationOptions} />
 			<MainStack.Screen
 				name='DiscussionBoardView'
 				component={DiscussionBoardView}

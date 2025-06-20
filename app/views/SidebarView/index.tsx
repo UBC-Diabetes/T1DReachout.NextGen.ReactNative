@@ -183,7 +183,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (isMasterDetail) {
 			return;
 		}
-		this.sidebarNavigate('HomeView');
+		Navigation.navigate('BottomTabNavigator', { initialTab: 'HomeView' });
 		navigation?.closeDrawer();
 	};
 
@@ -270,26 +270,26 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				<SidebarItem
 					text={I18n.t('Home')}
 					left={<CustomIcon name='home' size={24} color={iconStyles.tintColor} />}
-					onPress={() => this.sidebarNavigate('HomeView')}
+					onPress={() => Navigation.navigate('BottomTabNavigator', { initialTab: 'HomeView' })}
 					testID='home-screen'
 					theme={theme!}
-					current={this.currentItemKey === 'HomeView'}
+					current={this.currentItemKey === 'BottomTabNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Direct_messaging')}
 					left={<Image source={messagingIcon} style={iconStyles} />}
-					onPress={() => this.sidebarNavigate('RoomsListView')}
+					onPress={() => Navigation.navigate('BottomTabNavigator', { initialTab: 'RoomsListView' })}
 					testID='sidebar-chats'
 					theme={theme!}
-					current={this.currentItemKey === 'ChatsView'}
+					current={this.currentItemKey === 'BottomTabNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('DiscussionBoards')}
 					left={<Image source={discussionIcon} style={iconStyles} />}
-					onPress={() => this.sidebarNavigate('DiscussionHomeView')}
+					onPress={() => Navigation.navigate('BottomTabNavigator', { initialTab: 'DiscussionHomeView' })}
 					testID='sidebar-discussion'
 					theme={theme!}
-					current={this.currentItemKey === 'DiscussionHomeView'}
+					current={this.currentItemKey === 'BottomTabNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('PeerSupporterLibrary')}
