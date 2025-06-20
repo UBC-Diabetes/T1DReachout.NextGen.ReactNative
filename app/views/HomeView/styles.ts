@@ -6,6 +6,9 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 	StyleSheet.create({
 		mainContainer: {
 			backgroundColor: colors[theme].backgroundColor,
+			flex: 1
+		},
+		scrollContent: {
 			flex: 1,
 			padding: 20
 		},
