@@ -20,6 +20,7 @@ import { getRoomAvatar, isGroupChat } from '../../../lib/methods/helpers';
 import { loadMissedMessages } from '../../../lib/methods';
 import moment from 'moment';
 import { handleStar } from '../helpers';
+import BottomNavBar from '../../../containers/BottomNavBar';
 
 // const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 // const CHATS_HEADER = 'Chats';
@@ -192,7 +193,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 	return (
 		<View style={styles.mainContainer}>
 			<Header onTabChange={(tab: DiscussionTabs) => setSelectedTab(tab)} />
-			<View style={{ width: '100%' }}>
+			<View style={{ width: '100%', flex: 1 }}>
 				{selectedTab === DiscussionTabs.DISCUSSION_BOARDS && (
 					<FlatList
 						data={boards}
@@ -226,6 +227,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 					/>
 				)}
 			</View>
+			<BottomNavBar currentRoute='DiscussionHomeView' />
 		</View>
 	);
 };

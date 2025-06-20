@@ -17,6 +17,7 @@ import { Tileprops } from './interfaces';
 import { navToTechSupport, navigateTo247Chat, navigateToVirtualHappyHour } from './helpers';
 import Avatar from '../../containers/Avatar';
 import Navigation from '../../lib/navigation/appNavigation';
+import BottomNavBar from '../../containers/BottomNavBar';
 
 const HomeView: React.FC = ({ theme }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -85,11 +86,12 @@ const HomeView: React.FC = ({ theme }) => {
 	return (
 		<View style={styles.mainContainer} testID='home-view'>
 			<StatusBar />
-			<ScrollView>
+			<ScrollView style={styles.scrollContent}>
 				<Text style={styles.title}>{`Welcome ${userRealName},`}</Text>
 				<View style={styles.tileContainer}>{largeTiles.map((item, index) => homeViewTile(item, index))}</View>
 				<View style={styles.tileContainer}>{smallTiles.map((item, index) => homeViewTile(item, index))}</View>
 			</ScrollView>
+			<BottomNavBar currentRoute='HomeView' />
 		</View>
 	);
 };
