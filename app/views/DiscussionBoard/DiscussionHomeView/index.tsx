@@ -196,6 +196,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 		}
 	}, [route?.params?.selectedTab]);
 
+
 	return (
 		<View style={styles.mainContainer}>
 			<Header 
@@ -210,9 +211,9 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 							<DiscussionBoardCard item={item} onPress={() => navigation.navigate('DiscussionBoardView', { item, boards })} />
 						)}
 						keyExtractor={(item, id) => item.title + id}
-						ItemSeparatorComponent={() => <View style={styles.discussionBoardsSeparator} />}
-						style={{ padding: 20 }}
+						style={{ padding: 16 }}
 						ListFooterComponent={<View style={styles.footer} />}
+						showsVerticalScrollIndicator={false}
 					/>
 				)}
 				{selectedTab === DiscussionTabs.SAVED_POSTS && (

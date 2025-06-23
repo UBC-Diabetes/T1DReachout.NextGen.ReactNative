@@ -5,14 +5,16 @@ import { useSelector } from 'react-redux';
 import { themes } from '../../../lib/constants';
 import { withTheme } from '../../../theme';
 import { DiscussionBoardCardProps } from '../DiscussionHomeView/interaces';
-import { getIcon } from '../helpers';
+import { getIcon, getBoardIcon } from '../helpers';
+import { CustomIcon } from '../../../containers/CustomIcon';
 import IconOrAvatar from '../../../containers/RoomItem/IconOrAvatar';
 import { IApplicationState } from '../../../definitions';
 import { getUidDirectMessage } from '../../../lib/methods/helpers';
 import { useAppSelector } from '../../../lib/hooks';
 
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
-const cardColors = ['magenta', 'mossGreen', 'dreamBlue', 'creamsicleYellow', 'pink', 'superGray', 'forestGreen'];
+// Use consistent blue color for all board icons to match Home View style
+const BOARD_ICON_COLOR = '#112D4E'; // Same blue used in Home View tiles
 
 const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: DiscussionBoardCardProps) => {
 	const { title, description, saved = false, icon, color, onSaveClick, avatar, f, usersCount } = item;
@@ -27,41 +29,41 @@ const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: Discus
 	const id = getUidDirectMessage(item);
 	const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 	const status = item.t === 'l' ? item.visitor?.status || item.v?.status : userStatus;
-	const randomColor = cardColors[Math.floor(Math.random() * cardColors.length)];
+	// Use consistent blue color instead of random colors
 
 	const styles = makeStyles(colors);
 
 	return (
-		<TouchableOpacity style={styles.mainContainer} onPress={() => onPress && onPress()}>
-			<View style={{ ...styles.iconContainer, backgroundColor: themes[theme][randomColor] }}>
-				<IconOrAvatar
-					displayMode={displayMode}
-					avatar={avatar}
-					type={item.t}
-					rid={item.rid}
-					showAvatar={showAvatar}
-					prid={item.prid}
-					status={status}
-					isGroupChat={item.isGrouChat}
-					teamMain={item.teamMain}
-					showLastMessage={StoreLastMessage}
-					displayMode={displayMode}
-					sourceType={item.source}
-					iconSize={80}
-					containerStyles={{ backgroundColor: themes[theme][randomColor] }}
-					borderRadius={10}
-				/>
-			</View>
-			<View style={styles.textContainer}>
-				<Text style={styles.title}>{title}</Text>
-				{description ? (
-					<Text style={styles.description}>{`${description?.slice(0, 100)}${description?.length > 100 ? '...' : ''}`}</Text>
-				) : (
-					<></>
-				)}
-				<View style={styles.boardMembersContainer}>
-					<Image source={getIcon('boardUsers')} style={styles.usersIcon} />
-					<Text style={{ color: colors.boardMembersText }}>{usersCount} members</Text>
+		<TouchableOpacity style={styles.cardContainer} onPress={() => onPress && onPress()}>
+			<View style={styles.cardContent}>
+				<View style={styles.iconSection}>
+					<View style={styles.iconContainer}>
+						{getBoardIcon(title) === 'airplane' || getBoardIcon(title) === 'support' || getBoardIcon(title) === 'discussionBoardIcon' ? (
+							<CustomIcon 
+								name={getBoardIcon(title) === 'airplane' ? 'airplane' : getBoardIcon(title) === 'support' ? 'support' : 'discussions'} 
+								size={50} 
+								color="#FFFFFF" 
+							/>
+						) : (
+							<Image 
+								source={getIcon(getBoardIcon(title))} 
+								style={styles.boardIcon}
+								resizeMode="contain"
+							/>
+						)}
+					</View>
+				</View>
+				<View style={styles.textSection}>
+					<Text style={styles.title}>{title}</Text>
+					{description ? (
+						<Text style={styles.description}>{`${description?.slice(0, 100)}${description?.length > 100 ? '...' : ''}`}</Text>
+					) : (
+						<></>
+					)}
+					<View style={styles.boardMembersContainer}>
+						<Image source={getIcon('boardUsers')} style={styles.usersIcon} />
+						<Text style={{ color: colors.boardMembersText }}>{usersCount} members</Text>
+					</View>
 				</View>
 			</View>
 			{/* 
@@ -84,41 +86,77 @@ export default withTheme(DiscussionBoardCard);
 
 const makeStyles = themeColors =>
 	StyleSheet.create({
-		mainContainer: {
+		cardContainer: {
 			width: '100%',
-			flexDirection: 'row'
+			backgroundColor: '#FFFFFF', // White card background
+			borderRadius: 12,
+			marginVertical: 6,
+			marginHorizontal: 4
+		},
+		cardContent: {
+			flexDirection: 'row',
+			minHeight: 100 // Use minHeight for flexible card sizing
+		},
+		iconSection: {
+			width: '25%', // 1/4 of the card width for icon area
+			backgroundColor: BOARD_ICON_COLOR,
+			borderTopLeftRadius: 12,
+			borderBottomLeftRadius: 12,
+			justifyContent: 'center',
+			alignItems: 'center',
+			alignSelf: 'stretch' // Fill the full height of the card
 		},
 		iconContainer: {
-			borderRadius: 10,
-			height: 80,
-			width: 80,
+			// Remove specific dimensions and background - parent handles it
 			justifyContent: 'center',
 			alignItems: 'center'
 		},
-		icon: {
-			width: 38,
-			height: 38
+		boardIcon: {
+			width: 50,
+			height: 50
+		},
+		textSection: {
+			flex: 1, // 3/4 of the card width for text content
+			paddingVertical: 16,
+			paddingHorizontal: 16,
+			justifyContent: 'center'
+		},
+		title: {
+			fontFamily: 'Inter',
+			fontWeight: '600',
+			fontSize: 16,
+			lineHeight: 20,
+			color: '#191C20',
+			marginBottom: 4
+		},
+		description: {
+			fontFamily: 'Inter',
+			fontWeight: '400',
+			fontSize: 14,
+			lineHeight: 18,
+			color: '#374151',
+			marginBottom: 8
+		},
+		boardMembersContainer: {
+			flexDirection: 'row',
+			alignItems: 'center'
+		},
+		usersIcon: {
+			width: 16,
+			height: 16,
+			marginRight: 6,
+			tintColor: '#6B7280'
+		},
+		// Legacy styles for compatibility
+		mainContainer: {
+			width: '100%',
+			flexDirection: 'row'
 		},
 		textContainer: {
 			flex: 1,
 			paddingTop: 6,
 			marginLeft: 12,
 			marginRight: 15
-		},
-		title: {
-			fontFamily: 'Inter',
-			fontWeight: '500',
-			fontSize: 16,
-			lineHeight: 19,
-			color: themeColors.fontSecondaryInfo
-		},
-		description: {
-			fontFamily: 'Inter',
-			fontWeight: '400',
-			fontSize: 12,
-			lineHeight: 15,
-			marginTop: 4,
-			color: themeColors.fontSecondaryInfo
 		},
 		savedContainer: {
 			width: 42,
@@ -130,14 +168,5 @@ const makeStyles = themeColors =>
 		saveIcon: {
 			width: 42,
 			height: 42
-		},
-		boardMembersContainer: {
-			flexDirection: 'row',
-			marginTop: 4
-		},
-		usersIcon: {
-			width: 20,
-			height: 15,
-			marginRight: 8
 		}
 	});

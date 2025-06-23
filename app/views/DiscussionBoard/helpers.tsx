@@ -21,24 +21,24 @@ export const getColor = (color: string) => {
 export const getIcon = (icon: string) => {
 	let imagePath;
 	switch (icon) {
-		// case 'covid':
-		// 	imagePath = require('../../static/images/discussionboard/covid.png');
-		// 	break;
-		// case 'diet':
-		// 	imagePath = require('../../static/images/discussionboard/diet.png');
-		// 	break;
-		// case 'exercising':
-		// 	imagePath = require('../../static/images/discussionboard/exercising.png');
-		// 	break;
-		// case 'insulin':
-		// 	imagePath = require('../../static/images/discussionboard/insulin.png');
-		// 	break;
-		// case 'mdi_users':
-		// 	imagePath = require('../../static/images/discussionboard/mdi_users.png');
-		// 	break;
-		// case 'syringe':
-		// 	imagePath = require('../../static/images/discussionboard/syringe.png');
-		// 	break;
+		case 'covid':
+			imagePath = require('../../static/images/discussionboard/covid.png');
+			break;
+		case 'diet':
+			imagePath = require('../../static/images/discussionboard/diet.png');
+			break;
+		case 'exercising':
+			imagePath = require('../../static/images/discussionboard/exercising.png');
+			break;
+		case 'insulin':
+			imagePath = require('../../static/images/discussionboard/insulin.png');
+			break;
+		case 'mdi_users':
+			imagePath = require('../../static/images/discussionboard/mdi_users.png');
+			break;
+		case 'syringe':
+			imagePath = require('../../static/images/discussionboard/syringe.png');
+			break;
 		case 'solidStar':
 			imagePath = require(`../../static/images/discussionboard/star_solid.png`);
 			break;
@@ -139,4 +139,37 @@ export const handleSendMessage = async ({
 export const getDate = (date: string, format?: string) => {
 	const formattedDate = moment(date).format(format ?? 'MMMM D, YYYY - h:MMa');
 	return moment(date) ? formattedDate : '';
+};
+
+export const getBoardIcon = (boardName: string) => {
+	const name = boardName.toLowerCase();
+	
+	// Map board names to icon keys
+	if (name.includes('covid') || name.includes('coronavirus')) {
+		return 'covid';
+	}
+	if (name.includes('diet') || name.includes('nutrition')) {
+		return 'diet';
+	}
+	if (name.includes('exercis') || name.includes('fitness')) {
+		return 'exercising';
+	}
+	if (name.includes('insulin') || name.includes('pump')) {
+		return 'insulin';
+	}
+	if (name.includes('mdi') || name.includes('injection') || name.includes('multiple daily')) {
+		return 'mdi_users';
+	}
+	if (name.includes('syringe')) {
+		return 'syringe';
+	}
+	if (name.includes('travel')) {
+		return 'airplane'; // Use CustomIcon for travel
+	}
+	if (name.includes('cgm') || name.includes('continuous glucose')) {
+		return 'support'; // Use CustomIcon as fallback
+	}
+	
+	// Default fallback
+	return 'discussionBoardIcon';
 };
