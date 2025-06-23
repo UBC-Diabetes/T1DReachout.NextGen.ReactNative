@@ -5,7 +5,7 @@ import { colors } from '../../lib/constants';
 export const createMainStyles = ({ theme }: { theme: any }) =>
 	StyleSheet.create({
 		mainContainer: {
-			backgroundColor: colors[theme].backgroundColor,
+			backgroundColor: '#F8F9FA', // Light gray background for entire page
 			flex: 1
 		},
 		scrollContent: {
@@ -59,7 +59,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			fontStyle: 'italic'
 		},
 		eventsContainer: {
-			backgroundColor: '#F8F9FA',
+			backgroundColor: 'transparent',
 			borderRadius: 8,
 			padding: 4
 		},
@@ -67,12 +67,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			backgroundColor: '#FFFFFF',
 			marginVertical: 4,
 			marginHorizontal: 4,
-			borderRadius: 6,
-			elevation: 1,
-			shadowColor: '#000',
-			shadowOffset: { width: 0, height: 1 },
-			shadowOpacity: 0.1,
-			shadowRadius: 2
+			borderRadius: 6
 		},
 		eventContent: {
 			padding: 12
@@ -100,7 +95,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			fontWeight: '500'
 		},
 		savedPostsContainer: {
-			backgroundColor: '#F8F9FA',
+			backgroundColor: 'transparent',
 			borderRadius: 8,
 			padding: 4
 		},
@@ -108,12 +103,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			backgroundColor: '#FFFFFF',
 			marginVertical: 4,
 			marginHorizontal: 4,
-			borderRadius: 6,
-			elevation: 1,
-			shadowColor: '#000',
-			shadowOffset: { width: 0, height: 1 },
-			shadowOpacity: 0.1,
-			shadowRadius: 2
+			borderRadius: 6
 		},
 		savedPostContent: {
 			padding: 12
