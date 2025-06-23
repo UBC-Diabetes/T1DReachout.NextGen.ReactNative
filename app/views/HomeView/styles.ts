@@ -111,20 +111,30 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		savedPostHeader: {
 			flexDirection: 'row',
 			justifyContent: 'space-between',
-			alignItems: 'center',
+			alignItems: 'flex-start',
 			marginBottom: 6
+		},
+		savedPostInfo: {
+			flex: 1,
+			marginRight: 8
 		},
 		savedPostAuthor: {
 			fontSize: 14,
 			fontWeight: '600',
-			color: '#191C20',
-			flex: 1,
-			marginRight: 8
+			color: '#191C20'
 		},
 		savedPostDate: {
 			fontSize: 12,
 			color: '#6B7280',
 			fontWeight: '400'
+		},
+		bookmarkButton: {
+			padding: 4
+		},
+		bookmarkIcon: {
+			width: 18,
+			height: 18,
+			tintColor: '#112D4E'
 		},
 		savedPostText: {
 			fontSize: 14,

@@ -23,6 +23,8 @@ import {
 	getPostReactionsCount,
 	getPostRepliesCount
 } from './savedPostsHelpers';
+import { handleStar } from '../DiscussionBoard/helpers';
+import { getIcon } from '../DiscussionBoard/helpers';
 
 const HomeView: React.FC = ({ theme, switchTab }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -199,12 +201,31 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 								>
 									<View style={styles.savedPostContent}>
 										<View style={styles.savedPostHeader}>
-											<Text style={styles.savedPostAuthor} numberOfLines={1}>
-												{getPostAuthorName(post)}
-											</Text>
-											<Text style={styles.savedPostDate}>
-												{formatSavedPostDate(post._raw?.ts || post.ts)}
-											</Text>
+											<View style={styles.savedPostInfo}>
+												<Text style={styles.savedPostAuthor} numberOfLines={1}>
+													{getPostAuthorName(post)}
+												</Text>
+												<Text style={styles.savedPostDate}>
+													{formatSavedPostDate(post._raw?.ts || post.ts)}
+												</Text>
+											</View>
+											<Touchable
+												onPress={async () => {
+													// Toggle the star/bookmark status
+													await handleStar(post._raw || post, () => {
+														// Refresh saved posts after toggling
+														// The observeSavedPosts will automatically update the list
+													});
+												}}
+												style={styles.bookmarkButton}
+												activeOpacity={0.7}
+											>
+												<Image 
+													source={getIcon('solidSave')} 
+													style={styles.bookmarkIcon} 
+													resizeMode='contain' 
+												/>
+											</Touchable>
 										</View>
 										<Text style={styles.savedPostText} numberOfLines={2}>
 											{truncatePostContent(post._raw?.msg || post.msg, 100)}
