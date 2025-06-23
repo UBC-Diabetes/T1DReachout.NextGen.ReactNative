@@ -24,7 +24,7 @@ import {
 	getPostRepliesCount
 } from './savedPostsHelpers';
 
-const HomeView: React.FC = ({ theme }) => {
+const HomeView: React.FC = ({ theme, switchTab }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
 	const dispatch = useDispatch();
 
@@ -39,6 +39,7 @@ const HomeView: React.FC = ({ theme }) => {
 	useEffect(() => {
 		dispatch(fetchEventRequest());
 	}, [dispatch]);
+
 
 	// State for saved posts
 	const [savedPosts, setSavedPosts] = useState([]);
@@ -166,12 +167,16 @@ const HomeView: React.FC = ({ theme }) => {
 						{savedPosts.length > 0 && (
 							<Touchable
 								onPress={() => {
-									// Navigate to Discussion Boards with Saved Posts tab
-									navigation.navigate('BottomTabNavigator', { 
-										initialTab: 'DiscussionHomeView',
-										params: { selectedTab: 1 }, // SAVED_POSTS tab
-										key: `savedpost-${Date.now()}` // Force fresh navigation
-									});
+									// Use the switchTab function provided by BottomTabNavigator
+									if (switchTab) {
+										switchTab('DiscussionHomeView', { selectedTab: 1 });
+									} else {
+										// Fallback to navigation if switchTab is not available
+										navigation.getParent()?.navigate('BottomTabNavigator', {
+											initialTab: 'DiscussionHomeView',
+											params: { selectedTab: 1 }
+										});
+									}
 								}}
 								activeOpacity={0.7}
 							>
@@ -186,12 +191,9 @@ const HomeView: React.FC = ({ theme }) => {
 									key={post.id || index}
 									style={styles.savedPostItem}
 									onPress={() => {
-										// Navigate to Discussion Boards with Saved Posts tab
-										navigation.navigate('BottomTabNavigator', { 
-											initialTab: 'DiscussionHomeView',
-											params: { selectedTab: 1 }, // SAVED_POSTS tab
-											key: `savedpost-${Date.now()}` // Force fresh navigation
-										});
+										// Navigate directly to the post details view like in DiscussionHomeView
+										// Pass the whole post object, not just _raw, to match DiscussionPostCard pattern
+										navigation.navigate('DiscussionPostView', { item: post });
 									}}
 									activeOpacity={0.7}
 								>
