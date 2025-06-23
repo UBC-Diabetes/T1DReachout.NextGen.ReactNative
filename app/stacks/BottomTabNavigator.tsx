@@ -96,6 +96,14 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 
 	const handleTabPress = (screen: string) => {
 		setActiveTab(screen);
+		
+		// When navigating to DiscussionHomeView via bottom nav, reset to Discussion Boards tab
+		if (screen === 'DiscussionHomeView') {
+			navigation.setParams({ 
+				...route?.params,
+				params: { selectedTab: 0 } // 0 = DISCUSSION_BOARDS tab
+			});
+		}
 	};
 
 	const renderHeader = () => {
@@ -198,6 +206,17 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 					route={{
 						...route,
 						params: route?.params?.params || {}
+					}}
+					switchTab={(tabName: string, params?: any) => {
+						setActiveTab(tabName);
+						// If switching to DiscussionHomeView with specific params, handle them
+						if (tabName === 'DiscussionHomeView' && params?.selectedTab !== undefined) {
+							// The DiscussionHomeView will pick up these params from the route
+							navigation.setParams({ 
+								...route?.params,
+								params: { ...route?.params?.params, ...params }
+							});
+						}
 					}}
 					{...props} 
 				/>
