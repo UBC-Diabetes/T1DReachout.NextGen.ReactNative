@@ -14,7 +14,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import { IApplicationState } from '../../definitions';
 import { getFetchedEventsSelector } from '../../selectors/event';
 import { getUpcomingEvents, formatEventDate } from './calendarHelpers';
-import { fetchEventRequest } from '../../actions/calendarEvents';
+import { fetchEventRequest, pressEventRequest } from '../../actions/calendarEvents';
 import { 
 	observeSavedPosts, 
 	formatSavedPostDate, 
@@ -125,7 +125,10 @@ const HomeView: React.FC = ({ theme }) => {
 								<Touchable
 									key={event.id}
 									style={styles.eventItem}
-									onPress={() => navigation.navigate('CalendarView')}
+									onPress={() => {
+										dispatch(pressEventRequest(event));
+										navigation.navigate('EventDetailsView');
+									}}
 									activeOpacity={0.7}
 								>
 									<View style={styles.eventContent}>
