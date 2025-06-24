@@ -4,6 +4,7 @@ import { TSupportedThemes } from '../../theme';
 
 interface IGetUnreadStyle extends Omit<IUnreadBadge, 'small' | 'style'> {
 	theme: TSupportedThemes;
+	alert?: boolean;
 }
 
 export const getUnreadStyle = ({
@@ -13,13 +14,16 @@ export const getUnreadStyle = ({
 	theme,
 	tunread,
 	tunreadUser,
-	tunreadGroup
+	tunreadGroup,
+	alert
 }: IGetUnreadStyle) => {
-	if ((!unread || unread <= 0) && !tunread?.length) {
+	// Show background color if there are unread messages OR if there's an alert
+	const hasUnread = (unread && unread > 0) || tunread?.length;
+	if (!hasUnread && !alert) {
 		return {};
 	}
 
-	let backgroundColor = themes[theme].fontAnnotation;
+	let backgroundColor = '#112D4E'; // Dark blue for regular unread messages
 	const color = themes[theme].fontWhite;
 	if ((userMentions && userMentions > 0) || tunreadUser?.length) {
 		backgroundColor = themes[theme].badgeBackgroundLevel4;

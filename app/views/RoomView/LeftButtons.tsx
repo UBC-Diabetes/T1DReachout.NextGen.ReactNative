@@ -49,8 +49,36 @@ const LeftButtons = ({
 	goRoomActionsView,
 	isMasterDetail
 }: ILeftButtonsProps): React.ReactElement | null => {
-	const { goBack } = useAppNavigation();
+	const navigation = useAppNavigation();
+	const { goBack } = navigation;
 	const onPress = useCallback(() => goRoomActionsView(), []);
+
+	const handleGoBack = useCallback(() => {
+		if (navigation.canGoBack()) {
+			goBack();
+		} else {
+			// If can't go back via navigation stack, navigate back to Direct Messages tab
+			// This handles the bottom tab navigator case where rooms are opened with reset
+			try {
+				// Try to navigate to the main stack with RoomsListView
+				navigation.navigate('MainStackNavigator', { screen: 'RoomsListView' });
+			} catch (error) {
+				console.log('Direct navigation failed, trying reset:', error);
+				// Fallback: reset to the main stack with RoomsListView
+				navigation.reset({
+					index: 0,
+					routes: [
+						{
+							name: 'MainStackNavigator',
+							state: {
+								routes: [{ name: 'RoomsListView' }]
+							}
+						}
+					]
+				});
+			}
+		}
+	}, [navigation, goBack]);
 
 	if (!isMasterDetail || tmid) {
 		let label = ' ';
@@ -67,7 +95,7 @@ const LeftButtons = ({
 			<HeaderBackButton
 				label={label}
 				labelVisible={isIOS}
-				onPress={goBack}
+				onPress={handleGoBack}
 				tintColor={themes[theme].fontDefault}
 				labelStyle={{ fontSize, marginLeft }}
 				style={styles.container}

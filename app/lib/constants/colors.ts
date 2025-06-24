@@ -16,7 +16,7 @@ const light = {
 
 	surfaceLight: '#FFFFFF',
 	surfaceTint: '#F7F8FA',
-	surfaceRoom: '#FFFFFF',
+	surfaceRoom: '#F8F9FA',
 	surfaceNeutral: '#E4E7EA',
 	surfaceDisabled: '#F7F8FA',
 	surfaceHover: '#F2F3F5',
@@ -63,7 +63,7 @@ const light = {
 	statusFontService2: '#7F1B9F',
 
 	badgeBackgroundLevel1: '#6C727A',
-	badgeBackgroundLevel2: '#1D74F5',
+	badgeBackgroundLevel2: '#112D4E',
 	badgeBackgroundLevel3: '#F38C39',
 	badgeBackgroundLevel4: '#F5455C',
 
@@ -158,7 +158,7 @@ const dark = {
 	statusFontService2: '#C393D2',
 
 	badgeBackgroundLevel1: '#484C51',
-	badgeBackgroundLevel2: '#2C65BA',
+	badgeBackgroundLevel2: '#112D4E',
 	badgeBackgroundLevel3: '#955828',
 	badgeBackgroundLevel4: '#B43C4C',
 
@@ -253,7 +253,7 @@ const black = {
 	statusFontService2: '#C393D2',
 
 	badgeBackgroundLevel1: '#484C51',
-	badgeBackgroundLevel2: '#2C65BA',
+	badgeBackgroundLevel2: '#112D4E',
 	badgeBackgroundLevel3: '#955828',
 	badgeBackgroundLevel4: '#B43C4C',
 

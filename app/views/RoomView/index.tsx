@@ -492,22 +492,21 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
 		);
 		navigation.setOptions({
-			headerLeft: () =>
-				isIOS && (unreadsCount || isMasterDetail) ? (
-					<LeftButtons
-						rid={rid}
-						tmid={tmid}
-						unreadsCount={unreadsCount}
-						baseUrl={baseUrl}
-						userId={userId}
-						token={token}
-						title={avatar}
-						theme={theme}
-						t={t}
-						goRoomActionsView={this.goRoomActionsView}
-						isMasterDetail={isMasterDetail}
-					/>
-				) : undefined,
+			headerLeft: () => (
+				<LeftButtons
+					rid={rid}
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					theme={theme}
+					t={t}
+					goRoomActionsView={this.goRoomActionsView}
+					isMasterDetail={isMasterDetail}
+				/>
+			),
 			headerTitle: () => (
 				<RoomHeader
 					prid={prid}

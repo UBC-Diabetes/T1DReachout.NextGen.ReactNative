@@ -40,6 +40,7 @@ export interface IUnreadBadge {
 	small?: boolean;
 	hideUnreadStatus?: boolean;
 	hideMentionStatus?: boolean;
+	alert?: boolean;
 }
 
 const UnreadBadge = React.memo(
@@ -53,11 +54,17 @@ const UnreadBadge = React.memo(
 		tunreadGroup,
 		small,
 		hideMentionStatus,
-		hideUnreadStatus
+		hideUnreadStatus,
+		alert
 	}: IUnreadBadge) => {
 		const { theme } = useTheme();
 
-		if ((!unread || unread <= 0) && !tunread?.length) {
+		
+		// Show badge if there are unread messages OR if there's an alert
+		const hasUnread = (unread && unread > 0) || tunread?.length;
+		const shouldShowBadge = hasUnread || alert;
+		
+		if (!shouldShowBadge) {
 			return null;
 		}
 
@@ -77,31 +84,47 @@ const UnreadBadge = React.memo(
 			groupMentions,
 			tunread,
 			tunreadUser,
-			tunreadGroup
+			tunreadGroup,
+			alert
 		});
 
 		if (!backgroundColor) {
 			return null;
 		}
 		let text: any = unread || tunread?.length;
-		if (small && text >= 100) {
-			text = '+99';
+		
+		// If there's an alert but no unread count, show a dot or "•"
+		if (alert && (!text || text <= 0)) {
+			text = '•';
+		} else {
+			if (small && text >= 100) {
+				text = '+99';
+			}
+			if (!small && text >= 1000) {
+				text = '+999';
+			}
+			text = text.toString();
 		}
-		if (!small && text >= 1000) {
-			text = '+999';
-		}
-		text = text.toString();
 
 		let minWidth = 21;
+		let badgeSize = 21; // Default size for normal badges
 		if (small) {
-			minWidth = 11 + text.length * 5;
+			// For small badges, use a fixed circular size
+			badgeSize = 20;
+			minWidth = badgeSize;
 		}
 
 		return (
 			<View
 				style={[
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
-					{ backgroundColor, minWidth },
+					{ 
+						backgroundColor, 
+						minWidth,
+						width: small ? badgeSize : minWidth,
+						height: small ? badgeSize : 21,
+						borderRadius: small ? badgeSize / 2 : 10.5
+					},
 					style
 				]}>
 				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
