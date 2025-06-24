@@ -273,12 +273,12 @@ class ProfileLibraryView extends React.Component {
 		const { data, loading, refreshing, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view' theme={theme}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].nextGenLightGray }} testID='directory-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={data}
-					style={styles.list}
-					contentContainerStyle={styles.listContainer}
+					style={[styles.list, { backgroundColor: themes[theme].nextGenLightGray }]}
+					contentContainerStyle={[styles.listContainer, { backgroundColor: themes[theme].nextGenLightGray }]}
 					extraData={this.state}
 					keyExtractor={item => (item && item._id ? item._id : String(Math.random()))}
 					ListHeaderComponent={this.renderHeader}

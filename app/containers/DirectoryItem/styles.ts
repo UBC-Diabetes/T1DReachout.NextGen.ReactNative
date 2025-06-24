@@ -7,16 +7,9 @@ export const ROW_HEIGHT = 110;
 export default StyleSheet.create({
 	directoryItemButton: {
 		height: ROW_HEIGHT,
-		borderRadius: 11,
-		margin: 12,
-		elevation: 5,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84
+		marginVertical: 12,
+		marginHorizontal: 16,
+		backgroundColor: '#FFFFFF'
 	},
 	directoryItemContainer: {
 		flex: 1,
@@ -37,9 +30,14 @@ export default StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center'
 	},
+	directoryItemNameContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		flex: 1
+	},
 	directoryItemName: {
-		flex: 1,
-		fontSize: 17,
+		fontSize: 16,
+		fontWeight: '500',
 		...sharedStyles.textMedium
 	},
 	directoryItemUsername: {
@@ -54,8 +52,7 @@ export default StyleSheet.create({
 	},
 	directoryItemAge: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-		alignItems: 'center',
-		paddingLeft: 5
+		fontWeight: '500',
+		...sharedStyles.textRegular
 	}
 });

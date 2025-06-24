@@ -941,7 +941,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	renderSectionHeader = (header: string) => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.groupTitleContainer, { backgroundColor: '#F8F9FA' }]}>
+			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].nextGenLightGray }]}>
 				<Text style={[styles.groupTitle, { color: themes[theme].fontHint }]}>{I18n.t(header)}</Text>
 			</View>
 		);
@@ -963,8 +963,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
 				keyExtractor={item => keyExtractor(item, searching)}
-				style={[styles.list, { backgroundColor: '#F8F9FA' }]}
-				contentContainerStyle={{ backgroundColor: '#F8F9FA', flexGrow: 1 }}
+				style={[styles.list, { backgroundColor: themes[theme].nextGenLightGray }]}
+				contentContainerStyle={{ backgroundColor: themes[theme].nextGenLightGray, flexGrow: 1 }}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
 				getItemLayout={(data, index) => getItemLayout(data, index, height)}
@@ -987,8 +987,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { theme } = this.props;
 
 		return (
-			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: '#F8F9FA', flex: 1 }}>
-				<View style={{ backgroundColor: '#F8F9FA', flex: 1 }}>
+			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].nextGenLightGray, flex: 1 }}>
+				<View style={{ backgroundColor: themes[theme].nextGenLightGray, flex: 1 }}>
 					<StatusBar />
 					{this.renderHeader()}
 					{this.renderScroll()}

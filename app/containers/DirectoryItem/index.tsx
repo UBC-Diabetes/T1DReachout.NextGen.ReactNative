@@ -52,35 +52,30 @@ const DirectoryItem = ({
 	const { theme } = useTheme();
 
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID}>
-			<View
-				style={[
-					styles.directoryItemContainer,
-					styles.directoryItemButton,
-					style,
-					{ backgroundColor: themes[theme].peerSupporterBackground }
-				]}>
-				<Avatar text={avatar} size={70} type={type} rid={rid} style={styles.directoryItemAvatar} />
+		<Touch onPress={onPress} style={[styles.directoryItemButton, style]} testID={testID}>
+			<View style={styles.directoryItemContainer}>
+				<Avatar text={avatar} size={48} type={type} rid={rid} style={styles.directoryItemAvatar} borderRadius={24} />
 				<View style={styles.directoryItemTextContainer}>
 					<View style={styles.directoryItemTextTitle}>
 						{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
-						<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>
-							{title}
-						</Text>
+						<View style={styles.directoryItemNameContainer}>
+							<Text style={[styles.directoryItemName, { color: '#1D1B20' }]} numberOfLines={1}>
+								{title}
+							</Text>
+							{age ? (
+								<Text style={[styles.directoryItemAge, { color: '#49454F' }]} numberOfLines={1}>
+									{` — ${age}`}
+								</Text>
+							) : null}
+						</View>
 					</View>
 					{description ? (
 						<Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
 							{description}
 						</Text>
 					) : null}
-					{age ? (
-						<Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-							{age}
-						</Text>
-					) : null}
 				</View>
 				<DirectoryItemLabel text={rightLabel} theme={theme} />
-				<CustomIcon name={'chevron-right'} size={36} color='#38b000' />
 			</View>
 		</Touch>
 	);
