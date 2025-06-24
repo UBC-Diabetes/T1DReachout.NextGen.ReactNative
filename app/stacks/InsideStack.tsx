@@ -127,7 +127,7 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
 			
 			{/* Other screens */}
-			<MainStack.Screen name='RoomView' component={RoomView} />
+			<MainStack.Screen name='RoomView' component={RoomView} options={{ headerBackVisible: false }} />
 			<MainStack.Screen name='CalendarView' component={CalendarView} />
 			<MainStack.Screen name='CreateEventView' component={CreateEventView} />
 			<MainStack.Screen name='SearchPeersView' component={SearchPeersView} />

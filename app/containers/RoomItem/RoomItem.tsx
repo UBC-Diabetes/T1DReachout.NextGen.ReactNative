@@ -91,7 +91,8 @@ const RoomItem = ({
 				displayMode={displayMode}
 				showAvatar={showAvatar}
 				showLastMessage={!!showLastMessage}
-				sourceType={sourceType}>
+				sourceType={sourceType}
+				roomName={name}>
 				{showLastMessage && displayMode === DisplayMode.Expanded ? (
 					<>
 						<View style={styles.titleContainer}>

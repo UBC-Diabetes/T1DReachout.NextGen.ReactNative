@@ -63,20 +63,8 @@ const navigate = ({
 	if (popToRoot) {
 		Navigation.navigate('RoomsListView');
 	}
-	return Navigation.dispatch((state: any) => {
-		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
-		return CommonActions.reset({
-			...state,
-			routes: [
-				...routesRoomsListView,
-				{
-					name: 'RoomView',
-					params: routeParams
-				}
-			],
-			index: routesRoomsListView.length
-		});
-	});
+	// Use regular navigation instead of reset to preserve navigation stack
+	return Navigation.navigate('RoomView', routeParams);
 };
 
 interface IOmnichannelRoomVisitor extends IOmnichannelRoom {

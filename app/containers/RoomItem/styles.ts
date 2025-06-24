@@ -139,5 +139,18 @@ export default StyleSheet.create({
 	badgeInline: {
 		marginLeft: 8,
 		alignSelf: 'flex-end'
+	},
+	discussionIconContainer: {
+		width: 40,
+		height: 40,
+		backgroundColor: '#112D4E', // Same blue as boards view
+		borderRadius: 8,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight: 10
+	},
+	discussionIcon: {
+		width: 24,
+		height: 24
 	}
 });

@@ -1,12 +1,16 @@
 import { HeaderBackButton } from '@react-navigation/elements';
+import { CommonActions } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import Avatar from '../../containers/Avatar';
 import { themes } from '../../lib/constants';
 import { useAppNavigation } from '../../lib/hooks/navigation';
 import { isIOS } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
+import { getIcon } from '../DiscussionBoard/helpers';
+
+const hitSlop = { top: 15, bottom: 15, left: 15, right: 15 };
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,29 +58,12 @@ const LeftButtons = ({
 	const onPress = useCallback(() => goRoomActionsView(), []);
 
 	const handleGoBack = useCallback(() => {
+		// With proper navigation stack, we should always be able to go back
 		if (navigation.canGoBack()) {
 			goBack();
 		} else {
-			// If can't go back via navigation stack, navigate back to Direct Messages tab
-			// This handles the bottom tab navigator case where rooms are opened with reset
-			try {
-				// Try to navigate to the main stack with RoomsListView
-				navigation.navigate('MainStackNavigator', { screen: 'RoomsListView' });
-			} catch (error) {
-				console.log('Direct navigation failed, trying reset:', error);
-				// Fallback: reset to the main stack with RoomsListView
-				navigation.reset({
-					index: 0,
-					routes: [
-						{
-							name: 'MainStackNavigator',
-							state: {
-								routes: [{ name: 'RoomsListView' }]
-							}
-						}
-					]
-				});
-			}
+			// Fallback - this shouldn't happen with proper navigation
+			console.log('No navigation stack available - this indicates an issue');
 		}
 	}, [navigation, goBack]);
 
@@ -92,15 +79,9 @@ const LeftButtons = ({
 			fontSize = labelLength > 1 ? 14 : 17;
 		}
 		return (
-			<HeaderBackButton
-				label={label}
-				labelVisible={isIOS}
-				onPress={handleGoBack}
-				tintColor={themes[theme].fontDefault}
-				labelStyle={{ fontSize, marginLeft }}
-				style={styles.container}
-				testID='header-back'
-			/>
+			<TouchableOpacity style={{ marginLeft: 2, marginRight: 7 }} onPress={handleGoBack} hitSlop={hitSlop} testID='header-back'>
+				<Image source={getIcon('arrowLeft')} style={{ width: 11, height: 19 }} resizeMode='contain' />
+			</TouchableOpacity>
 		);
 	}
 
