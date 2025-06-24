@@ -61,6 +61,7 @@ export interface ITypeIconProps {
 	size?: number;
 	style?: object;
 	sourceType: IOmnichannelSource;
+	roomName?: string;
 }
 
 interface IRoomItemTouchables {
@@ -117,6 +118,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	size?: number;
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
+	inlineBadge?: boolean;
 }
 
 export interface ILastMessageProps {

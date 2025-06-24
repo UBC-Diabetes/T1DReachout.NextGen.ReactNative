@@ -81,7 +81,7 @@ const RoomItemContainer = React.memo(
 				type={item.t}
 				isFocused={isFocused}
 				prid={item.prid}
-				hideUnreadStatus={item.hideUnreadStatus}
+				hideUnreadStatus={item.t === 'd' || item.t === 'c' || item.t === 'p' || item.prid ? false : item.hideUnreadStatus}
 				hideMentionStatus={item.hideMentionStatus}
 				alert={alert}
 				lastMessage={item.lastMessage}
@@ -101,6 +101,7 @@ const RoomItemContainer = React.memo(
 				displayMode={displayMode}
 				status={item.t === 'l' ? item?.visitor?.status : null}
 				sourceType={item.t === 'l' ? item.source : null}
+				inlineBadge={item.t === 'd' || item.t === 'c' || item.t === 'p' || item.prid} // Use inline badges for direct messages, channels, groups, and discussions
 			/>
 		);
 	},

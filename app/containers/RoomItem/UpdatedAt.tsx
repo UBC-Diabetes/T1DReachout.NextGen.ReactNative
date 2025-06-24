@@ -17,15 +17,8 @@ const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps
 			style={[
 				styles.date,
 				{
-					color: colors.fontSecondaryInfo
-				},
-				alert &&
-					!hideUnreadStatus && [
-						styles.updateAlert,
-						{
-							color: colors.badgeBackgroundLevel2
-						}
-					]
+					color: '#6B7280' // Always light gray, regardless of alert status
+				}
 			]}
 			ellipsizeMode='tail'
 			numberOfLines={1}>

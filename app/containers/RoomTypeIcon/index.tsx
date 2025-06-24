@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle, View, Image } from 'react-native';
 
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon, TIconsName } from '../CustomIcon';
@@ -7,10 +7,24 @@ import { themes } from '../../lib/constants';
 import Status from '../Status';
 import { useTheme } from '../../theme';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { getIcon, getBoardIcon } from '../../views/DiscussionBoard/helpers';
 
 const styles = StyleSheet.create({
 	icon: {
 		marginRight: 4
+	},
+	discussionIconContainer: {
+		width: 40,
+		height: 40,
+		backgroundColor: '#112D4E', // Same blue as boards view
+		borderRadius: 8,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight: 4
+	},
+	discussionIcon: {
+		width: 24,
+		height: 24
 	}
 });
 
@@ -23,10 +37,11 @@ interface IRoomTypeIcon {
 	size?: number;
 	style?: ViewStyle;
 	sourceType?: IOmnichannelSource;
+	roomName?: string;
 }
 
 const RoomTypeIcon = React.memo(
-	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) => {
+	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, roomName }: IRoomTypeIcon) => {
 		const { theme } = useTheme();
 
 		if (!type) {
@@ -41,6 +56,29 @@ const RoomTypeIcon = React.memo(
 
 		if (type === 'l') {
 			return <OmnichannelRoomIcon style={iconStyle} size={size} type={type} status={status} sourceType={sourceType} />;
+		}
+
+		// Special handling for discussion boards to match Boards view style
+		if (type === 'discussion' && roomName) {
+			const iconKey = getBoardIcon(roomName);
+			
+			return (
+				<View style={styles.discussionIconContainer}>
+					{iconKey === 'airplane' || iconKey === 'support' || iconKey === 'discussionBoardIcon' ? (
+						<CustomIcon 
+							name={iconKey === 'airplane' ? 'airplane' : iconKey === 'support' ? 'support' : 'discussions'} 
+							size={24} 
+							color="#FFFFFF" 
+						/>
+					) : (
+						<Image 
+							source={getIcon(iconKey)} 
+							style={styles.discussionIcon}
+							resizeMode="contain"
+						/>
+					)}
+				</View>
+			);
 		}
 
 		// TODO: move this to a separate function

@@ -2,8 +2,8 @@ import { PixelRatio, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
-export const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
+export const ROW_HEIGHT = 100 * PixelRatio.getFontScale(); // Increased height for card layout
+export const ROW_HEIGHT_CONDENSED = 80 * PixelRatio.getFontScale();
 export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 2.5;
@@ -14,23 +14,29 @@ export default StyleSheet.create({
 	},
 	container: {
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'flex-start', // Changed from center to flex-start for better content layout
 		paddingLeft: 14,
-		height: ROW_HEIGHT
+		height: ROW_HEIGHT,
+		backgroundColor: '#FFFFFF', // White card background
+		marginVertical: 12, // Further increased margin for better card separation
+		marginHorizontal: 16,
+		borderRadius: 12,
+		paddingVertical: 16, // Increased padding for better spacing
+		position: 'relative' // Enable absolute positioning for badge
 	},
 	containerCondensed: {
 		height: ROW_HEIGHT_CONDENSED
 	},
 	centerContainer: {
 		flex: 1,
-		paddingVertical: 10,
+		paddingVertical: 4,
 		paddingRight: 14,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		justifyContent: 'center'
 	},
 	title: {
-		flex: 1,
-		fontSize: 17,
-		...sharedStyles.textMedium
+		fontSize: 18,
+		fontWeight: 'bold',
+		color: '#191C20'
 	},
 	alert: {
 		...sharedStyles.textSemibold
@@ -47,12 +53,18 @@ export default StyleSheet.create({
 		width: '100%',
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'flex-start'
+	},
+	titleAndDateContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between'
 	},
 	date: {
-		fontSize: 13,
+		fontSize: 12,
 		marginLeft: 4,
-		...sharedStyles.textRegular
+		fontWeight: '400'
 	},
 	updateAlert: {
 		...sharedStyles.textSemibold
@@ -117,5 +129,15 @@ export default StyleSheet.create({
 	typeIcon: {
 		height: ROW_HEIGHT,
 		justifyContent: 'center'
+	},
+	badgePosition: {
+		position: 'absolute',
+		bottom: 4,
+		right: 8,
+		zIndex: 1 // Ensure badge appears above other content
+	},
+	badgeInline: {
+		marginLeft: 8,
+		alignSelf: 'flex-end'
 	}
 });

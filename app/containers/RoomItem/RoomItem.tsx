@@ -54,7 +54,8 @@ const RoomItem = ({
 	showAvatar,
 	displayMode,
 	sourceType,
-	hideMentionStatus
+	hideMentionStatus,
+	inlineBadge
 }: IRoomItemProps) => {
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
@@ -103,11 +104,14 @@ const RoomItem = ({
 									isGroupChat={isGroupChat}
 									teamMain={teamMain}
 									sourceType={sourceType}
+									roomName={name}
 								/>
 							) : null}
-							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							<View style={styles.titleAndDateContainer}>
+								<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+								<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							</View>
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-							<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
 							<LastMessage
@@ -118,16 +122,22 @@ const RoomItem = ({
 								alert={alert && !hideUnreadStatus}
 								useRealName={useRealName}
 							/>
-							<UnreadBadge
-								unread={unread}
-								userMentions={userMentions}
-								groupMentions={groupMentions}
-								tunread={tunread}
-								tunreadUser={tunreadUser}
-								tunreadGroup={tunreadGroup}
-								hideMentionStatus={hideMentionStatus}
-								hideUnreadStatus={hideUnreadStatus}
-							/>
+							{inlineBadge && (
+								<View style={styles.badgeInline}>
+									<UnreadBadge
+										unread={unread}
+										userMentions={userMentions}
+										groupMentions={groupMentions}
+										tunread={tunread}
+										tunreadUser={tunreadUser}
+										tunreadGroup={tunreadGroup}
+										hideMentionStatus={hideMentionStatus}
+										hideUnreadStatus={hideUnreadStatus}
+										alert={alert}
+										small={true}
+									/>
+								</View>
+							)}
 						</View>
 					</>
 				) : (
@@ -142,21 +152,26 @@ const RoomItem = ({
 							size={22}
 							style={{ marginRight: 8 }}
 							sourceType={sourceType}
+							roomName={name}
 						/>
 						<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
 						<View style={styles.wrapUpdatedAndBadge}>
 							<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-							<UnreadBadge
-								unread={unread}
-								userMentions={userMentions}
-								groupMentions={groupMentions}
-								tunread={tunread}
-								tunreadUser={tunreadUser}
-								tunreadGroup={tunreadGroup}
-								hideMentionStatus={hideMentionStatus}
-								hideUnreadStatus={hideUnreadStatus}
-							/>
+							{inlineBadge && (
+								<UnreadBadge
+									unread={unread}
+									userMentions={userMentions}
+									groupMentions={groupMentions}
+									tunread={tunread}
+									tunreadUser={tunreadUser}
+									tunreadGroup={tunreadGroup}
+									hideMentionStatus={hideMentionStatus}
+									hideUnreadStatus={hideUnreadStatus}
+									alert={alert}
+									small={true}
+								/>
+							)}
 						</View>
 					</View>
 				)}
