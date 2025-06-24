@@ -80,7 +80,7 @@ const ChatsStackNavigator = React.memo(() => {
 
 	return (
 		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<ChatsStack.Screen name='RoomView' component={RoomView} options={{ title: '' }} />
+			<ChatsStack.Screen name='RoomView' component={RoomView} options={{ title: '', headerBackVisible: false }} />
 		</ChatsStack.Navigator>
 	);
 });

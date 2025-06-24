@@ -48,6 +48,7 @@ export interface IWrapperProps {
 	teamMain: boolean;
 	showAvatar: boolean;
 	sourceType: IOmnichannelSource;
+	roomName?: string;
 }
 
 export interface ITypeIconProps {
@@ -159,4 +160,5 @@ export interface IIconOrAvatar {
 	containerStyles?: object;
 	iconSize?: number;
 	borderRadius?: number;
+	roomName?: string;
 }
