@@ -5,7 +5,7 @@ import { colors } from '../../lib/constants';
 export const createMainStyles = ({ theme }: { theme: any }) =>
 	StyleSheet.create({
 		mainContainer: {
-			backgroundColor: '#F8F9FA', // Light gray background for entire page
+			backgroundColor: colors[theme].nextGenLightGray, // Light gray background for entire page
 			flex: 1
 		},
 		scrollContent: {
@@ -46,7 +46,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			marginBottom: 32
 		},
 		emptySection: {
-			backgroundColor: '#F8F9FA',
+			backgroundColor: colors[theme].nextGenLightGray,
 			padding: 20,
 			borderRadius: 8,
 			alignItems: 'center',

@@ -5,7 +5,7 @@ const makeStyles = themeColors =>
 		mainContainer: {
 			flex: 1,
 			alignItems: 'center',
-			backgroundColor: '#F8F9FA' // Light gray background to match Home View
+			backgroundColor: themeColors.nextGenLightGray // Light gray background to match Home View
 		},
 		discussionBoardsSeparator: {
 			height: 1,

@@ -16,7 +16,7 @@ const light = {
 
 	surfaceLight: '#FFFFFF',
 	surfaceTint: '#F7F8FA',
-	surfaceRoom: '#F8F9FA',
+	surfaceRoom: '#EBEDF0', // same as nextGenLightGray
 	surfaceNeutral: '#E4E7EA',
 	surfaceDisabled: '#F7F8FA',
 	surfaceHover: '#F2F3F5',
@@ -305,6 +305,7 @@ export const colors = {
 		peerSupporterBackground: '#ffffff',
 		auxiliaryBackground: '#efeff4',
 		bannerBackground: '#f1f2f4',
+		nextGenLightGray: '#EBEDF0',
 		titleText: '#0d0e12',
 		bodyText: '#2f343d',
 		boardMembersText: '#00000080',
@@ -381,6 +382,7 @@ export const colors = {
 		peerSupporterBackground: '#0e182b',
 		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
+		nextGenLightGray: '#EBEDF0',
 		titleText: '#f9f9f9',
 		bodyText: '#cbced1',
 		dangerColor: '#f5455c',
@@ -456,6 +458,7 @@ export const colors = {
 		peerSupporterBackground: '#0d0d0d',
 		auxiliaryBackground: '#080808',
 		bannerBackground: '#1f2329',
+		nextGenLightGray: '#EBEDF0',
 		titleText: '#f9f9f9',
 		bodyText: '#cbced1',
 		dangerColor: '#f5455c',

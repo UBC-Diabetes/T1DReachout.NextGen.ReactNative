@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
@@ -33,6 +33,8 @@ const Avatar = React.memo(
 		roomAvatarExternalProviderUrl,
 		cdnPrefix
 	}: IAvatar) => {
+		const [imageError, setImageError] = useState(false);
+
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
@@ -43,9 +45,42 @@ const Avatar = React.memo(
 			borderRadius
 		};
 
+		// Helper function to get initials from text
+		const getInitials = (str: string): string => {
+			if (!str) return '';
+			const words = str.trim().split(/\s+/);
+			if (words.length === 1) {
+				return words[0].charAt(0).toUpperCase();
+			}
+			return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
+		};
+
+		// Fallback text avatar component
+		const TextAvatar = () => (
+			<View style={[
+				avatarStyle, 
+				{ 
+					backgroundColor: '#112D4E', 
+					justifyContent: 'center', 
+					alignItems: 'center' 
+				}
+			]}>
+				<Text style={{
+					color: '#FFFFFF',
+					fontSize: size * 0.4,
+					fontWeight: 'bold'
+				}}>
+					{getInitials(text || '')}
+				</Text>
+			</View>
+		);
+
 		let image;
 		if (emoji) {
 			image = <Emoji getCustomEmoji={getCustomEmoji} isMessageContainsOnlyEmoji literal={emoji} style={avatarStyle} />;
+		} else if (imageError && text) {
+			// Render fallback text avatar with deep blue background
+			image = <TextAvatar />;
 		} else {
 			let uri = avatar;
 			if (!isStatic) {
@@ -75,6 +110,7 @@ const Avatar = React.memo(
 						headers: RocketChatSettings.customHeaders,
 						priority: FastImage.priority.high
 					}}
+					onError={() => setImageError(true)}
 				/>
 			);
 		}
