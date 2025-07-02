@@ -56,7 +56,7 @@ type TRoom = {
   prid?: string;
   announcement?: string;
   bannerClosed?: boolean;
-  isRoom247Chatroom?: boolean;
+  useWhatsAppUI?: boolean;
   joinCodeRequired?: boolean;
   status?: string;
   lastMessage?: any;
@@ -201,7 +201,7 @@ const BaseRoomView: React.FC<IRoomViewProps> = ({
       disableNotifications: false,
       announcement: '',
       bannerClosed: false,
-      isRoom247Chatroom: false,
+      useWhatsAppUI: false,
       lm: '',
       lr: '',
       messages: { fetch: async () => [] },

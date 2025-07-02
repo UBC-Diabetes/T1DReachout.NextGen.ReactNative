@@ -76,6 +76,7 @@ export interface IMessageEmoji {
 
 export interface IMessageThread extends Pick<IThread, 'msg' | 'tcount' | 'tlm' | 'id'> {
 	isThreadRoom: boolean;
+	useWhatsAppUI?: boolean;
 }
 
 export interface IMessageTouchable {

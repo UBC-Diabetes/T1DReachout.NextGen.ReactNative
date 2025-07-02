@@ -41,7 +41,7 @@ interface IRoom247MessageProps {
 	onThreadPress?: (item: TAnyMessageModel) => void;
 	showAttachment?: (file: IAttachment) => void;
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
-	isRoom247Chatroom?: boolean;
+	useWhatsAppUI?: boolean;
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
 	useRealName?: boolean;

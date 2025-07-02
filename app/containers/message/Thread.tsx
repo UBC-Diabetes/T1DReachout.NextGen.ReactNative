@@ -10,7 +10,7 @@ import { IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 
 const Thread = React.memo(
-	({ msg, tcount, tlm, isThreadRoom, id, isRoom247Chatroom }: IMessageThread) => {
+	({ msg, tcount, tlm, isThreadRoom, id, useWhatsAppUI }: IMessageThread) => {
 		const { theme } = useTheme();
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 
@@ -18,9 +18,9 @@ const Thread = React.memo(
 		// Otherwise, it is visible only if someone has replied as a thread already
 		// We want it to be visible so people make more threads, organizing the discussion
 
-		const isMain247Chatroom = isRoom247Chatroom && !isThreadRoom;
+		const isMainWhatsAppUI = useWhatsAppUI && !isThreadRoom;
 
-		if (!isMain247Chatroom && (!tlm || isThreadRoom || tcount === null)) {
+		if (!isMainWhatsAppUI && (!tlm || isThreadRoom || tcount === null)) {
 			return null;
 		}
 		return (
