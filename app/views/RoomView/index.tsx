@@ -48,6 +48,17 @@ import styles from './styles';
 import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
+
+// Room classification function to determine UI style
+function shouldUseWhatsAppUI(room: any): boolean {
+	// Exclude professional/business contexts
+	if (room.t === 'l' || room.broadcast) {
+		return false;
+	}
+	
+	// Apply WhatsApp UI to chat-like rooms: direct messages, private groups, and channels
+	return ['d', 'p', 'c'].includes(room.t);
+}
 import List from './List';
 import {
 	IApplicationState,
@@ -1360,9 +1371,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (inAppFeedback?.[item.id]) {
 				this.hapticFeedback(item.id);
 			}
-			const isRoom247Chatroom = room.fname === '24/7 Chatroom';
+			const useWhatsAppUI = shouldUseWhatsAppUI(room);
 
-			const MessageComponent = isRoom247Chatroom ? Room247Message : Message;
+			const MessageComponent = useWhatsAppUI ? Room247Message : Message;
 
 			content = (
 				<MessageComponent
@@ -1408,7 +1419,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isBeingEdited={isBeingEdited}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
-					isRoom247Chatroom={isRoom247Chatroom}
+					useWhatsAppUI={useWhatsAppUI}
 				/>
 			);
 		}
@@ -1480,9 +1491,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			);
 		}
 
-		// Room247Chatroom uses standard MessageComposer
-		const isRoom247Chatroom = room.fname === '24/7 Chatroom';
-		if (isRoom247Chatroom) {
+		// WhatsApp UI rooms use standard MessageComposer
+		const useWhatsAppUI = shouldUseWhatsAppUI(room);
+		if (useWhatsAppUI) {
 			return <MessageComposerContainer ref={this.messageComposerRef} />;
 		}
 
@@ -1526,7 +1537,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			({ bannerClosed, announcement } = room);
 		}
 
-		const isRoom247Chatroom = room.fname === '24/7 Chatroom';
+		const useWhatsAppUI = shouldUseWhatsAppUI(room);
 
 		if ('encrypted' in room) {
 			// Missing room encryption key
@@ -1555,13 +1566,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onSendMessage: this.handleSendMessage,
 					setQuotesAndText: this.setQuotesAndText,
 					getText: this.getText,
-					isRoom247Chatroom
+					useWhatsAppUI
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
 					<StatusBar />
 					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 
-					{isRoom247Chatroom ? (
+					{useWhatsAppUI ? (
 						<Room247Chatroom
 							theme={theme}
 							rid={rid}

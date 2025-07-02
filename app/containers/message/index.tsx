@@ -162,7 +162,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	onPress = debounce(
 		() => {
-			const { onPress, isRoom247Chatroom } = this.props;
+			const { onPress, useWhatsAppUI } = this.props;
 			if (this.isIgnored) {
 				return this.onIgnoredMessagePress();
 			}
@@ -174,9 +174,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			const { item, isThreadRoom } = this.props;
 			Keyboard.dismiss();
 
-			const isMain247Chatroom = isRoom247Chatroom && !isThreadRoom;
+			const isMainWhatsAppUI = useWhatsAppUI && !isThreadRoom;
 
-			if (isMain247Chatroom || ((item.tlm || item.tmid) && !isThreadRoom)) {
+			if (isMainWhatsAppUI || ((item.tlm || item.tmid) && !isThreadRoom)) {
 				this.onThreadPress();
 			}
 
@@ -383,7 +383,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			isPreview,
 			showUnreadSeparator,
 			dateSeparator,
-			isRoom247Chatroom
+			useWhatsAppUI
 		} = this.props;
 		const {
 			id,
@@ -511,7 +511,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
-					isRoom247Chatroom={isRoom247Chatroom}
+					useWhatsAppUI={useWhatsAppUI}
 				/>
 			</MessageContext.Provider>
 		);
