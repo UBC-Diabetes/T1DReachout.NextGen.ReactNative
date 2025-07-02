@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { IApplicationState } from '../definitions';
+import { getUpcomingEvents } from '../views/HomeView/calendarHelpers';
 
 const getEvent = (state: IApplicationState) => state.calendarEvents.draftEvent;
 
@@ -20,3 +21,11 @@ export const getFetchedEventsSelector = createSelector([getCalendarEvents], cale
 const getPressedEvent = (state: IApplicationState) => state.calendarEvents.pressedEvent;
 
 export const getPressedEventSelector = createSelector([getPressedEvent], event => event);
+
+export const getUpcomingEventsCountSelector = createSelector(
+	[getFetchedEventsSelector], 
+	(fetchedEvents) => {
+		const upcomingEvents = getUpcomingEvents(fetchedEvents || []);
+		return upcomingEvents.length;
+	}
+);
