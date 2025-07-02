@@ -68,5 +68,11 @@ export default StyleSheet.create({
 		width: 10,
 		height: 10,
 		borderRadius: 5
+	},
+	customDivider: {
+		height: 1,
+		backgroundColor: '#CAC4D0',
+		marginHorizontal: 32, // Inset from edges (smaller than calendar button width)
+		marginVertical: 8
 	}
 });

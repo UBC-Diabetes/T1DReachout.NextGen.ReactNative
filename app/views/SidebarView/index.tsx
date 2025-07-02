@@ -1,43 +1,27 @@
 import React, { Component } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerNavigationState } from '@react-navigation/native';
-import { Alert, Image, ScrollView, Text, TouchableWithoutFeedback, View, Linking } from 'react-native';
+import { Alert, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Dispatch } from 'redux';
 
-import Avatar from '../../containers/Avatar';
-import Status from '../../containers/Status/Status';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
-import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import userPreferences from '../../lib/methods/userPreferences';
-import { CustomIcon } from '../../containers/CustomIcon';
 import { NOTIFICATION_PRESENCE_CAP, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/navigation/appNavigation';
-import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import { IApplicationState, IUser, TSVStatus } from '../../definitions';
 import * as List from '../../containers/List';
-import { IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
+import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
-import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
-import { navigateTo247Chat, navToTechSupport, navigateToVirtualHappyHour } from '../HomeView/helpers';
-
-const settingsIcon = require('../../static/images/sidepanel/settings.png');
-const techSupportIcon = require('../../static/images/support-solid.png');
-const calendarIcon = require('../../static/images/calendar-solid.png');
-const discussionIcon = require('../../static/images/discussion-solid.png');
-const peerSupportIcon = require('../../static/images/peer-supporter-solid.png');
-const editIcon = require('../../static/images/sidepanel/edit.png');
-const message247Icon = require('../../static/images/sidepanel/247.png');
-const messagingIcon = require('../../static/images/sidepanel/messaging.png');
-const happyHourIcon = require('../../static/images/happy-hour-solid.png');
+import { ProfileSection, CalendarButton, NavigationSection, BrandingFooter } from './components';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -214,206 +198,55 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
-	renderAdmin = () => {
-		const { theme, isMasterDetail } = this.props;
-		if (!this.getIsAdmin()) {
-			return null;
-		}
-		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelView';
-		return (
-			<>
-				<List.Separator />
-				<SidebarItem
-					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
-					onPress={() => this.sidebarNavigate(routeName)}
-					testID='sidebar-admin'
-					theme={theme!}
-					current={this.currentItemKey === routeName}
-				/>
-			</>
-		);
-	};
-
-	additionalPanels = (theme, iconStyle) => {
-		const iconStyles = { ...iconStyle, backgroundColor: 'black' };
-		const isPeerSupporter = this.props.user?.roles?.includes('peer-supporter');
-		const admin = this.getIsAdmin();
-
-		if (!isPeerSupporter && !admin) {
-			return null;
-		}
-
-		return (
-			<>
-				{isPeerSupporter && (
-					<SidebarItem
-						text={I18n.t('PostModeration')}
-						left={<View style={iconStyles} />}
-						onPress={() => this.sidebarNavigate('ChatsView')}
-						testID='sidebar-chats'
-						theme={theme!}
-						disabled={true}
-					/>
-				)}
-				<List.Separator />
-			</>
-		);
-	};
-
-	renderNavigation = () => {
-		const { theme } = this.props;
-		const iconStyles = { height: 20, width: 20, tintColor: themes[theme!].titleText, borderRadius: 10 };
-		return (
-			<>
-				{this.additionalPanels(theme, iconStyles)}
-				<SidebarItem
-					text={I18n.t('Home')}
-					left={<CustomIcon name='home' size={24} color={iconStyles.tintColor} />}
-					onPress={() => Navigation.navigate('BottomTabNavigator', { initialTab: 'HomeView' })}
-					testID='home-screen'
-					theme={theme!}
-					current={this.currentItemKey === 'BottomTabNavigator'}
-				/>
-				<SidebarItem
-					text={I18n.t('Direct_messaging')}
-					left={<Image source={messagingIcon} style={iconStyles} />}
-					onPress={() => Navigation.navigate('BottomTabNavigator', { initialTab: 'RoomsListView' })}
-					testID='sidebar-chats'
-					theme={theme!}
-					current={this.currentItemKey === 'BottomTabNavigator'}
-				/>
-				<SidebarItem
-					text={I18n.t('DiscussionBoards')}
-					left={<Image source={discussionIcon} style={iconStyles} />}
-					onPress={() => Navigation.navigate('BottomTabNavigator', { initialTab: 'DiscussionHomeView' })}
-					testID='sidebar-discussion'
-					theme={theme!}
-					current={this.currentItemKey === 'BottomTabNavigator'}
-				/>
-				<SidebarItem
-					text={I18n.t('PeerSupporterLibrary')}
-					left={<Image source={peerSupportIcon} style={iconStyles} />}
-					onPress={() => this.sidebarNavigate('ProfileLibraryView')}
-					testID='sidebar-profile-library'
-					current={this.currentItemKey === 'ProfileLibraryView'}
-				/>
-				<SidebarItem
-					text={I18n.t('247ChatRoom')}
-					left={<Image source={message247Icon} style={iconStyles} resizeMode='contain' />}
-					onPress={() => {
-						navigateTo247Chat(Navigation, this.props.isMasterDetail);
-					}}
-					testID='sidebar-247chat'
-					theme={theme!}
-					current={this.currentItemKey === 'todo'}
-				/>
-				<SidebarItem
-					text={I18n.t('VirtualHappyHour')}
-					left={<Image source={happyHourIcon} style={iconStyles} />}
-					onPress={() => {
-						navigateToVirtualHappyHour(Navigation, this.props.isMasterDetail);
-					}}
-					testID='sidebar-happy-hour'
-					theme={theme!}
-					current={this.currentItemKey === 'todo'}
-				/>
-				<SidebarItem
-					text={I18n.t('Calendar')}
-					left={<Image source={calendarIcon} style={iconStyles} />}
-					onPress={() => {
-						this.sidebarNavigate('CalendarView');
-					}}
-					testID='sidebar-calendar'
-					theme={theme!}
-					current={this.currentItemKey === 'todo'}
-				/>
-				<SidebarItem
-					text={I18n.t('TechSupport')}
-					left={<Image source={techSupportIcon} style={iconStyles} />}
-					onPress={() => {
-						navToTechSupport(Navigation, this.props.isMasterDetail);
-					}}
-					testID='sidebar-tech-support'
-					theme={theme!}
-					current={this.currentItemKey === 'todo'}
-				/>
-				<SidebarItem
-					text={I18n.t('Settings')}
-					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
-					onPress={() => this.sidebarNavigate('SettingsView')}
-					testID='sidebar-settings'
-					theme={theme!}
-					current={this.currentItemKey === 'SettingsView'}
-				/>
-				{this.renderAdmin()}
-			</>
-		);
-	};
-
-	renderCustomStatus = () => {
-		const { user, theme } = this.props;
-		const iconStyles = { height: 20, width: 20, tintColor: themes[theme!].titleText };
-		return (
-			<SidebarItem
-				text={user.statusText || I18n.t('Edit_Status')}
-				left={<Status size={24} status={user?.status} />}
-				theme={theme!}
-				right={<Image source={editIcon} style={iconStyles} />}
-				onPress={() => this.sidebarNavigate('StatusView')}
-				testID={`sidebar-custom-status-${user.status}`}
-			/>
-		);
-	};
-
 	render() {
-		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
+		const { user, Site_Name, baseUrl, useRealName, isMasterDetail, theme } = this.props;
 
 		if (!user) {
 			return null;
 		}
+
 		return (
 			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].focusedBackground }} vertical={isMasterDetail}>
-				<ScrollView
+				<View
 					style={[
 						styles.container,
 						{
-							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground
+							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground,
+							flex: 1
 						}
-					]}
-					{...scrollPersistTaps}>
-					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
-						<View style={styles.header}>
-							<Avatar text={user.username} style={styles.avatar} size={30} />
-							<View style={styles.headerTextContainer}>
-								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].titleText }]}>
-										{useRealName ? user.name : user.username}
-									</Text>
-								</View>
-								<Text
-									style={[styles.currentServerText, { color: themes[theme!].titleText }]}
-									numberOfLines={1}
-									accessibilityLabel={`Connected to ${baseUrl}`}>
-									{Site_Name}
-								</Text>
-							</View>
-						</View>
-					</TouchableWithoutFeedback>
+					]}>
+					{/* Profile Section */}
+					<ProfileSection
+						user={user}
+						siteName={Site_Name}
+						baseUrl={baseUrl}
+						useRealName={useRealName}
+						theme={theme!}
+						isMasterDetail={isMasterDetail}
+						onPress={this.onPressUser}
+					/>
 
-					<List.Separator />
+					{/* Calendar Button */}
+					<CalendarButton theme={theme!} />
 
-					{allowStatusMessage ? this.renderCustomStatus() : null}
-					{!isMasterDetail ? (
-						<>
-							<List.Separator />
-							{this.renderNavigation()}
-							<List.Separator />
-						</>
-					) : (
-						<>{this.renderAdmin()}</>
-					)}
-				</ScrollView>
+					{/* Spacing after calendar button */}
+					<View style={{ height: 16 }} />
+
+					{/* Custom Divider Line */}
+					<View style={styles.customDivider} />
+
+					{/* Navigation Section */}
+					<NavigationSection
+						theme={theme!}
+						isMasterDetail={isMasterDetail}
+						currentItemKey={this.currentItemKey}
+						isAdmin={this.getIsAdmin()}
+						onNavigate={this.sidebarNavigate}
+					/>
+
+					{/* T1D Branding Footer */}
+					<BrandingFooter theme={theme!} />
+				</View>
 			</SafeAreaView>
 		);
 	}

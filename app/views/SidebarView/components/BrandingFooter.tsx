@@ -1,16 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { TSupportedThemes } from '../../../theme';
+import Navigation from '../../../lib/navigation/appNavigation';
 
 interface IBrandingFooterProps {
 	theme: TSupportedThemes;
 }
 
 const BrandingFooter = ({ theme }: IBrandingFooterProps) => {
+	const handlePress = () => {
+		// Navigate to home page (BottomTabNavigator with HomeView)
+		Navigation.navigate('BottomTabNavigator', { initialTab: 'HomeView' });
+	};
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.brandingText}>T1D</Text>
+			<TouchableOpacity onPress={handlePress} testID='sidebar-t1d-brand'>
+				<Image source={require('../../../static/images/T1DBrand.png')} style={styles.brandingImage} resizeMode='contain' />
+			</TouchableOpacity>
 		</View>
 	);
 };
@@ -20,17 +28,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'flex-end',
 		alignItems: 'center',
-		paddingBottom: 80, // Move up higher by increasing bottom padding
+		paddingBottom: 80, // Position higher up from bottom
 		paddingHorizontal: 20
 	},
-	brandingText: {
-		fontFamily: 'System', // Will need to map to actual Title Page font family
-		fontWeight: '700', // Title Page font weight equivalent
-		fontSize: 32, // Larger text size
-		lineHeight: 38.4, // 120% of font size
-		letterSpacing: -0.64, // -2% letter spacing
-		color: '#112D4E', // Blue text color instead of background
-		textAlign: 'center'
+	brandingImage: {
+		width: 180, // Adjust size as needed
+		height: 180, // Adjust size as needed
+		opacity: 0.8 // Slight transparency for subtle effect
 	}
 });
 
