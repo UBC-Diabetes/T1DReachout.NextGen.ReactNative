@@ -20,6 +20,7 @@ import { getRoomAvatar, isGroupChat } from '../../../lib/methods/helpers';
 import { loadMissedMessages } from '../../../lib/methods';
 import moment from 'moment';
 import { handleStar } from '../helpers';
+import { goRoom } from '../../../lib/methods/helpers/goRoom';
 
 // const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 // const CHATS_HEADER = 'Chats';
@@ -208,7 +209,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 					<FlatList
 						data={boards}
 						renderItem={({ item }) => (
-							<DiscussionBoardCard item={item} onPress={() => navigation.navigate('DiscussionBoardView', { item, boards })} />
+							<DiscussionBoardCard item={item} onPress={() => goRoom({ item, isMasterDetail })} />
 						)}
 						keyExtractor={(item, id) => item.title + id}
 						style={{ padding: 16 }}
