@@ -63,6 +63,7 @@ interface IMessageContainerProps {
 	isPreview?: boolean;
 	dateSeparator?: Date | string | null;
 	showUnreadSeparator?: boolean;
+	useWhatsAppUI?: boolean;
 }
 
 interface IMessageContainerState {
