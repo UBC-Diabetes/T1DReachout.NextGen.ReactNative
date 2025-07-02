@@ -8,6 +8,7 @@ export interface ITouchProps extends RectButtonProps {
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	testID?: string;
+	disabled?: boolean;
 }
 
 const Touch = React.forwardRef<RectButton, ITouchProps>(({ children, onPress, underlayColor, disabled, ...props }, ref) => {

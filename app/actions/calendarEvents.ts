@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { TCreateEventResult } from '../reducers/calendarEvent';
+import { TCreateEventResult } from '../reducers/calendarEvents';
 import {
 	CREATE_EVENT,
 	DELETE_EVENT,
