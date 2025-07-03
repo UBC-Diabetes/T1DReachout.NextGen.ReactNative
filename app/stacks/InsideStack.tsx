@@ -216,7 +216,8 @@ const DrawerNavigator = () => {
 				headerShown: false,
 				drawerPosition: I18nManager.isRTL ? 'right' : 'left',
 				drawerType: 'back',
-				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`
+				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`,
+				keyboardHandlingEnabled: false
 			}}>
 			<Drawer.Screen name='MainStackNavigator' component={MainStackNavigator} />
 			<Drawer.Screen name='DisplayPrefStackNavigator' component={DisplayPrefStackNavigator} />
