@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerNavigationState } from '@react-navigation/native';
-import { Alert, View, Linking } from 'react-native';
+import { Alert, View, Linking, KeyboardAvoidingView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Dispatch } from 'redux';
@@ -207,14 +207,18 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 
 		return (
 			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].focusedBackground }} vertical={isMasterDetail}>
-				<View
-					style={[
-						styles.container,
-						{
-							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground,
-							flex: 1
-						}
-					]}>
+				<KeyboardAvoidingView
+					style={{ flex: 1 }}
+					behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+					enabled={false}>
+					<View
+						style={[
+							styles.container,
+							{
+								backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground,
+								flex: 1
+							}
+						]}>
 					{/* Profile Section */}
 					<ProfileSection
 						user={user}
@@ -247,6 +251,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					{/* T1D Branding Footer */}
 					<BrandingFooter theme={theme!} />
 				</View>
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 		);
 	}
