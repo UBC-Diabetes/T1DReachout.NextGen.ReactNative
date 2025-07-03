@@ -11,6 +11,7 @@ import { getUserSelector } from '../../selectors/login';
 import { pressEventRequest } from '../../actions/calendarEvents';
 import { IApplicationState } from '../../definitions';
 import Avatar from '../../containers/Avatar';
+import { useTheme } from '../../theme';
 import testIDs from './testIds';
 
 interface ItemProps {
@@ -21,11 +22,14 @@ const AgendaItem = (props: ItemProps) => {
 	const { item } = props;
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
 	const dispatch = useDispatch();
+	const theme = useTheme();
+	const { colors } = theme;
 
 	const { username } = useSelector((state: IApplicationState) => getUserSelector(state));
 	const { attendees } = item;
 
 	const isAttending = useMemo(() => attendees.includes(username), [attendees, username]);
+	const styles = makeStyles(theme);
 
 	const itemPressed = useCallback(
 		(item: any) => {
@@ -85,85 +89,95 @@ const AgendaItem = (props: ItemProps) => {
 	);
 };
 
-const styles = StyleSheet.create({
-	attendingContainer: {
-		backgroundColor: '#799A79',
-		paddingVertical: 4,
-		paddingHorizontal: 8,
-		alignItems: 'center',
-		flexDirection: 'row',
-		alignSelf: 'flex-start',
-		marginTop: 4
-	},
-	morePeersContainer: {
-		alignSelf: 'center',
-		marginTop: 4
-	},
-	morePeersText: {
-		color: 'grey',
-		fontSize: 12
-	},
-	attendingText: {
-		color: 'white',
-		fontSize: 12,
-		fontWeight: 'bold'
-	},
-	avatarContainer: {
-		flexDirection: 'column',
-		marginLeft: 10
-	},
-	avatarGroup: {
-		flexDirection: 'row-reverse'
-	},
-	avatarWrapper: {
-		position: 'relative',
-		marginLeft: -2,
-		borderWidth: 2,
-		borderColor: 'white',
-		borderRadius: 18,
-		overflow: 'hidden',
-		width: 36,
-		height: 36,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	itemContainer: {
-		paddingBottom: 8,
-		backgroundColor: '#F5F4F2'
-	},
-	item: {
-		padding: 20,
-		backgroundColor: 'white',
-		flexDirection: 'row',
-
-		borderRadius: 20,
-		left: 15,
-		width: '90%'
-	},
-	contentContainer: {
-		flex: 1
-	},
-	itemTitleText: {
-		color: 'black',
-		fontWeight: 'bold',
-		fontSize: 16
-	},
-	itemDateText: {
-		color: 'grey',
-		fontSize: 14,
-		marginTop: 4
-	},
-	emptyItem: {
-		paddingLeft: 20,
-		height: 52,
-		justifyContent: 'center',
-		borderBottomWidth: 1,
-		borderBottomColor: 'lightgrey'
-	},
-	emptyItemText: {
-		color: 'lightgrey',
-		fontSize: 14
-	}
-});
+const makeStyles = (theme: any) =>
+	StyleSheet.create({
+		attendingContainer: {
+			backgroundColor: theme.colors.nextGenPrimary,
+			paddingVertical: 4,
+			paddingHorizontal: 8,
+			alignItems: 'center',
+			flexDirection: 'row',
+			alignSelf: 'flex-start',
+			marginTop: 4,
+			borderRadius: 12
+		},
+		morePeersContainer: {
+			alignSelf: 'center',
+			marginTop: 4
+		},
+		morePeersText: {
+			color: theme.colors.nextGenTextSecondary,
+			fontSize: 12
+		},
+		attendingText: {
+			color: theme.colors.nextGenSurface,
+			fontSize: 12,
+			fontWeight: 'bold',
+			marginLeft: 4
+		},
+		avatarContainer: {
+			flexDirection: 'column',
+			marginLeft: 10
+		},
+		avatarGroup: {
+			flexDirection: 'row-reverse'
+		},
+		avatarWrapper: {
+			position: 'relative',
+			marginLeft: -2,
+			borderWidth: 2,
+			borderColor: theme.colors.nextGenSurface,
+			borderRadius: 18,
+			overflow: 'hidden',
+			width: 36,
+			height: 36,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		itemContainer: {
+			paddingBottom: 8,
+			backgroundColor: theme.colors.nextGenBackground
+		},
+		item: {
+			padding: 20,
+			backgroundColor: theme.colors.nextGenSurface,
+			flexDirection: 'row',
+			borderRadius: 20,
+			left: 15,
+			width: '90%',
+			shadowColor: theme.colors.nextGenBorder,
+			shadowOffset: {
+				width: 0,
+				height: 2,
+			},
+			shadowOpacity: 0.1,
+			shadowRadius: 3.84,
+			elevation: 5,
+		},
+		contentContainer: {
+			flex: 1
+		},
+		itemTitleText: {
+			color: theme.colors.nextGenText,
+			fontWeight: 'bold',
+			fontSize: 16
+		},
+		itemDateText: {
+			color: theme.colors.nextGenTextSecondary,
+			fontSize: 14,
+			marginTop: 4
+		},
+		emptyItem: {
+			paddingLeft: 20,
+			height: 52,
+			justifyContent: 'center',
+			borderBottomWidth: 1,
+			borderBottomColor: theme.colors.nextGenBorder
+		},
+		emptyItemText: {
+			color: theme.colors.nextGenTextSecondary,
+			fontSize: 14
+		}
+	});
 
 export default React.memo(AgendaItem);
