@@ -1,127 +1,158 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../lib/constants';
 
-const makeStyles = (themes: any, theme: string) => {
-	return StyleSheet.create({
+export const createStyles = ({ theme }: { theme: any }) =>
+	StyleSheet.create({
+		// Main container with NextGen background
 		mainContainer: {
 			flex: 1,
-			paddingBottom: 20
+			backgroundColor: colors[theme].nextGenBackground
 		},
-		profileContainer: {
-			marginTop: 20,
-			alignSelf: 'center'
-		},
-		profileImage: {},
 
-		identityContainer: {
-			alignSelf: 'center',
-			marginTop: 40
+		// Profile Header Section (Gray background)
+		profileHeaderSection: {
+			backgroundColor: colors[theme].nextGenBackground,
+			paddingHorizontal: 20,
+			paddingVertical: 24
 		},
-		nameContainer: {
+		profileRow: {
 			flexDirection: 'row',
-			alignItems: 'center'
-		},
-		profileName: {
-			marginLeft: 10,
-			fontSize: 18,
-			color: themes[theme].titleText
-		},
-		pronounsContainer: {
-			paddingLeft: 30,
-			marginTop: 5
+			alignItems: 'flex-start'
 		},
 
-		pronounsText: {
-			fontSize: 16,
-			color: themes[theme].auxiliaryText
+		// Avatar container with circular profile picture
+		avatarContainer: {
+			position: 'relative',
+			marginRight: 24 // Increased to give more space for content on right
 		},
-		playIconContainer: {
+		circularAvatar: {
+			// Avatar component handles the circular shape via borderRadius prop
+		},
+
+		// Play button positioned to bisect the profile picture edge at 4:30 position (half on, half off)
+		playButtonContainer: {
 			position: 'absolute',
-			right: -10,
-			bottom: -10
+			bottom: -5, // Much lower for 4:30 angle
+			right: -10 // Less to the right than 3:30
 		},
-		playIcon: {
-			height: 50,
-			width: 50
-		},
-		locationContainer: {
-			marginTop: 20,
-			alignSelf: 'center'
-		},
-		locationText: {
-			marginLeft: 10,
-			fontSize: 18,
-			color: themes[theme].titleText
-		},
-		userInfoContainer: {
-			flexDirection: 'row',
-			justifyContent: 'space-between',
-			width: '70%',
-			alignSelf: 'center',
-			marginTop: 20
-		},
-		userInfoTextContainer: {
-			alignItems: 'center'
-		},
-		userInfoTextContainerLeft: {
-			width: '50%'
-		},
-		userInfoTextContainerRight: {
-			width: '50%',
-			marginLeft: 10
-		},
-		userInfoText: {
-			fontSize: 18,
-			alignSelf: 'center',
-			color: themes[theme].titleText
-		},
-		userInfoTextGrey: {
-			fontSize: 16,
-			alignSelf: 'center',
-			color: themes[theme].auxiliaryText,
-			flexWrap: 'wrap',
-			textAlign: 'center'
-		},
-		connectButton: {
-			backgroundColor: '#799A79',
-			padding: 15,
-			width: '85%',
-			alignSelf: 'center',
-			borderRadius: 40,
-			marginVertical: 20,
+		playButton: {
+			width: 36,
+			height: 36,
+			borderRadius: 18,
+			backgroundColor: colors[theme].nextGenPrimary,
+			justifyContent: 'center',
+			alignItems: 'center',
 			shadowColor: '#000',
-			shadowOffset: {
-				width: 0,
-				height: 10
-			},
-			shadowOpacity: 0.2,
-			shadowRadius: 15,
+			shadowOffset: { width: 0, height: 2 },
+			shadowOpacity: 0.25,
+			shadowRadius: 3.84,
 			elevation: 5
 		},
+
+		// Profile info container (right side)
+		profileInfoContainer: {
+			flex: 1,
+			justifyContent: 'flex-start',
+			paddingLeft: 8 // Additional padding to move content further right
+		},
+
+		// Name and age row with online status
+		nameRow: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			marginBottom: 4
+		},
+		nameText: {
+			fontSize: 24, // M3 Headline Small
+			fontWeight: '400',
+			color: '#1d1b20',
+			marginRight: 8
+		},
+		onlineStatusDot: {
+			// Status component handles its own styling
+		},
+
+		// Pronouns text
+		pronounsText: {
+			fontSize: 14,
+			color: colors[theme].nextGenTextSecondary,
+			marginBottom: 4
+		},
+
+		// Hometown text
+		hometownText: {
+			fontSize: 16, // M3 Title Medium
+			fontWeight: '500',
+			color: '#49454f',
+			marginBottom: 12
+		},
+
+		// Connect button - small dark blue oval
+		connectButton: {
+			backgroundColor: colors[theme].nextGenPrimary,
+			paddingHorizontal: 16,
+			paddingVertical: 8,
+			borderRadius: 16,
+			alignSelf: 'flex-start'
+		},
 		connectButtonText: {
+			fontSize: 14,
 			fontWeight: '600',
-			fontSize: 16,
-			color: '#fff',
+			color: colors[theme].nextGenSurface,
 			textAlign: 'center'
 		},
-		bioContainer: {
-			marginHorizontal: '10%',
-			marginTop: 10
+
+		// T1D Info Section (White background)
+		infoSection: {
+			backgroundColor: colors[theme].nextGenSurface,
+			paddingHorizontal: 20,
+			paddingVertical: 16,
+			marginTop: 16
 		},
-		aboutTextHeader: {
-			fontSize: 26,
+		infoRow: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'flex-start',
+			marginBottom: 12
+		},
+		infoLabel: {
+			fontSize: 16,
+			fontWeight: '500',
+			color: colors[theme].nextGenText,
+			flex: 1
+		},
+		infoValue: {
+			fontSize: 16,
+			color: colors[theme].nextGenText,
+			flex: 1,
+			textAlign: 'right'
+		},
+		deviceContainer: {
+			flex: 1,
+			alignItems: 'flex-end'
+		},
+
+		// About Section (Gray background)
+		aboutSection: {
+			backgroundColor: colors[theme].nextGenBackground,
+			paddingHorizontal: 20,
+			paddingVertical: 20,
+			marginTop: 16
+		},
+		aboutHeader: {
+			fontSize: 22, // M3 Title Large
 			fontWeight: '400',
-			marginLeft: 10,
-			marginBottom: 10,
-			color: themes[theme].titleText
+			color: '#49454f',
+			marginBottom: 12
 		},
 		aboutText: {
 			fontSize: 16,
-			fontWeight: '400',
-			marginLeft: 10,
-			marginBottom: 10,
-			color: themes[theme].bodyText
+			lineHeight: 22,
+			color: colors[theme].nextGenText
 		}
 	});
-};
+
+// Legacy export for compatibility
+const makeStyles = (themes: any, theme: string) => createStyles({ theme });
 
 export default makeStyles;

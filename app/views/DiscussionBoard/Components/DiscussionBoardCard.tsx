@@ -13,8 +13,7 @@ import { getUidDirectMessage } from '../../../lib/methods/helpers';
 import { useAppSelector } from '../../../lib/hooks';
 
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
-// Use consistent blue color for all board icons to match Home View style
-const BOARD_ICON_COLOR = '#112D4E'; // Same blue used in Home View tiles
+// Board icon color will now come from theme
 
 const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: DiscussionBoardCardProps) => {
 	const { title, description, saved = false, icon, color, onSaveClick, avatar, f, usersCount } = item;
@@ -88,7 +87,7 @@ const makeStyles = themeColors =>
 	StyleSheet.create({
 		cardContainer: {
 			width: '100%',
-			backgroundColor: '#FFFFFF', // White card background
+			backgroundColor: themeColors.nextGenSurface, // NextGen surface background
 			borderRadius: 12,
 			marginVertical: 6,
 			marginHorizontal: 4
@@ -99,7 +98,7 @@ const makeStyles = themeColors =>
 		},
 		iconSection: {
 			width: '25%', // 1/4 of the card width for icon area
-			backgroundColor: BOARD_ICON_COLOR,
+			backgroundColor: themeColors.nextGenPrimary,
 			borderTopLeftRadius: 12,
 			borderBottomLeftRadius: 12,
 			justifyContent: 'center',

@@ -10,10 +10,11 @@ import Status from '../../../containers/Status/Status';
 import { Services } from '../../../lib/services';
 import { getRoomTitle, getUidDirectMessage } from '../../../lib/methods/helpers';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import makeStyles from './styles';
+import { createStyles } from './styles';
+import { CustomIcon } from '../../../containers/CustomIcon';
 
 import { withTheme } from '../../../theme';
-import { themes } from '../../../lib/constants';
+import { themes, colors } from '../../../lib/constants';
 
 const playIcon = require('../../../static/images/discussionboard/play_icon.png');
 const screenWidth = Dimensions.get('window').width;
@@ -28,7 +29,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 
 	const user = route.params?.user;
 
-	const styles = makeStyles(themes, theme);
+	const styles = createStyles({ theme });
 
 	const fetchData = async (userId: string) => {
 		if (user) {
@@ -96,7 +97,8 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 		videoUrl = '';
 
 	const devices = [];
-	const { customFields, name } = userInfo || {};
+
+	const { customFields, name, roles } = userInfo || {};
 
 	if (customFields) {
 		age = customFields.Age;
@@ -119,72 +121,165 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 
 	const isVideoUrlPresent = !!videoUrl && videoUrl !== '' && videoUrl !== '?autoplay=1';
 
+	// Generate all possible peer supporter role combinations
+	const generateRolePatterns = () => {
+		const roleTypes = ['CASUAL', 'FORMAL', 'INFORMAL', 'SOUNDING BOARD'];
+		const patterns = [];
+		
+		// Hybrid roles with slashes (all combinations)
+		for (let i = 0; i < roleTypes.length; i++) {
+			for (let j = 0; j < roleTypes.length; j++) {
+				if (i !== j) {
+					const type1 = roleTypes[i];
+					const type2 = roleTypes[j];
+					const displayType1 = type1.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+					const displayType2 = type2.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+					
+					patterns.push({
+						pattern: new RegExp(`^${type1}\\s*\\/\\s*${type2}\\s+PEER SUPPORTER\\.?\\s*`, 'i'),
+						displayName: `${displayType1}/${displayType2} Peer Supporter`
+					});
+				}
+			}
+		}
+		
+		// Single role types with period variations
+		roleTypes.forEach(type => {
+			const displayType = type.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+			patterns.push({
+				pattern: new RegExp(`^${type}\\.?\\s+PEER SUPPORTER\\.?\\s*`, 'i'),
+				displayName: `${displayType} Peer Supporter`
+			});
+			patterns.push({
+				pattern: new RegExp(`^PEER SUPPORTER\\s+${type}\\.?\\s*`, 'i'),
+				displayName: `${displayType} Peer Supporter`
+			});
+		});
+		
+		// Just "CASUAL." with period at the end (standalone)
+		patterns.push({
+			pattern: /^CASUAL\.\s*/i,
+			displayName: 'Casual'
+		});
+		
+		// Generic peer supporter
+		patterns.push({
+			pattern: /^PEER SUPPORTER\.?\s*/i,
+			displayName: 'Peer Supporter'
+		});
+		
+		return patterns;
+	};
+
+	const rolePatterns = generateRolePatterns();
+
+	// Function to extract role from bio text and clean the description
+	const extractRoleFromBio = (bioText: string) => {
+		if (!bioText) return { role: '', cleanedBio: '' };
+		
+		for (const { pattern, displayName } of rolePatterns) {
+			if (pattern.test(bioText)) {
+				const cleanedBio = bioText.replace(pattern, '').trim();
+				return { role: displayName, cleanedBio };
+			}
+		}
+		
+		return { role: '', cleanedBio: bioText };
+	};
+
+	// Extract role information
+	const roleFromArray = roles?.find(role => role.toLowerCase().includes('peer supporter')) || '';
+	const { role: roleFromBio, cleanedBio } = extractRoleFromBio(bio || '');
+	
+	// Use the more specific role from bio if available, otherwise fall back to roles array
+	const displayRole = roleFromBio || roleFromArray;
+	const bioDescription = cleanedBio;
+
 	return (
 		<View style={styles.mainContainer}>
 			<ScrollView>
-				<View style={styles.profileContainer}>
-					{username && (
-						<View>
-							<Avatar
-								text={username}
-								style={styles.profileImage}
-								size={screenWidth * 0.4}
-								server={server}
-								borderRadius={screenWidth * 0.05}
-							/>
-							{isVideoUrlPresent ? (
-								<TouchableOpacity
-									style={styles.playIconContainer}
-									onPress={() => {
-										navigation.navigate('VideoPlayerView', { videoUrl: `${videoUrl}` });
-									}}>
-									<Image source={playIcon} style={styles.playIcon} />
-								</TouchableOpacity>
-							) : null}
+				{/* Profile Header Section - Gray Background */}
+				<View style={styles.profileHeaderSection}>
+					<View style={styles.profileRow}>
+						{/* Left: Circular Profile Picture with Play Button */}
+						<View style={styles.avatarContainer}>
+							{username && (
+								<>
+									<Avatar text={username} style={styles.circularAvatar} size={80} server={server} borderRadius={40} />
+									{isVideoUrlPresent && (
+										<TouchableOpacity
+											style={styles.playButtonContainer}
+											onPress={() => {
+												navigation.navigate('VideoPlayerView', { videoUrl: `${videoUrl}` });
+											}}>
+											<View style={styles.playButton}>
+												<CustomIcon name='play' size={18} color={colors[theme].nextGenSurface} />
+											</View>
+										</TouchableOpacity>
+									)}
+								</>
+							)}
 						</View>
-					)}
-				</View>
-				<View style={styles.identityContainer}>
-					<View style={styles.nameContainer}>
-						<Status size={20} id={user._id} />
-						<Text style={styles.profileName}>{age ? `${name}, ${age}` : `${name ?? ''}`}</Text>
-					</View>
 
-					{isPronounsPresent && (
-						<View style={styles.pronounsContainer}>
-							<Text style={styles.pronounsText}>{`(${pronouns})`}</Text>
+						{/* Right: Name, Age, Online Status, Hometown, Connect Button */}
+						<View style={styles.profileInfoContainer}>
+							{/* Name, Age, and Online Status */}
+							<View style={styles.nameRow}>
+								<Text style={styles.nameText}>{age ? `${name}, ${age}` : `${name ?? ''}`}</Text>
+								<View style={styles.onlineStatusDot}>
+									<Status size={12} id={user._id} />
+								</View>
+							</View>
+
+							{/* Pronouns (if present) */}
+							{isPronounsPresent && <Text style={styles.pronounsText}>{`(${pronouns})`}</Text>}
+
+							{/* Hometown */}
+							<Text style={styles.hometownText}>{location ?? ''}</Text>
+
+							{/* Connect Button */}
+							<TouchableOpacity style={styles.connectButton} onPress={() => handleCreateDirectMessage(goToRoom)}>
+								<Text style={styles.connectButtonText}>Connect</Text>
+							</TouchableOpacity>
 						</View>
+					</View>
+				</View>
+
+				{/* T1D Info Section - White Background */}
+				<View style={styles.infoSection}>
+					<View style={styles.infoRow}>
+						<Text style={styles.infoLabel}>T1D Since</Text>
+						<Text style={styles.infoValue}>{t1dSince !== '' ? t1dSince : '-'}</Text>
+					</View>
+					<View style={styles.infoRow}>
+						<Text style={styles.infoLabel}>Device</Text>
+						<View style={styles.deviceContainer}>
+							{devices.length > 0 ? (
+								devices.map((device, index) => (
+									<Text style={styles.infoValue} key={index}>
+										{device}
+									</Text>
+								))
+							) : (
+								<Text style={styles.infoValue}>-</Text>
+							)}
+						</View>
+					</View>
+				</View>
+
+				{/* About Section - Gray Background */}
+				<View style={styles.aboutSection}>
+					<Text style={styles.aboutHeader}>About</Text>
+					{displayRole ? (
+						<>
+							<Text style={styles.aboutText}>{displayRole}</Text>
+							{bioDescription && (
+								<Text style={[styles.aboutText, { marginTop: 12 }]}>{bioDescription}</Text>
+							)}
+						</>
+					) : (
+						<Text style={styles.aboutText}>{bioDescription}</Text>
 					)}
-				</View>
-				<View style={styles.locationContainer}>
-					<Text style={[styles.locationText, { color: themes[theme].titleText }]}>{location ?? ''}</Text>
-				</View>
-				<View style={styles.userInfoContainer}>
-					<View style={styles.userInfoTextContainerLeft}>
-						<Text style={[styles.userInfoText, { color: themes[theme].titleText }]}>T1D Since</Text>
-						<Text style={[styles.userInfoTextGrey, { color: themes[theme].bodyText }]}>{t1dSince !== '' ? t1dSince : '-'}</Text>
-					</View>
-					<View style={styles.userInfoTextContainerRight}>
-						<Text style={[styles.userInfoText, { color: themes[theme].titleText }]}>Devices</Text>
-						{devices.length > 0 ? (
-							devices.map((device, index) => (
-								<Text style={[styles.userInfoTextGrey, { color: themes[theme].bodyText }]} key={index}>
-									{device}
-								</Text>
-							))
-						) : (
-							<Text style={[styles.userInfoTextGrey, { color: themes[theme].bodyText }]}>-</Text>
-						)}
-					</View>
-				</View>
-				<View>
-					<TouchableOpacity style={styles.connectButton} onPress={() => handleCreateDirectMessage(goToRoom)}>
-						<Text style={styles.connectButtonText}>Connect</Text>
-					</TouchableOpacity>
-				</View>
-				<View style={styles.bioContainer}>
-					<Text style={[styles.aboutTextHeader, { color: themes[theme].titleText }]}>About</Text>
-					<Text style={[styles.aboutText, { color: themes[theme].bodyText }]}>{bio ?? ''}</Text>
 				</View>
 			</ScrollView>
 		</View>

@@ -5,12 +5,12 @@ const makeStyles = themeColors =>
 		mainContainer: {
 			flex: 1,
 			alignItems: 'center',
-			backgroundColor: themeColors.nextGenLightGray // Light gray background to match Home View
+			backgroundColor: themeColors.nextGenBackground // NextGen background to match Home View
 		},
 		discussionBoardsSeparator: {
 			height: 1,
 			width: '100%',
-			backgroundColor: '#0000004D',
+			backgroundColor: themeColors.nextGenBorder,
 			marginVertical: 16
 		},
 		footer: {

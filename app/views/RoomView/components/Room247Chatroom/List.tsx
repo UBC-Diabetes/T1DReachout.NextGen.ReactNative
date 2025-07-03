@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { themes } from '../../../../lib/constants';
+import { themes, colors } from '../../../../lib/constants';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import ActivityIndicator from '../../../../containers/ActivityIndicator';
 import { CustomIcon } from '../../../../containers/CustomIcon';
@@ -23,10 +23,10 @@ const SHOW_MOCK_OWN_MESSAGE = false;
 
 // Scroll button constants imported from RoomView/List/constants
 
-const styles = StyleSheet.create({
+const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#F8F8F8' // Updated message area background color
+		backgroundColor: colors[theme].nextGenBackground // NextGen background color
 	},
 	list: {
 		flex: 1
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 	emptyText: {
 		fontSize: 16,
 		fontWeight: '500',
-		color: '#888',
+		color: colors[theme].nextGenTextSecondary,
 		textAlign: 'center',
 		marginHorizontal: 40
 	},
@@ -60,9 +60,9 @@ const styles = StyleSheet.create({
 		width: 50,
 		height: 50,
 		borderRadius: 25,
-		backgroundColor: '#112D4E', // Dark blue to match reply buttons
+		backgroundColor: colors[theme].nextGenPrimary, // NextGen primary color
 		borderWidth: 1,
-		borderColor: 'rgba(0,0,0,0.1)',
+		borderColor: colors[theme].nextGenBorder,
 		alignItems: 'center',
 		justifyContent: 'center',
 		shadowColor: '#000',
@@ -73,9 +73,15 @@ const styles = StyleSheet.create({
 	}
 });
 
+// Legacy export for compatibility
+const styles = createStyles({ theme: 'light' });
+
 const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IRoom247ListProps) => {
 	// FlatList ref for scroll control
 	const flatListRef = useRef<FlatList>(null);
+	
+	// Create theme-aware styles
+	const dynamicStyles = createStyles({ theme });
 
 	// Scroll button visibility state
 	const [showScrollButton, setShowScrollButton] = useState(false);
@@ -326,11 +332,11 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IR
 	};
 
 	return (
-		<View style={styles.container}>
+		<View style={dynamicStyles.container}>
 			<FlatList
 				ref={flatListRef}
 				testID='room-view-messages-247'
-				style={styles.list}
+				style={dynamicStyles.list}
 				data={displayMessages}
 				keyExtractor={item => item.id}
 				renderItem={({ item, index }) => {
@@ -343,7 +349,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IR
 						</>
 					);
 				}}
-				contentContainerStyle={styles.contentContainer}
+				contentContainerStyle={dynamicStyles.contentContainer}
 				removeClippedSubviews={false}
 				initialNumToRender={15}
 				maxToRenderPerBatch={20}
@@ -358,8 +364,8 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IR
 			/>
 			{/* Scroll to bottom button - only show when scrolled up */}
 			{showScrollButton && (
-				<TouchableOpacity style={styles.scrollButton} onPress={handleScrollToBottom} testID='room-247-scroll-to-bottom'>
-					<CustomIcon name='chevron-down' size={24} color='#FFFFFF' />
+				<TouchableOpacity style={dynamicStyles.scrollButton} onPress={handleScrollToBottom} testID='room-247-scroll-to-bottom'>
+					<CustomIcon name='chevron-down' size={24} color={colors[theme].nextGenSurface} />
 				</TouchableOpacity>
 			)}
 		</View>

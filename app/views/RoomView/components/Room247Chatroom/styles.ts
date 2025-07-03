@@ -2,13 +2,14 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 import sharedStyles from '../../../Styles';
 import { isTablet } from '../../../../lib/methods/helpers';
+import { colors } from '../../../../lib/constants';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Helper function to get responsive padding/margin
 const getResponsiveSpacing = (baseSize: number) => Math.max(baseSize, SCREEN_WIDTH * 0.03); // Minimum 3% of screen width
 
-export default StyleSheet.create({
+export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 	root: {
 		flexDirection: 'row'
 	},
@@ -17,7 +18,7 @@ export default StyleSheet.create({
 		width: '100%',
 		paddingHorizontal: getResponsiveSpacing(14),
 		flexDirection: 'column',
-		backgroundColor: '#F8F8F8'
+		backgroundColor: colors[theme].nextGenBackground
 	},
 	contentContainer: {
 		flex: 1
@@ -220,20 +221,20 @@ export default StyleSheet.create({
 	},
 	ownMessage: {
 		maxWidth: '90%',
-		backgroundColor: '#2C74B3',
+		backgroundColor: colors[theme].nextGenPrimary,
 		borderRadius: 12,
 		borderWidth: 1,
-		borderColor: 'rgba(0,0,0,0.05)',
+		borderColor: colors[theme].nextGenBorder,
 		overflow: 'hidden',
 		marginRight: getResponsiveSpacing(8),
 		position: 'relative'
 	},
 	otherMessage: {
 		maxWidth: '90%',
-		backgroundColor: '#FFFFFF',
+		backgroundColor: colors[theme].nextGenSurface,
 		borderRadius: 12,
 		borderWidth: 1,
-		borderColor: 'rgba(0,0,0,0.05)',
+		borderColor: colors[theme].nextGenBorder,
 		overflow: 'hidden',
 		marginLeft: getResponsiveSpacing(8),
 		position: 'relative'
@@ -259,7 +260,7 @@ export default StyleSheet.create({
 		top: 0,
 		width: getResponsiveSpacing(8),
 		height: getResponsiveSpacing(16),
-		backgroundColor: '#2C74B3', // Match ownMessage background color
+		backgroundColor: colors[theme].nextGenPrimary, // Match ownMessage background color
 		borderTopRightRadius: getResponsiveSpacing(8)
 	},
 	otherTail: {
@@ -268,7 +269,7 @@ export default StyleSheet.create({
 		top: 0,
 		width: getResponsiveSpacing(8),
 		height: getResponsiveSpacing(16),
-		backgroundColor: '#FFFFFF', // Match otherMessage background color
+		backgroundColor: colors[theme].nextGenSurface, // Match otherMessage background color
 		borderTopLeftRadius: getResponsiveSpacing(8)
 	},
 	// Add extra styling for user name in group chats
@@ -296,14 +297,14 @@ export default StyleSheet.create({
 		marginBottom: 18
 	},
 	replyButton: {
-		backgroundColor: '#112D4E',
+		backgroundColor: colors[theme].nextGenPrimary,
 		borderRadius: 16,
 		paddingHorizontal: 16,
 		paddingVertical: 6,
 		marginRight: 8
 	},
 	replyButtonText: {
-		color: '#FFFFFF',
+		color: colors[theme].nextGenSurface,
 		fontSize: 14,
 		fontWeight: '600'
 	},
@@ -316,17 +317,17 @@ export default StyleSheet.create({
 		marginRight: 4
 	},
 	iconText: {
-		color: '#1E2A3A',
+		color: colors[theme].nextGenText,
 		fontSize: 14,
 		fontWeight: '600'
 	},
 	// Message text color for own messages
 	ownMessageText: {
-		color: '#FFFFFF'
+		color: colors[theme].nextGenSurface
 	},
 	// Message text color for other messages
 	otherMessageText: {
-		color: '#000000'
+		color: colors[theme].nextGenText
 	},
 	// New flex-based layout styles
 	actionsContainer: {
@@ -340,3 +341,7 @@ export default StyleSheet.create({
 		lineHeight: 18
 	}
 });
+
+// Keep legacy export for compatibility
+const styles = createStyles({ theme: 'light' });
+export default styles;
