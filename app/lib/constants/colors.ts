@@ -10,9 +10,44 @@ export const themeColors = {
 	forestGreen: '#567156'
 };
 
+export const nextGenColors = {
+	light: {
+		nextGenPrimary: '#112D4E',        // Dark blue primary
+		nextGenSecondary: '#CAC4D0',      // Light gray/purple secondary
+		nextGenBackground: '#EBEDF0',     // Light gray background
+		nextGenSurface: '#FFFFFF',        // White surface
+		nextGenBorder: '#E1E5E8',         // Light border
+		nextGenText: '#2F343D',           // Dark text
+		nextGenTextSecondary: '#6C727A',  // Secondary text
+		nextGenAccent: '#156FF5'          // Blue accent
+	},
+	dark: {
+		nextGenPrimary: '#1A3A5C',        // Slightly lighter dark blue primary
+		nextGenSecondary: '#4A4A52',      // Darker secondary for dark mode
+		nextGenBackground: '#1F2329',     // Dark background
+		nextGenSurface: '#262931',        // Dark surface
+		nextGenBorder: '#333842',         // Dark border
+		nextGenText: '#E4E7EA',           // Light text
+		nextGenTextSecondary: '#9EA2A8',  // Secondary light text
+		nextGenAccent: '#549DF9'          // Lighter blue accent for dark mode
+	},
+	black: {
+		nextGenPrimary: '#1E4A6F',        // Adjusted blue for black theme
+		nextGenSecondary: '#3A3A3A',      // Dark gray secondary for black mode
+		nextGenBackground: '#000000',     // True black background
+		nextGenSurface: '#0d0d0d',        // Slightly off-black surface
+		nextGenBorder: '#1f2329',         // Very dark border
+		nextGenText: '#F2F3F5',           // Bright light text
+		nextGenTextSecondary: '#B2B8C6',  // Secondary bright text
+		nextGenAccent: '#76B7FC'          // Bright blue accent for black mode
+	}
+};
+
 const light = {
 	discussionBoardHeaderButtonText: '#00000080',
 	discussionBoardHeaderButtonTextSelected: '#000000',
+
+	...nextGenColors.light,
 
 	surfaceLight: '#FFFFFF',
 	surfaceTint: '#F7F8FA',
@@ -109,6 +144,8 @@ const dark = {
 	discussionBoardHeaderButtonText: '#FFFFFF80',
 	discussionBoardHeaderButtonTextSelected: '#FFFFFF',
 
+	...nextGenColors.dark,
+
 	surfaceLight: '#262931',
 	surfaceTint: '#1F2329',
 	surfaceRoom: '#1F2329',
@@ -203,6 +240,8 @@ const dark = {
 const black = {
 	discussionBoardHeaderButtonText: '#FFFFFF80',
 	discussionBoardHeaderButtonTextSelected: '#FFFFFF',
+
+	...nextGenColors.black,
 
 	surfaceLight: '#0d0d0d',
 	surfaceTint: '#16181a',

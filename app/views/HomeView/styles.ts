@@ -5,7 +5,7 @@ import { colors } from '../../lib/constants';
 export const createMainStyles = ({ theme }: { theme: any }) =>
 	StyleSheet.create({
 		mainContainer: {
-			backgroundColor: colors[theme].nextGenLightGray, // Light gray background for entire page
+			backgroundColor: colors[theme].nextGenBackground, // NextGen background
 			flex: 1
 		},
 		scrollContent: {
@@ -16,7 +16,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			fontSize: 28,
 			lineHeight: 32,
 			fontWeight: '400',
-			color: '#191C20',
+			color: colors[theme].nextGenText,
 			marginBottom: 24
 		},
 		tileContainer: {
@@ -35,7 +35,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			fontSize: 20,
 			lineHeight: 24,
 			fontWeight: '600',
-			color: '#191C20'
+			color: colors[theme].nextGenText
 		},
 		viewAllLink: {
 			fontSize: 14,
@@ -46,7 +46,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			marginBottom: 32
 		},
 		emptySection: {
-			backgroundColor: colors[theme].nextGenLightGray,
+			backgroundColor: colors[theme].nextGenSurface,
 			padding: 20,
 			borderRadius: 8,
 			alignItems: 'center',
@@ -55,7 +55,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		},
 		emptySectionText: {
 			fontSize: 14,
-			color: '#6B7280',
+			color: colors[theme].nextGenTextSecondary,
 			fontStyle: 'italic'
 		},
 		eventsContainer: {
@@ -64,7 +64,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			padding: 4
 		},
 		eventItem: {
-			backgroundColor: '#FFFFFF',
+			backgroundColor: colors[theme].nextGenSurface,
 			marginVertical: 4,
 			marginHorizontal: 4,
 			borderRadius: 6
@@ -75,12 +75,12 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		eventTitle: {
 			fontSize: 16,
 			fontWeight: '600',
-			color: '#191C20',
+			color: colors[theme].nextGenText,
 			marginBottom: 4
 		},
 		eventDate: {
 			fontSize: 14,
-			color: '#6B7280',
+			color: colors[theme].nextGenTextSecondary,
 			fontWeight: '400'
 		},
 		viewMoreEvents: {
@@ -100,7 +100,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			padding: 4
 		},
 		savedPostItem: {
-			backgroundColor: '#FFFFFF',
+			backgroundColor: colors[theme].nextGenSurface,
 			marginVertical: 4,
 			marginHorizontal: 4,
 			borderRadius: 6
@@ -121,11 +121,11 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		savedPostAuthor: {
 			fontSize: 14,
 			fontWeight: '600',
-			color: '#191C20'
+			color: colors[theme].nextGenText
 		},
 		savedPostDate: {
 			fontSize: 12,
-			color: '#6B7280',
+			color: colors[theme].nextGenTextSecondary,
 			fontWeight: '400'
 		},
 		bookmarkButton: {
@@ -134,11 +134,11 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		bookmarkIcon: {
 			width: 18,
 			height: 18,
-			tintColor: '#112D4E'
+			tintColor: colors[theme].nextGenPrimary
 		},
 		savedPostText: {
 			fontSize: 14,
-			color: '#374151',
+			color: colors[theme].nextGenText,
 			lineHeight: 18,
 			marginBottom: 8
 		},
@@ -148,7 +148,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		},
 		savedPostStat: {
 			fontSize: 12,
-			color: '#6B7280',
+			color: colors[theme].nextGenTextSecondary,
 			marginRight: 16
 		},
 		viewMoreSavedPosts: {
@@ -208,7 +208,7 @@ export const createTileStyles = ({
 			textAlign: 'center',
 			fontWeight: '500',
 			marginTop: 12,
-			color: '#191C20'
+			color: colors[theme].nextGenText
 		},
 		image: {
 			width: 50,

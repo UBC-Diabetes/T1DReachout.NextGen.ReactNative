@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../lib/constants';
 
-const styles = StyleSheet.create({
+export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 	mainContainer: {
 		flex: 1,
-		backgroundColor: 'white'
+		backgroundColor: colors[theme].nextGenBackground
 	},
 	headerContainer: {
 		margin: 20
@@ -11,7 +12,8 @@ const styles = StyleSheet.create({
 	headerText: {
 		fontSize: 24,
 		fontWeight: '600',
-		lineHeight: 29
+		lineHeight: 29,
+		color: colors[theme].nextGenText
 	},
 	footer: {
 		height: 90
@@ -26,6 +28,7 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		bottom: 28,
+		backgroundColor: colors[theme].nextGenPrimary,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 0 },
 		shadowOpacity: 0.15,
@@ -33,11 +36,13 @@ const styles = StyleSheet.create({
 		elevation: 5
 	},
 	buttonText: {
-		color: 'white',
+		color: colors[theme].nextGenSurface,
 		fontSize: 16,
 		fontWeight: '600',
 		lineHeight: 19
 	}
 });
 
+// Keep legacy export for compatibility
+const styles = createStyles({ theme: 'light' });
 export default styles;
