@@ -70,7 +70,12 @@ const CalendarView = (): React.ReactElement => {
 			<CalendarProvider date={todaysDate}>
 				<ExpandableCalendar
 					testID={testIDs.expandableCalendar.CONTAINER}
-					theme={{ ...theme, dotColor: '#CB007B', arrowColor: '#CB007B', selectedDayBackgroundColor: '#799A79' }}
+					theme={{ 
+						...theme, 
+						dotColor: colors.nextGenAccent, 
+						arrowColor: colors.nextGenAccent, 
+						selectedDayBackgroundColor: colors.nextGenPrimary 
+					}}
 					firstDay={0}
 					markedDates={marked}
 				/>
@@ -78,7 +83,17 @@ const CalendarView = (): React.ReactElement => {
 					sections={agendaItems ?? []}
 					renderItem={renderItem}
 					sectionStyle={{
-						backgroundColor: '#F5F4F2'
+						backgroundColor: colors.nextGenBackground,
+						color: colors.nextGenTextSecondary,
+						fontWeight: '600',
+						fontSize: 12,
+						lineHeight: 16,
+						paddingTop: 24,
+						paddingBottom: 8,
+						paddingLeft: 20,
+						paddingRight: 20,
+						textAlign: 'left',
+						textTransform: 'uppercase'
 					}}
 				/>
 			</CalendarProvider>
@@ -113,11 +128,11 @@ const makeStyles = (theme: any) =>
 			marginTop: 20,
 			bottom: 20,
 			width: '100%',
-			backgroundColor: '#F5F4F2'
+			backgroundColor: theme.colors.nextGenBackground
 		},
 		adminButton: {
 			margin: 10,
-			backgroundColor: '#799A79',
+			backgroundColor: theme.colors.nextGenPrimary,
 			paddingVertical: 15,
 			paddingHorizontal: 20,
 			borderRadius: 20,
@@ -125,7 +140,7 @@ const makeStyles = (theme: any) =>
 			justifyContent: 'center'
 		},
 		adminButtonText: {
-			color: 'white',
+			color: theme.colors.nextGenSurface,
 			fontSize: 20,
 			fontWeight: 'bold'
 		}

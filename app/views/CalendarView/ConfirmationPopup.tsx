@@ -5,8 +5,13 @@ import { parseISO, format } from 'date-fns';
 
 import { hideConfirmationPopup } from '../../actions/confirmationPopup';
 import { registerEventRequest } from '../../actions/calendarEvents';
+import { useTheme } from '../../theme';
 
 const ConfirmationPopup = ({ event, userName }) => {
+	const theme = useTheme();
+	const { colors } = theme;
+	const styles = makeStyles(theme);
+	
 	const eventDetails = useMemo(() => {
 		return event?.title
 			? event
@@ -83,93 +88,93 @@ const ConfirmationPopup = ({ event, userName }) => {
 	);
 };
 
-const styles = StyleSheet.create({
-	fullOverlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: 'rgba(0, 0, 0, 0.5)',
-		justifyContent: 'flex-end',
-		zIndex: 1000
-	},
-	overlay: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		bottom: 0,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	safeArea: {
-		backgroundColor: 'transparent'
-	},
-	popupContainer: {
-		backgroundColor: '#FFFFFF',
-		borderTopLeftRadius: 20,
-		borderTopRightRadius: 20
-	},
-	popup: {
-		padding: 20
-	},
-	popupTitle: {
-		fontSize: 18,
-		fontWeight: 'bold',
-		marginBottom: 10,
-		color: '#333'
-	},
-	eventTitle: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		marginBottom: 20,
-		color: '#000'
-	},
-	detailsContainer: {
-		marginBottom: 20
-	},
-	detailRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 10
-	},
-	detailIcon: {
-		fontSize: 18,
-		marginRight: 10
-	},
-	detailText: {
-		fontSize: 16,
-		color: '#333'
-	},
-	meetingLinkLabel: {
-		fontSize: 14,
-		color: '#666',
-		marginBottom: 5
-	},
-	meetingLink: {
-		fontSize: 14,
-		color: '#0000FF',
-		textDecorationLine: 'underline',
-		marginBottom: 20
-	},
-	confirmButton: {
-		paddingVertical: 15,
-		borderRadius: 25,
-		alignItems: 'center',
-		marginBottom: 15,
-		borderWidth: 1,
-		borderColor: '#E3E3E3'
-	},
-	confirmButtonText: {
-		color: '#000',
-		fontSize: 18,
-		fontWeight: 'bold'
-	},
-	helpButton: {
-		alignItems: 'center'
-	},
-	helpButtonText: {
-		color: '#666',
-		fontSize: 14,
-		textDecorationLine: 'underline'
-	}
-});
+const makeStyles = (theme: any) =>
+	StyleSheet.create({
+		fullOverlay: {
+			...StyleSheet.absoluteFillObject,
+			backgroundColor: 'rgba(0, 0, 0, 0.5)',
+			justifyContent: 'flex-end',
+			zIndex: 1000
+		},
+		overlay: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		safeArea: {
+			backgroundColor: 'transparent'
+		},
+		popupContainer: {
+			backgroundColor: theme.colors.nextGenSurface,
+			borderTopLeftRadius: 20,
+			borderTopRightRadius: 20
+		},
+		popup: {
+			padding: 20
+		},
+		popupTitle: {
+			fontSize: 18,
+			fontWeight: 'bold',
+			marginBottom: 10,
+			color: theme.colors.nextGenTextSecondary
+		},
+		eventTitle: {
+			fontSize: 24,
+			fontWeight: 'bold',
+			marginBottom: 20,
+			color: theme.colors.nextGenText
+		},
+		detailsContainer: {
+			marginBottom: 20
+		},
+		detailRow: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			marginBottom: 10
+		},
+		detailIcon: {
+			fontSize: 18,
+			marginRight: 10
+		},
+		detailText: {
+			fontSize: 16,
+			color: theme.colors.nextGenText
+		},
+		meetingLinkLabel: {
+			fontSize: 14,
+			color: theme.colors.nextGenTextSecondary,
+			marginBottom: 5
+		},
+		meetingLink: {
+			fontSize: 14,
+			color: theme.colors.nextGenAccent,
+			textDecorationLine: 'underline',
+			marginBottom: 20
+		},
+		confirmButton: {
+			paddingVertical: 15,
+			borderRadius: 25,
+			alignItems: 'center',
+			marginBottom: 15,
+			backgroundColor: theme.colors.nextGenPrimary
+		},
+		confirmButtonText: {
+			color: theme.colors.nextGenSurface,
+			fontSize: 18,
+			fontWeight: 'bold'
+		},
+		helpButton: {
+			alignItems: 'center'
+		},
+		helpButtonText: {
+			color: theme.colors.nextGenTextSecondary,
+			fontSize: 14,
+			textDecorationLine: 'underline'
+		}
+	});
 
 export default ConfirmationPopup;
