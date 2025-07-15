@@ -39,10 +39,15 @@ const Avatar = React.memo(
 			return null;
 		}
 
+		// Check if this is likely a letter avatar (no custom avatar provided, just text)
+		const isLikelyLetterAvatar = !avatar && text && !emoji;
+		const adjustedSize = isLikelyLetterAvatar ? size * 0.85 : size;
+		const adjustedBorderRadius = isLikelyLetterAvatar ? borderRadius * 0.85 : borderRadius;
+		
 		const avatarStyle = {
-			width: size,
-			height: size,
-			borderRadius
+			width: adjustedSize,
+			height: adjustedSize,
+			borderRadius: adjustedBorderRadius
 		};
 
 		// Helper function to get initials from text
@@ -57,19 +62,21 @@ const Avatar = React.memo(
 
 		// Fallback text avatar component
 		const TextAvatar = () => (
-			<View style={[
-				avatarStyle, 
-				{ 
-					backgroundColor: '#112D4E', 
-					justifyContent: 'center', 
-					alignItems: 'center' 
-				}
-			]}>
-				<Text style={{
-					color: '#FFFFFF',
-					fontSize: size * 0.4,
-					fontWeight: 'bold'
-				}}>
+			<View
+				style={[
+					avatarStyle,
+					{
+						backgroundColor: '#112D4E',
+						justifyContent: 'center',
+						alignItems: 'center'
+					}
+				]}>
+				<Text
+					style={{
+						color: '#FFFFFF',
+						fontSize: adjustedSize * 0.4,
+						fontWeight: 'bold'
+					}}>
 					{getInitials(text || '')}
 				</Text>
 			</View>
@@ -110,6 +117,7 @@ const Avatar = React.memo(
 						headers: RocketChatSettings.customHeaders,
 						priority: FastImage.priority.high
 					}}
+					resizeMode={FastImage.resizeMode.cover}
 					onError={() => setImageError(true)}
 				/>
 			);
