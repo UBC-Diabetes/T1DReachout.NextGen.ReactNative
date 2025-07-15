@@ -42,7 +42,7 @@ const NAV_ITEMS: IBottomNavBarItem[] = [
 			showDrawer: true,
 			showProfile: false,
 			showSearch: true,
-			title: ''
+			title: 'Messaging'
 		}
 	},
 	{
@@ -55,7 +55,7 @@ const NAV_ITEMS: IBottomNavBarItem[] = [
 			showDrawer: true,
 			showProfile: true,
 			showSearch: false,
-			title: ''
+			title: 'Welcome'
 		}
 	},
 	{
@@ -68,7 +68,7 @@ const NAV_ITEMS: IBottomNavBarItem[] = [
 			showDrawer: true,
 			showProfile: false,
 			showSearch: true,
-			title: ''
+			title: 'Boards'
 		}
 	}
 ];
@@ -96,10 +96,10 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 
 	const handleTabPress = (screen: string) => {
 		setActiveTab(screen);
-		
+
 		// When navigating to DiscussionHomeView via bottom nav, reset to Discussion Boards tab
 		if (screen === 'DiscussionHomeView') {
-			navigation.setParams({ 
+			navigation.setParams({
 				...route?.params,
 				params: { selectedTab: 0 } // 0 = DISCUSSION_BOARDS tab
 			});
@@ -113,29 +113,20 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 			<View style={[styles.header, { backgroundColor: themes[theme].nextGenLightGray }]}>
 				<View style={styles.headerLeft}>
 					{headerConfig.showDrawer && (
-						<HeaderButton.Drawer
-							navigation={navigation}
-							testID='bottom-tab-drawer'
-							onPress={() => navigation.toggleDrawer()}
-						/>
+						<HeaderButton.Drawer navigation={navigation} testID='bottom-tab-drawer' onPress={() => navigation.toggleDrawer()} />
 					)}
 				</View>
-				
+
 				<View style={styles.headerCenter}>
 					{headerConfig.title && (
-						<Text style={[styles.headerTitle, { color: themes[theme].titleText }]}>
-							{headerConfig.title}
-						</Text>
+						<Text style={[styles.headerTitle, { color: themes[theme].titleText }]}>{headerConfig.title}</Text>
 					)}
 				</View>
 
 				<View style={styles.headerRight}>
 					{headerConfig.showProfile && userName && (
 						<HeaderButton.Container>
-							<Touchable 
-								style={styles.profileContainer} 
-								onPress={() => navigation.navigate('ProfileView')}
-							>
+							<Touchable style={styles.profileContainer} onPress={() => navigation.navigate('ProfileView')}>
 								<Avatar text={userName} size={24} borderRadius={12} />
 							</Touchable>
 						</HeaderButton.Container>
@@ -172,21 +163,15 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 						style={styles.tabItem}
 						onPress={() => handleTabPress(item.screen)}
 						testID={item.testID}
-						activeOpacity={0.7}
-					>
-						<CustomIcon
-							name={item.icon}
-							size={24}
-							color={active ? colors.actionTintColor : '#1D1B20'}
-						/>
+						activeOpacity={0.7}>
+						<CustomIcon name={item.icon} size={24} color={active ? colors.actionTintColor : '#1D1B20'} />
 						<Text
 							style={[
 								styles.tabText,
 								{
 									color: active ? colors.actionTintColor : '#1D1B20'
 								}
-							]}
-						>
+							]}>
 							{item.title}
 						</Text>
 					</TouchableOpacity>
@@ -200,9 +185,9 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 			<StatusBar />
 			{renderHeader()}
 			<View style={styles.content}>
-				<ActiveComponent 
-					navigation={navigation} 
-					theme={theme} 
+				<ActiveComponent
+					navigation={navigation}
+					theme={theme}
 					route={{
 						...route,
 						params: route?.params?.params || {}
@@ -212,13 +197,13 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 						// If switching to DiscussionHomeView with specific params, handle them
 						if (tabName === 'DiscussionHomeView' && params?.selectedTab !== undefined) {
 							// The DiscussionHomeView will pick up these params from the route
-							navigation.setParams({ 
+							navigation.setParams({
 								...route?.params,
 								params: { ...route?.params?.params, ...params }
 							});
 						}
 					}}
-					{...props} 
+					{...props}
 				/>
 			</View>
 			{renderTabBar()}
@@ -254,7 +239,7 @@ const styles = StyleSheet.create({
 	},
 	headerTitle: {
 		fontSize: 18,
-		fontWeight: '600'
+		fontWeight: '400'
 	},
 	profileContainer: {
 		marginRight: 8
