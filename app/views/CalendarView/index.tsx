@@ -135,7 +135,7 @@ const makeStyles = (theme: any) =>
 			backgroundColor: theme.colors.nextGenPrimary,
 			paddingVertical: 15,
 			paddingHorizontal: 20,
-			borderRadius: 20,
+			borderRadius: 50,
 			alignItems: 'center',
 			justifyContent: 'center'
 		},
