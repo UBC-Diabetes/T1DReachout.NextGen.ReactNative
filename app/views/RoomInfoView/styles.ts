@@ -65,7 +65,7 @@ export default StyleSheet.create({
 	},
 	roleBadge: {
 		padding: 6,
-		borderRadius: 4,
+		borderRadius: 12,
 		marginRight: 6,
 		marginBottom: 6
 	},
@@ -90,5 +90,96 @@ export default StyleSheet.create({
 		paddingTop: 16,
 		paddingHorizontal: 20,
 		alignItems: 'center'
+	},
+	
+	// New sectioned layout styles matching ConnectView
+	infoSection: {
+		paddingHorizontal: 20,
+		paddingVertical: 16,
+		marginTop: 16
+	},
+	infoRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'flex-start',
+		marginBottom: 12
+	},
+	infoLabel: {
+		fontSize: 16,
+		fontWeight: '500',
+		flex: 1
+	},
+	infoValue: {
+		fontSize: 16,
+		flex: 1,
+		textAlign: 'right'
+	},
+	deviceContainer: {
+		flex: 1,
+		alignItems: 'flex-end'
+	},
+	
+	// About Section styles
+	aboutSection: {
+		paddingHorizontal: 20,
+		paddingVertical: 20,
+		marginTop: 16
+	},
+	aboutHeader: {
+		fontSize: 22, // M3 Title Large
+		fontWeight: '400',
+		marginBottom: 12
+	},
+	
+	// Profile Header Section styles (horizontal layout for direct messages)
+	profileHeaderSection: {
+		paddingHorizontal: 20,
+		paddingVertical: 24
+	},
+	profileRow: {
+		flexDirection: 'row',
+		alignItems: 'flex-start'
+	},
+	profileInfoContainer: {
+		flex: 1,
+		justifyContent: 'flex-start',
+		paddingLeft: 16
+	},
+	
+	// Direct message title styles for horizontal layout
+	directTitleContainer: {
+		marginBottom: 16
+	},
+	directNameText: {
+		fontSize: 24, // M3 Headline Small
+		fontWeight: '400',
+		marginBottom: 4
+	},
+	directUsernameText: {
+		fontSize: 14,
+		marginBottom: 4
+	},
+	statusTextContainer: {
+		marginTop: 4
+	},
+	
+	// Field layout styles matching ProfileView
+	fieldRow: {
+		marginBottom: 16
+	},
+	fieldLabel: {
+		fontSize: 16,
+		fontWeight: '500',
+		marginBottom: 4
+	},
+	fieldValue: {
+		fontSize: 16,
+		lineHeight: 20
+	},
+	
+	// About text style
+	aboutText: {
+		fontSize: 16,
+		lineHeight: 22
 	}
 });

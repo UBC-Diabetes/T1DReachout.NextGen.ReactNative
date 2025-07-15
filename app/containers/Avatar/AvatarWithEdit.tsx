@@ -9,18 +9,22 @@ import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import { useAppSelector } from '../../lib/hooks';
 import { compareServerVersion } from '../../lib/methods/helpers';
+import { colors } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 
-const styles = StyleSheet.create({
+const createStyles = (theme: string) => StyleSheet.create({
 	editAvatarButton: {
-		marginTop: 8,
-		paddingVertical: 8,
-		paddingHorizontal: 12,
+		marginTop: 12,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
 		marginBottom: 0,
-		height: undefined
+		height: undefined,
+		borderRadius: 20, // Make it oval
+		backgroundColor: colors[theme].nextGenPrimary
 	},
 	textButton: {
-		fontSize: 12,
+		fontSize: 14,
+		color: colors[theme].nextGenSurface,
 		...sharedStyles.textSemibold
 	}
 });
@@ -43,11 +47,13 @@ const AvatarWithEdit = ({
 	rid,
 	handleEdit
 }: IAvatarContainer): React.ReactElement => {
-	const { colors } = useTheme();
+	const { theme } = useTheme();
 
 	const { serverVersion } = useAppSelector(state => ({
 		serverVersion: state.server.version
 	}));
+
+	const styles = createStyles(theme);
 
 	return (
 		<>
@@ -57,7 +63,7 @@ const AvatarWithEdit = ({
 				avatar={avatar}
 				emoji={emoji}
 				size={120}
-				borderRadius={borderRadius}
+				borderRadius={60} // Make profile picture round
 				type={type}
 				children={children}
 				onPress={onPress}
@@ -68,12 +74,11 @@ const AvatarWithEdit = ({
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
 					title={I18n.t('Edit')}
-					type='secondary'
+					type='primary'
 					onPress={handleEdit}
 					testID='avatar-edit-button'
 					style={styles.editAvatarButton}
 					styleText={styles.textButton}
-					color={colors.fontTitlesLabels}
 					hitSlop={BUTTON_HIT_SLOP}
 				/>
 			) : null}
