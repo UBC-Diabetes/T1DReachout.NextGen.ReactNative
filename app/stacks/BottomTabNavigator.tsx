@@ -110,7 +110,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 		if (!headerConfig || isMasterDetail) return null;
 
 		return (
-			<View style={[styles.header, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.header, { backgroundColor: themes[theme].nextGenLightGray }]}>
 				<View style={styles.headerLeft}>
 					{headerConfig.showDrawer && (
 						<HeaderButton.Drawer
@@ -238,9 +238,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		height: 56,
-		paddingHorizontal: 16,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderBottomColor: '#E0E0E0'
+		paddingHorizontal: 16
 	},
 	headerLeft: {
 		flex: 1,
