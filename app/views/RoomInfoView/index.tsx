@@ -59,6 +59,7 @@ const RoomInfoView = (): React.ReactElement => {
 		usersRoles,
 		roles,
 		serverVersion,
+		user,
 		// permissions
 		editRoomPermission,
 		editOmnichannelContact,
@@ -69,6 +70,7 @@ const RoomInfoView = (): React.ReactElement => {
 		roles: state.roles,
 		usersRoles: state.usersRoles,
 		serverVersion: state.server.version,
+		user: state.login.user,
 		// permissions
 		editRoomPermission: state.permissions['edit-room'],
 		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
@@ -107,9 +109,18 @@ const RoomInfoView = (): React.ReactElement => {
 					onPress={() => {
 						if (!room) return;
 						logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
-						const navigationProps = { room, roomUser };
-						if (isLivechat) navigate('LivechatEditView', navigationProps);
-						else navigate('RoomInfoEditView', { rid, ...navigationProps });
+
+						// Check if it's the user's own profile (itsMe param or comparing user IDs)
+						const isOwnProfile = itsMe || (isDirect && user?.id === roomUser?._id);
+						// If it's the user's own profile, navigate to ProfileView
+						if (isOwnProfile && isDirect) {
+							navigate('ProfileView' as never);
+						} else {
+							// Otherwise use the original navigation logic
+							const navigationProps = { room, roomUser };
+							if (isLivechat) navigate('LivechatEditView', navigationProps);
+							else navigate('RoomInfoEditView', { rid, ...navigationProps });
+						}
 					}}
 					testID='room-info-view-edit-button'
 				/>
@@ -184,6 +195,7 @@ const RoomInfoView = (): React.ReactElement => {
 		const permissions = await hasPermission(permissionToEdit, rid);
 		const canEdit = permissions.some(Boolean);
 		const subRoom = await getSubscriptionByRoomId(rid);
+
 		if (!subRoom && isDirect && fromRid) {
 			const roomFromRid = await getSubscriptionByRoomId(fromRid);
 			if (roomFromRid?.observe) {
@@ -196,7 +208,14 @@ const RoomInfoView = (): React.ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+				// For direct messages, show edit if it's the user's own profile
+				// For other room types, show edit based on permissions
+				const isOwnProfile = itsMe || (isDirect && (user?.id === member?._id || user?.id === roomUser?._id));
+				const shouldShowEdit = isDirect ? isOwnProfile : canEdit;
+				const shouldShowEditButton = isDirect ? isOwnProfile : canEdit;
+
+				setShowEdit(shouldShowEdit);
+				setHeader(shouldShowEditButton);
 			});
 		} else {
 			try {
@@ -208,8 +227,14 @@ const RoomInfoView = (): React.ReactElement => {
 				log(e);
 			}
 		}
-		setShowEdit(canEdit);
-		setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+		// For direct messages, show edit if it's the user's own profile
+		// For other room types, show edit based on permissions
+		const isOwnProfile = itsMe || (isDirect && (user?.id === member?._id || user?.id === roomUser?._id));
+		const shouldShowEdit = isDirect ? isOwnProfile : canEdit;
+		const shouldShowEditButton = isDirect ? isOwnProfile : canEdit;
+
+		setShowEdit(shouldShowEdit);
+		setHeader(shouldShowEditButton);
 	};
 
 	const createDirect = () =>
@@ -288,39 +313,59 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	return (
-		<ScrollView style={[styles.scroll, { backgroundColor: colors.surfaceRoom }]}>
+		<ScrollView style={[styles.scroll, { backgroundColor: colors.nextGenBackground }]}>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-info-view'>
-				<View style={[styles.avatarContainer, { backgroundColor: colors.surfaceHover }]}>
-					<RoomInfoViewAvatar
-						username={room?.name || roomUser.username}
-						rid={room?.rid}
-						userId={roomUser?._id}
-						handleEditAvatar={() => navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' })}
-						showEdit={showEdit}
-						type={t}
-					/>
-					<RoomInfoViewTitle
-						type={t}
-						room={room || roomUser}
-						name={roomUser?.name}
-						username={roomUser?.username}
-						statusText={roomUser?.statusText}
-					/>
-					<RoomInfoButtons
-						rid={room?.rid || rid}
-						fromRid={fromRid}
-						handleBlockUser={handleBlockUser}
-						handleCreateDirectMessage={handleCreateDirectMessage}
-						handleIgnoreUser={handleIgnoreUser}
-						handleReportUser={handleReportUser}
-						isDirect={isDirect}
-						room={room || roomUser}
-						roomUserId={roomUser?._id}
-						roomFromRid={roomFromRid}
-						serverVersion={serverVersion}
-						itsMe={itsMe}
-					/>
+			<SafeAreaView style={{ backgroundColor: colors.nextGenBackground }} testID='room-info-view'>
+				{/* Profile Header Section */}
+				<View style={[styles.profileHeaderSection, { backgroundColor: colors.nextGenBackground }]}>
+					{/* Avatar and Title */}
+					<View style={[styles.avatarContainer, { backgroundColor: 'transparent' }]}>
+						<RoomInfoViewAvatar
+							username={room?.name || roomUser.username}
+							rid={room?.rid}
+							userId={roomUser?._id}
+							handleEditAvatar={() => {
+								console.log('Avatar edit - itsMe:', itsMe, 'isDirect:', isDirect, 'roomUser:', roomUser, 'user:', user);
+
+								// Check if it's the user's own profile (itsMe param or comparing user IDs)
+								const isOwnProfile = itsMe || (isDirect && user?.id === roomUser?._id);
+								console.log('isOwnProfile:', isOwnProfile, 'user.id:', user?.id, 'roomUser._id:', roomUser?._id);
+
+								if (isOwnProfile && isDirect) {
+									console.log('Avatar edit: Navigating to ProfileView for own profile');
+									navigate('ProfileView' as never);
+								} else {
+									// Otherwise navigate to ChangeAvatarView
+									console.log('Avatar edit: Navigating to ChangeAvatarView for other user');
+									navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' });
+								}
+							}}
+							showEdit={showEdit}
+							type={t}
+						/>
+						<RoomInfoViewTitle
+							type={t}
+							room={room || roomUser}
+							name={roomUser?.name}
+							username={roomUser?.username}
+							statusText={roomUser?.statusText}
+						/>
+						{/* Action buttons below avatar */}
+						<RoomInfoButtons
+							rid={room?.rid || rid}
+							fromRid={fromRid}
+							handleBlockUser={handleBlockUser}
+							handleCreateDirectMessage={handleCreateDirectMessage}
+							handleIgnoreUser={handleIgnoreUser}
+							handleReportUser={handleReportUser}
+							isDirect={isDirect}
+							room={room || roomUser}
+							roomUserId={roomUser?._id}
+							roomFromRid={roomFromRid}
+							serverVersion={serverVersion}
+							itsMe={itsMe}
+						/>
+					</View>
 				</View>
 				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} />
 			</SafeAreaView>
