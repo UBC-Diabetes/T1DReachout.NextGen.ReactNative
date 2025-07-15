@@ -15,10 +15,10 @@ import { IApplicationState } from '../../definitions';
 import { getFetchedEventsSelector } from '../../selectors/event';
 import { getUpcomingEvents, formatEventDate } from './calendarHelpers';
 import { fetchEventRequest, pressEventRequest } from '../../actions/calendarEvents';
-import { 
-	observeSavedPosts, 
-	formatSavedPostDate, 
-	truncatePostContent, 
+import {
+	observeSavedPosts,
+	formatSavedPostDate,
+	truncatePostContent,
 	getPostAuthorName,
 	getPostReactionsCount,
 	getPostRepliesCount
@@ -42,14 +42,13 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 		dispatch(fetchEventRequest());
 	}, [dispatch]);
 
-
 	// State for saved posts
 	const [savedPosts, setSavedPosts] = useState([]);
 
 	// Subscribe to saved posts updates when screen is focused
 	useFocusEffect(
 		React.useCallback(() => {
-			const subscription = observeSavedPosts(3, (posts) => {
+			const subscription = observeSavedPosts(3, posts => {
 				setSavedPosts(posts);
 			});
 
@@ -66,7 +65,7 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 	const homeViewTile = ({ icon, title, size, screen, color, disabled = false }: Tileprops, index: number) => {
 		const tileStyles = createTileStyles({
 			size,
-			color: color,
+			color: themes[theme][color] || color,
 			theme
 		});
 
@@ -103,21 +102,14 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 		<View style={styles.mainContainer} testID='home-view'>
 			<ScrollView style={styles.scrollContent}>
 				<Text style={styles.title}>Explore</Text>
-				
-				<View style={styles.tileContainer}>
-					{mainTiles.map((item, index) => homeViewTile(item, index))}
-				</View>
+
+				<View style={styles.tileContainer}>{mainTiles.map((item, index) => homeViewTile(item, index))}</View>
 
 				<View style={styles.sectionContainer}>
 					<View style={styles.sectionHeader}>
-						<Text style={styles.sectionTitle}>
-							{upcomingEvents.length === 1 ? 'Upcoming Event' : 'Upcoming Events'}
-						</Text>
+						<Text style={styles.sectionTitle}>{upcomingEvents.length === 1 ? 'Upcoming Event' : 'Upcoming Events'}</Text>
 						{upcomingEvents.length > 0 && (
-							<Touchable
-								onPress={() => navigation.navigate('CalendarView')}
-								activeOpacity={0.7}
-							>
+							<Touchable onPress={() => navigation.navigate('CalendarView')} activeOpacity={0.7}>
 								<Text style={styles.viewAllLink}>View all</Text>
 							</Touchable>
 						)}
@@ -132,27 +124,18 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 										dispatch(pressEventRequest(event));
 										navigation.navigate('EventDetailsView');
 									}}
-									activeOpacity={0.7}
-								>
+									activeOpacity={0.7}>
 									<View style={styles.eventContent}>
 										<Text style={styles.eventTitle} numberOfLines={1}>
 											{event.title}
 										</Text>
-										<Text style={styles.eventDate}>
-											{formatEventDate(event.dateTime)}
-										</Text>
+										<Text style={styles.eventDate}>{formatEventDate(event.dateTime)}</Text>
 									</View>
 								</Touchable>
 							))}
 							{upcomingEvents.length > 3 && (
-								<Touchable
-									style={styles.viewMoreEvents}
-									onPress={() => navigation.navigate('CalendarView')}
-									activeOpacity={0.7}
-								>
-									<Text style={styles.viewMoreText}>
-										View {upcomingEvents.length - 3} more events
-									</Text>
+								<Touchable style={styles.viewMoreEvents} onPress={() => navigation.navigate('CalendarView')} activeOpacity={0.7}>
+									<Text style={styles.viewMoreText}>View {upcomingEvents.length - 3} more events</Text>
 								</Touchable>
 							)}
 						</View>
@@ -180,8 +163,7 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 										});
 									}
 								}}
-								activeOpacity={0.7}
-							>
+								activeOpacity={0.7}>
 								<Text style={styles.viewAllLink}>View all</Text>
 							</Touchable>
 						)}
@@ -197,17 +179,14 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 										// Pass the whole post object, not just _raw, to match DiscussionPostCard pattern
 										navigation.navigate('DiscussionPostView', { item: post });
 									}}
-									activeOpacity={0.7}
-								>
+									activeOpacity={0.7}>
 									<View style={styles.savedPostContent}>
 										<View style={styles.savedPostHeader}>
 											<View style={styles.savedPostInfo}>
 												<Text style={styles.savedPostAuthor} numberOfLines={1}>
 													{getPostAuthorName(post)}
 												</Text>
-												<Text style={styles.savedPostDate}>
-													{formatSavedPostDate(post._raw?.ts || post.ts)}
-												</Text>
+												<Text style={styles.savedPostDate}>{formatSavedPostDate(post._raw?.ts || post.ts)}</Text>
 											</View>
 											<Touchable
 												onPress={async () => {
@@ -218,25 +197,16 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 													});
 												}}
 												style={styles.bookmarkButton}
-												activeOpacity={0.7}
-											>
-												<Image 
-													source={getIcon('solidSave')} 
-													style={styles.bookmarkIcon} 
-													resizeMode='contain' 
-												/>
+												activeOpacity={0.7}>
+												<Image source={getIcon('solidSave')} style={styles.bookmarkIcon} resizeMode='contain' />
 											</Touchable>
 										</View>
 										<Text style={styles.savedPostText} numberOfLines={2}>
 											{truncatePostContent(post._raw?.msg || post.msg, 100)}
 										</Text>
 										<View style={styles.savedPostStats}>
-											<Text style={styles.savedPostStat}>
-												❤️ {getPostReactionsCount(post)}
-											</Text>
-											<Text style={styles.savedPostStat}>
-												💬 {getPostRepliesCount(post)}
-											</Text>
+											<Text style={styles.savedPostStat}>❤️ {getPostReactionsCount(post)}</Text>
+											<Text style={styles.savedPostStat}>💬 {getPostRepliesCount(post)}</Text>
 										</View>
 									</View>
 								</Touchable>

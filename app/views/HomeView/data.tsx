@@ -5,7 +5,7 @@ export const mainTiles = [
 		title: 'Peer Supporter Library',
 		screen: 'ProfileLibraryView',
 		size: SizeTypes.LARGE,
-		color: '#112D4E',
+		color: 'mossGreen',
 		icon: require('../../static/images/peer-supporter-solid.png'),
 		disabled: false
 	},
@@ -13,7 +13,7 @@ export const mainTiles = [
 		title: '24/7 Chat Room',
 		screen: '24Chat',
 		size: SizeTypes.LARGE,
-		color: '#112D4E',
+		color: 'magenta',
 		icon: require('../../static/images/24-7-solid.png'),
 		disabled: false
 	},
@@ -21,7 +21,7 @@ export const mainTiles = [
 		title: 'Virtual Happy Hour',
 		screen: 'VirtualHappyHour',
 		size: SizeTypes.LARGE,
-		color: '#112D4E',
+		color: 'creamsicleYellow',
 		icon: require('../../static/images/happy-hour-solid.png'),
 		disabled: false
 	}
