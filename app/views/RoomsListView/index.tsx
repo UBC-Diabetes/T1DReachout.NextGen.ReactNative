@@ -934,6 +934,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
+				view='direct-messaging'
 			/>
 		);
 	};

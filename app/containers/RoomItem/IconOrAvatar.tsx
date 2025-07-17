@@ -22,18 +22,26 @@ const IconOrAvatar = ({
 	sourceType,
 	containerStyles,
 	iconSize,
-	borderRadius
+	borderRadius,
+	view,
+	isDiscussionBoard
 }: IIconOrAvatar): React.ReactElement | null => {
 	if (showAvatar) {
-		const avatarSize = iconSize ? iconSize : displayMode === DisplayMode.Condensed ? 36 : 48;
+		let avatarSize = iconSize;
+		if (!avatarSize) {
+			avatarSize = displayMode === DisplayMode.Condensed ? 36 : 48;
+		}
+
+		const newBorderRadius = isDiscussionBoard ? 4 : borderRadius !== undefined ? borderRadius : avatarSize / 2;
+
 		return (
 			<Avatar
 				text={avatar}
 				size={avatarSize}
 				type={type}
-				style={containerStyles ? containerStyles : styles.avatar}
+				style={containerStyles || styles.avatar}
 				rid={rid}
-				borderRadius={borderRadius || avatarSize / 2} // Make circular if no borderRadius specified
+				borderRadius={newBorderRadius}
 			/>
 		);
 	}

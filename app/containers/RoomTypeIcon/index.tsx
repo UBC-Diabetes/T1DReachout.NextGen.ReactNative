@@ -58,29 +58,6 @@ const RoomTypeIcon = React.memo(
 			return <OmnichannelRoomIcon style={iconStyle} size={size} type={type} status={status} sourceType={sourceType} />;
 		}
 
-		// Special handling for discussion boards to match Boards view style
-		if (type === 'discussion' && roomName) {
-			const iconKey = getBoardIcon(roomName);
-			
-			return (
-				<View style={styles.discussionIconContainer}>
-					{iconKey === 'airplane' || iconKey === 'support' || iconKey === 'discussionBoardIcon' ? (
-						<CustomIcon 
-							name={iconKey === 'airplane' ? 'airplane' : iconKey === 'support' ? 'support' : 'discussions'} 
-							size={24} 
-							color="#FFFFFF" 
-						/>
-					) : (
-						<Image 
-							source={getIcon(iconKey)} 
-							style={styles.discussionIcon}
-							resizeMode="contain"
-						/>
-					)}
-				</View>
-			);
-		}
-
 		// TODO: move this to a separate function
 		let icon: TIconsName = 'channel-private';
 		if (teamMain) {
