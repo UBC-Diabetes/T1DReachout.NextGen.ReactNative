@@ -13,7 +13,7 @@ import { getUidDirectMessage } from '../../../lib/methods/helpers';
 import { useAppSelector } from '../../../lib/hooks';
 
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
-// Board icon color will now come from theme
+const cardColors = ['magenta', 'mossGreen', 'dreamBlue', 'creamsicleYellow', 'pink', 'superGray', 'forestGreen'];
 
 const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: DiscussionBoardCardProps) => {
 	const { title, description, saved = false, icon, color, onSaveClick, avatar, f, usersCount } = item;
@@ -28,29 +28,31 @@ const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: Discus
 	const id = getUidDirectMessage(item);
 	const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 	const status = item.t === 'l' ? item.visitor?.status || item.v?.status : userStatus;
-	// Use consistent blue color instead of random colors
+	const randomColor = cardColors[Math.floor(Math.random() * cardColors.length)];
 
 	const styles = makeStyles(colors);
 
 	return (
 		<TouchableOpacity style={styles.cardContainer} onPress={() => onPress && onPress()}>
 			<View style={styles.cardContent}>
-				<View style={styles.iconSection}>
-					<View style={styles.iconContainer}>
-						{getBoardIcon(title) === 'airplane' || getBoardIcon(title) === 'support' || getBoardIcon(title) === 'discussionBoardIcon' ? (
-							<CustomIcon 
-								name={getBoardIcon(title) === 'airplane' ? 'airplane' : getBoardIcon(title) === 'support' ? 'support' : 'discussions'} 
-								size={50} 
-								color="#FFFFFF" 
-							/>
-						) : (
-							<Image 
-								source={getIcon(getBoardIcon(title))} 
-								style={styles.boardIcon}
-								resizeMode="contain"
-							/>
-						)}
-					</View>
+				<View style={{ ...styles.iconContainer }}>
+					<IconOrAvatar
+						displayMode={displayMode}
+						avatar={avatar}
+						type={item.t}
+						rid={item.rid}
+						showAvatar={showAvatar}
+						prid={item.prid}
+						status={status}
+						isGroupChat={item.isGrouChat}
+						teamMain={item.teamMain}
+						showLastMessage={StoreLastMessage}
+						displayMode={displayMode}
+						sourceType={item.source}
+						iconSize={90}
+						containerStyles={{ backgroundColor: themes[theme][randomColor], marginLeft: 10 }}
+						borderRadius={10}
+					/>
 				</View>
 				<View style={styles.textSection}>
 					<Text style={styles.title}>{title}</Text>
