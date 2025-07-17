@@ -195,15 +195,11 @@ export default withTheme(DiscussionPostCard);
 const makeStyles = (theme: string, themes: any) =>
 	StyleSheet.create({
 		container: {
-			width: '100%',
-			backgroundColor: '#fff',
-			padding: 20,
-			borderRadius: 20,
-			shadowColor: '#000',
-			shadowOffset: { width: 0, height: 0 },
-			shadowOpacity: 0.05,
-			shadowRadius: 30,
-			elevation: 5
+			backgroundColor: '#ffffff',
+			marginVertical: 4,
+			marginHorizontal: 16, // To match the list padding in DiscussionHomeView
+			borderRadius: 0,
+			padding: 12
 		},
 		header: {
 			flexDirection: 'row',
