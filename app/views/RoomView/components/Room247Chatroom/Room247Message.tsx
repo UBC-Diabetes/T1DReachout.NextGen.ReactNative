@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '../../../../theme';
@@ -15,6 +15,8 @@ import { CustomIcon } from '../../../../containers/CustomIcon';
 import CustomReactions from './CustomReactions';
 import Blocks from '../../../../containers/message/Blocks';
 import PollBubble247 from './PollBubble247';
+import { Services } from '../../../../lib/services';
+import { getIcon } from '../../../DiscussionBoard/helpers';
 
 interface IRoom247MessageProps {
 	item: TAnyMessageModel;
@@ -47,14 +49,7 @@ interface IRoom247MessageProps {
 	useRealName?: boolean;
 	// Other props from MessageContainer
 	toggleFollowThread?: (isFollowing: boolean, messageId: string) => void;
-	blockAction?: (params: {
-		actionId: string;
-		appId: string;
-		value: any;
-		blockId: string;
-		rid: string;
-		mid: string;
-	}) => void;
+	blockAction?: (params: { actionId: string; appId: string; value: any; blockId: string; rid: string; mid: string }) => void;
 	[key: string]: any;
 }
 
@@ -88,7 +83,6 @@ function isPollBlock(blocks: any[]) {
 	// If there are at least 2, it's a poll
 	return optionSections.length >= 2;
 }
-
 
 const Room247Message = (props: IRoom247MessageProps) => {
 	const {
@@ -161,18 +155,19 @@ const Room247Message = (props: IRoom247MessageProps) => {
 
 	// Determine if user is following this thread (using existing ThreadDetails logic)
 	const initialFollowState = item.replies?.find((u: string) => u === user?.id);
-	
+
 	// Local state for immediate visual feedback
 	const [isFollowing, setIsFollowing] = useState(!!initialFollowState);
-	
+	const [isSaved, setIsSaved] = useState(!!item.starred);
+
 	// Track the last local state we set to detect when backend catches up
 	const lastLocalStateRef = useRef<boolean>(!!initialFollowState);
 	const pendingOperationRef = useRef<boolean>(false);
-	
+
 	// Update local state when item.replies changes (backend update)
 	useEffect(() => {
 		const backendState = !!item.replies?.find((u: string) => u === user?.id);
-		
+
 		// If we have a pending operation, check if backend state matches our expectation
 		if (pendingOperationRef.current) {
 			// If backend state now matches what we expected, clear the pending flag
@@ -185,9 +180,24 @@ const Room247Message = (props: IRoom247MessageProps) => {
 			lastLocalStateRef.current = backendState;
 		}
 	}, [item.replies, user?.id]);
-	
+
+	// Update saved state when item.starred changes
+	useEffect(() => {
+		setIsSaved(!!item.starred);
+	}, [item.starred]);
+
 	// Always show bell on all posts (new behavior)
 	const shouldShowBell = true;
+
+	// Save/unsave functionality
+	const handleSave = async () => {
+		try {
+			await Services.toggleStarMessage(item.id, isSaved);
+			setIsSaved(!isSaved);
+		} catch (error) {
+			console.log('Error saving message:', error);
+		}
+	};
 
 	// Create a message context with all necessary values, including proper translateLanguage
 	const messageContextValue = {
@@ -209,9 +219,9 @@ const Room247Message = (props: IRoom247MessageProps) => {
 			console.log('Rendering poll with PollBubble247 for block analysis');
 			return (
 				<View style={styles.bubbleMessageContent}>
-					<PollBubble247 
-						blocks={item.blocks} 
-						creator={item.u} 
+					<PollBubble247
+						blocks={item.blocks}
+						creator={item.u}
 						timestamp={item.ts}
 						rid={props.rid}
 						user={props.user}
@@ -317,32 +327,37 @@ const Room247Message = (props: IRoom247MessageProps) => {
 								<View style={{ flex: 1 }} />
 								{/* Bell notification - positioned between bubble edge and screen edge */}
 								{shouldShowBell && (
-									<TouchableOpacity 
+									<TouchableOpacity
 										style={styles.threadBellBetweenBubbleAndEdge}
 										onPress={() => {
 											if (props.toggleFollowThread) {
 												// Calculate new state
 												const newFollowState = !isFollowing;
-												
+
 												// Mark as pending operation
 												pendingOperationRef.current = true;
-												
+
 												// Update local state immediately for visual feedback
 												setIsFollowing(newFollowState);
 												lastLocalStateRef.current = newFollowState;
-												
+
 												// Call the backend function (matches ThreadDetails pattern)
 												props.toggleFollowThread(isFollowing, item.id);
 											}
-										}}
-									>
-										<CustomIcon 
-											name={isFollowing ? 'notification' : 'notification-disabled'} 
-											size={18} 
-											color='#1E2A3A' 
-										/>
+										}}>
+										<CustomIcon name={isFollowing ? 'notification' : 'notification-disabled'} size={18} color='#1E2A3A' />
 									</TouchableOpacity>
 								)}
+								{/* Bookmark icon for save/unsave */}
+								<TouchableOpacity
+									style={styles.threadBellBetweenBubbleAndEdge}
+									onPress={handleSave}>
+									<Image 
+										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} 
+										style={{ width: 14, height: 14, tintColor: '#1E2A3A' }} 
+										resizeMode='contain' 
+									/>
+								</TouchableOpacity>
 							</View>
 						)}
 						{props.isThreadRoom && <View style={styles.replyRow} />}
