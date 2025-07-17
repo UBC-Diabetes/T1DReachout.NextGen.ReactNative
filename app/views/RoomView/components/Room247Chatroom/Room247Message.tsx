@@ -186,8 +186,8 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		setIsSaved(!!item.starred);
 	}, [item.starred]);
 
-	// Always show bell on all posts (new behavior)
-	const shouldShowBell = true;
+	// Show bell only if the post has replies (is a thread)
+	const shouldShowBell = !!(item.tcount && item.tcount > 0) || !!(item.replies && item.replies.length > 0);
 
 	// Save/unsave functionality
 	const handleSave = async () => {
@@ -323,9 +323,9 @@ const Room247Message = (props: IRoom247MessageProps) => {
 									<CustomIcon name='user' size={18} style={styles.icon} color='#1E2A3A' />
 									<Text style={styles.iconText}>{item.replies ? item.replies.length : 0}</Text>
 								</View>
-								{/* Spacer to push bell to the right */}
+								{/* Spacer to push icons to the right */}
 								<View style={{ flex: 1 }} />
-								{/* Bell notification - positioned between bubble edge and screen edge */}
+								{/* Bell notification - only for threads with replies */}
 								{shouldShowBell && (
 									<TouchableOpacity
 										style={styles.threadBellBetweenBubbleAndEdge}
