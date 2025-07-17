@@ -47,7 +47,6 @@ const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: Discus
 						isGroupChat={item.isGrouChat}
 						teamMain={item.teamMain}
 						showLastMessage={StoreLastMessage}
-						displayMode={displayMode}
 						sourceType={item.source}
 						iconSize={90}
 						containerStyles={{ backgroundColor: themes[theme][randomColor], marginLeft: 10 }}

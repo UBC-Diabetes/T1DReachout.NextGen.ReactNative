@@ -55,7 +55,8 @@ const RoomItem = ({
 	displayMode,
 	sourceType,
 	hideMentionStatus,
-	inlineBadge
+	inlineBadge,
+	view
 }: IRoomItemProps) => {
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
@@ -92,7 +93,8 @@ const RoomItem = ({
 				showAvatar={showAvatar}
 				showLastMessage={!!showLastMessage}
 				sourceType={sourceType}
-				roomName={name}>
+				roomName={name}
+				view={view}>
 				{showLastMessage && displayMode === DisplayMode.Expanded ? (
 					<>
 						<View style={styles.titleContainer}>

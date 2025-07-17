@@ -49,6 +49,7 @@ export interface IWrapperProps {
 	showAvatar: boolean;
 	sourceType: IOmnichannelSource;
 	roomName?: string;
+	view?: string;
 }
 
 export interface ITypeIconProps {
@@ -84,6 +85,7 @@ interface IBaseRoomItem extends IRoomItemTouchables {
 	autoJoin?: boolean;
 	width: number;
 	username?: string;
+	view?: string;
 }
 
 export interface IRoomItemContainerProps extends IBaseRoomItem {
@@ -161,4 +163,6 @@ export interface IIconOrAvatar {
 	iconSize?: number;
 	borderRadius?: number;
 	roomName?: string;
+	view?: string;
+	isDiscussionBoard?: boolean;
 }

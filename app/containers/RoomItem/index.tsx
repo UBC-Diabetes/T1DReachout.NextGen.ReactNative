@@ -31,7 +31,8 @@ const RoomItemContainer = React.memo(
 		getRoomTitle = () => 'title',
 		getRoomAvatar = () => '',
 		getIsRead = () => false,
-		swipeEnabled = true
+		swipeEnabled = true,
+		view
 	}: IRoomItemContainerProps) => {
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${name}`;
@@ -102,6 +103,7 @@ const RoomItemContainer = React.memo(
 				status={item.t === 'l' ? item?.visitor?.status : null}
 				sourceType={item.t === 'l' ? item.source : null}
 				inlineBadge={item.t === 'd' || item.t === 'c' || item.t === 'p' || item.prid} // Use inline badges for direct messages, channels, groups, and discussions
+				view={view}
 			/>
 		);
 	},
