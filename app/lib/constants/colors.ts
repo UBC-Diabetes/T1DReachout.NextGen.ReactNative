@@ -137,7 +137,9 @@ const light = {
 	buttonFontDanger: '#FFFFFF',
 	buttonDangerDisabled: '#FFFFFF',
 	buttonFontSuccess: '#FFFFFF',
-	buttonSuccessDisabled: '#FFFFFF'
+	buttonSuccessDisabled: '#FFFFFF',
+	
+	viewAllText: '#384454'
 };
 
 const dark = {
@@ -234,7 +236,9 @@ const dark = {
 	buttonFontDanger: '#FFFFFF',
 	buttonDangerDisabled: '#757575',
 	buttonFontSuccess: '#FFFFFF',
-	buttonSuccessDisabled: '#757575'
+	buttonSuccessDisabled: '#757575',
+	
+	viewAllText: '#384454'
 };
 
 const black = {
@@ -331,7 +335,9 @@ const black = {
 	buttonFontDanger: '#FFFFFF',
 	buttonDangerDisabled: '#757575',
 	buttonFontSuccess: '#FFFFFF',
-	buttonSuccessDisabled: '#757575'
+	buttonSuccessDisabled: '#757575',
+	
+	viewAllText: '#384454'
 };
 
 export const colors = {
