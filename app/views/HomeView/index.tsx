@@ -20,11 +20,13 @@ import {
 	formatSavedPostDate,
 	truncatePostContent,
 	getPostAuthorName,
+	getPostAuthorUsername,
 	getPostReactionsCount,
 	getPostRepliesCount
 } from './savedPostsHelpers';
 import { handleStar } from '../DiscussionBoard/helpers';
 import { getIcon } from '../DiscussionBoard/helpers';
+import Avatar from '../../containers/Avatar';
 
 const HomeView: React.FC = ({ theme, switchTab }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -36,6 +38,9 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 	// Get calendar events from Redux
 	const agendaItems = useSelector((state: IApplicationState) => getFetchedEventsSelector(state));
 	const upcomingEvents = getUpcomingEvents(agendaItems || []);
+	
+	// Get server information for Avatar component
+	const server = useSelector((state: IApplicationState) => state.server.server);
 
 	// Fetch calendar events when component mounts
 	useEffect(() => {
@@ -182,6 +187,16 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 									activeOpacity={0.7}>
 									<View style={styles.savedPostContent}>
 										<View style={styles.savedPostHeader}>
+											<View style={styles.profileImageContainer}>
+												<Avatar
+													text={getPostAuthorUsername(post)}
+													style={styles.profileImage}
+													size={24}
+													server={server}
+													borderRadius={12}
+													rid={post.rid}
+												/>
+											</View>
 											<View style={styles.savedPostInfo}>
 												<Text style={styles.savedPostAuthor} numberOfLines={1}>
 													{getPostAuthorName(post)}

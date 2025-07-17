@@ -93,7 +93,7 @@ export const getRecentSavedPosts = async (limit: number = 5): Promise<SavedPost[
 /**
  * Formats the timestamp of a saved post for display
  * @param timestamp - Date object or ISO string
- * @returns Formatted date string (e.g., "Today", "Yesterday", "Jun 20")
+ * @returns Formatted date string (e.g., "Today", "Yesterday", "July 3rd 2024, 2:00 pm")
  */
 export const formatSavedPostDate = (timestamp: Date | string): string => {
   try {
@@ -117,7 +117,7 @@ export const formatSavedPostDate = (timestamp: Date | string): string => {
     } else if (isYesterday(date)) {
       return 'Yesterday';
     } else {
-      return format(date, 'MMM d');
+      return format(date, 'MMMM do yyyy, h:mm a');
     }
   } catch (error) {
     return 'Unknown date';
@@ -154,6 +154,20 @@ export const getPostAuthorName = (post: SavedPost): string => {
     return user.name || user.username || 'Unknown user';
   }
   return 'Unknown user';
+};
+
+/**
+ * Gets the username for a post author
+ * @param post - The saved post object
+ * @returns Username
+ */
+export const getPostAuthorUsername = (post: SavedPost): string => {
+	// Access user data from _raw field
+	const user = post._raw?.u || post.u;
+	if (user) {
+		return user.username || 'Unknown user';
+	}
+	return 'Unknown user';
 };
 
 /**

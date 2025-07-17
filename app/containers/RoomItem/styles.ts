@@ -14,13 +14,13 @@ export default StyleSheet.create({
 	},
 	container: {
 		flexDirection: 'row',
-		alignItems: 'flex-start', // Changed from center to flex-start for better content layout
+		alignItems: 'center', // Changed from center to flex-start for better content layout
 		paddingLeft: 14,
 		height: ROW_HEIGHT,
 		backgroundColor: '#FFFFFF', // White card background
 		marginVertical: 12, // Further increased margin for better card separation
 		marginHorizontal: 16,
-		borderRadius: 12,
+		borderRadius: 0,
 		paddingVertical: 16, // Increased padding for better spacing
 		position: 'relative' // Enable absolute positioning for badge
 	},
