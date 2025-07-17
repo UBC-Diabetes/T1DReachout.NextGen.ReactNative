@@ -1,4 +1,3 @@
-import { HeaderBackButton } from '@react-navigation/elements';
 import { CommonActions } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, Image } from 'react-native';
@@ -9,6 +8,7 @@ import { useAppNavigation } from '../../lib/hooks/navigation';
 import { isIOS } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
 import { getIcon } from '../DiscussionBoard/helpers';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 const hitSlop = { top: 15, bottom: 15, left: 15, right: 15 };
 
@@ -79,9 +79,17 @@ const LeftButtons = ({
 			fontSize = labelLength > 1 ? 14 : 17;
 		}
 		return (
-			<TouchableOpacity style={{ marginLeft: 2, marginRight: 7 }} onPress={handleGoBack} hitSlop={hitSlop} testID='header-back'>
-				<Image source={getIcon('arrowLeft')} style={{ width: 11, height: 19 }} resizeMode='contain' />
-			</TouchableOpacity>
+			<HeaderBackButton
+				label={label}
+				onPress={handleGoBack}
+				labelStyle={{
+					fontSize,
+					marginLeft
+				}}
+				backImage={() => <Image source={getIcon('arrowLeft')} style={{ width: 11, height: 19 }} resizeMode='contain' />}
+				tintColor={themes[theme].headerTintColor}
+				testID='header-back'
+			/>
 		);
 	}
 
