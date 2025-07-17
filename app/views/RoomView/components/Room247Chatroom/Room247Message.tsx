@@ -360,7 +360,23 @@ const Room247Message = (props: IRoom247MessageProps) => {
 								</TouchableOpacity>
 							</View>
 						)}
-						{props.isThreadRoom && <View style={styles.replyRow} />}
+						{/* In thread room, show save/bookmark icon */}
+						{props.isThreadRoom && (
+							<View style={[styles.replyRow, { marginLeft: 12 }]}>
+								{/* Spacer to push bookmark icon to the right */}
+								<View style={{ flex: 1 }} />
+								{/* Bookmark icon for save/unsave in thread */}
+								<TouchableOpacity
+									style={styles.threadBellBetweenBubbleAndEdge}
+									onPress={handleSave}>
+									<Image 
+										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} 
+										style={{ width: 14, height: 14, tintColor: '#1E2A3A' }} 
+										resizeMode='contain' 
+									/>
+								</TouchableOpacity>
+							</View>
+						)}
 					</View>
 				</View>
 				{isOwn && <Avatar text={displayName} size={32} borderRadius={16} style={{ marginLeft: 2 }} onPress={handleAvatarPress} />}
