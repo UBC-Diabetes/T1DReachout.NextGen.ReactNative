@@ -67,7 +67,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			backgroundColor: colors[theme].nextGenSurface,
 			marginVertical: 4,
 			marginHorizontal: 4,
-			borderRadius: 6
+			borderRadius: 0
 		},
 		eventContent: {
 			padding: 12
@@ -103,7 +103,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			backgroundColor: colors[theme].nextGenSurface,
 			marginVertical: 4,
 			marginHorizontal: 4,
-			borderRadius: 6
+			borderRadius: 0
 		},
 		savedPostContent: {
 			padding: 12
@@ -158,13 +158,12 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			marginHorizontal: 4
 		},
 		profileImageContainer: {
-			marginRight: 20
+			marginRight: 8
 		},
 		profileImage: {
-			// width: 24,
-			// height: 24,
+			width: 24,
+			height: 24,
 			borderRadius: 12
-			// backgroundColor: 'red'
 		}
 	});
 
