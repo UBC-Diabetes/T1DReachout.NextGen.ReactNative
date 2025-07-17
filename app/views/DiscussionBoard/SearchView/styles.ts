@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { themes } from '../../../lib/constants';
 
 const styles = StyleSheet.create({
 	mainContainer: {
-		backgroundColor: '#fff',
+		backgroundColor: themes.light.nextGenBackground,
 		flex: 1
 	},
 	searchContainer: {

@@ -16,6 +16,10 @@ import { IApplicationState } from '../../../definitions';
 import { themes } from '../../../lib/constants';
 import styles from './styles';
 import { searchItemProps } from './interfaces';
+import DiscussionPostCard from '../Components/DiscussionPostCard';
+import { handleStar } from '../helpers';
+import { loadMissedMessages } from '../../../lib/methods';
+import moment from 'moment';
 
 const leftArrow = require('../../../static/images/discussionboard/arrow_left.png');
 const rightArrow = require('../../../static/images/discussionboard/arrow_right.png');
@@ -36,54 +40,38 @@ const SearchView: React.FC<SearchProps> = ({ route }) => {
 	const [filteredData, setFilteredData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
-	useEffect(() => {
-		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
-		if (!isMasterDetail) {
-			navigation.setOptions({
-				headerLeft: () => (
-					<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
-						<Image source={leftArrow} style={{ width: 11, height: 19 }} resizeMode='contain' />
-					</TouchableOpacity>
-				)
-			});
-		}
-	});
-
 	const searchItem = ({ item, index }: searchItemProps) => {
 		const formattedItem = { ...item };
 
 		try {
-			if (item?._raw?.u?.length && item._raw.u.length > 0 && item._raw.u !== '[]') {
+			if (item?._raw?.u?.length && typeof item._raw.u === 'string' && item._raw.u !== '[]') {
 				formattedItem._raw.u = JSON.parse(item._raw.u);
 			}
-			if (item?._raw?.attachments?.length && item._raw.attachments.length > 0) {
+			if (item?._raw?.attachments?.length > 0 && typeof item._raw.attachments === 'string') {
 				formattedItem._raw.attachments = JSON.parse(item._raw.attachments);
 			}
-			if (item?._raw?.replies?.length && item._raw.replies.length > 0 && item._raw.replies !== '[]') {
+			if (item?._raw?.replies?.length > 0 && typeof item._raw.replies === 'string' && item._raw.replies !== '[]') {
 				formattedItem._raw.replies = JSON.parse(item._raw.replies);
 			}
-			if (item?._raw?.reactions?.length && item._raw.reactions.length > 0 && item._raw.reactions !== '[]') {
+			if (item?._raw?.reactions?.length > 0 && typeof item._raw.reactions === 'string' && item._raw.reactions !== '[]') {
 				formattedItem._raw.reactions = JSON.parse(item._raw.reactions);
 			}
 		} catch (e) {
 			// console.log('err', e);
 		}
 
-		const title = null;
-		const description = item?._raw?.msg || null;
-
 		return (
-			<TouchableOpacity
-				style={styles.searchItemContainer}
-				key={index}
-				onPress={() => navigation.navigate('DiscussionPostView', { item: formattedItem })}
-			>
-				{title && <Text style={styles.title}>{title}</Text>}
-				{description && <Text style={styles.description}>{description}</Text>}
-				<View style={styles.searchItemArrow}>
-					<Image source={rightArrow} style={styles.arrow} resizeMode='contain' />
-				</View>
-			</TouchableOpacity>
+			<DiscussionPostCard
+				{...formattedItem}
+				_raw={formattedItem._raw}
+				onPress={(params: any) => navigation.navigate('DiscussionPostView', params)}
+				starPost={(message: any) =>
+					handleStar(message, async () => {
+						await loadMissedMessages({ rid: message.rid, lastOpen: moment().subtract(7, 'days').toDate() });
+						search();
+					})
+				}
+			/>
 		);
 	};
 

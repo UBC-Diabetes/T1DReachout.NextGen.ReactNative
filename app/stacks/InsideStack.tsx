@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18nManager } from 'react-native';
+import { I18nManager, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -122,7 +122,7 @@ const MainStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<MainStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<MainStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), headerShadowVisible: false }}>
 			{/* Tab Navigator for main screens */}
 			<MainStack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
 			
@@ -194,7 +194,27 @@ const MainStackNavigator = () => {
 			<MainStack.Screen
 				name='DiscussionSearchView'
 				component={DiscussionSearchView}
-				options={DiscussionSearchView.navigationOptions}
+				options={{
+					title: '',
+					headerStyle: {
+						shadowColor: 'transparent',
+						backgroundColor: themes.light.nextGenBackground,
+						elevation: 0,
+						borderBottomWidth: 0
+					},
+					headerLeft: () => {
+						const navigation = useNavigation();
+						return (
+							<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
+								<Image
+									source={require('../static/images/discussionboard/arrow_left.png')}
+									style={{ width: 11, height: 19, tintColor: themes.light.superGray }}
+									resizeMode='contain'
+								/>
+							</TouchableOpacity>
+						);
+					}
+				}}
 			/>
 			{/* AdminPanelStackNavigator */}
 			<MainStack.Screen name='AdminPanelView' component={AdminPanelView} />
