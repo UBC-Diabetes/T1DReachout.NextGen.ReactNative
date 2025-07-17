@@ -39,7 +39,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		},
 		viewAllLink: {
 			fontSize: 14,
-			color: '#799A79',
+			color: colors[theme].viewAllText,
 			fontWeight: '500'
 		},
 		sectionContainer: {
@@ -91,7 +91,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 		},
 		viewMoreText: {
 			fontSize: 14,
-			color: '#799A79',
+			color: colors[theme].viewAllText,
 			fontWeight: '500'
 		},
 		savedPostsContainer: {

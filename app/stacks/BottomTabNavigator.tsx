@@ -139,9 +139,11 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 								onPress={() => {
 									// Handle search based on active tab
 									if (activeTab === 'DiscussionHomeView') {
-										// Handle discussion search
+										// Navigate to discussion search view
+										navigation.navigate('DiscussionSearchView');
 									} else if (activeTab === 'RoomsListView') {
-										// Handle rooms search
+										// Navigate to search messages view
+										navigation.navigate('SearchMessagesView');
 									}
 								}}
 								testID='bottom-tab-search'
