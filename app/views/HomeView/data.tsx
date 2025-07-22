@@ -18,8 +18,8 @@ export const mainTiles = [
 		disabled: false
 	},
 	{
-		title: 'Virtual Happy Hour',
-		screen: 'VirtualHappyHour',
+		title: 'Virtual Huddle',
+		screen: 'VirtualHuddle',
 		size: SizeTypes.LARGE,
 		color: 'creamsicleYellow',
 		icon: require('../../static/images/happy-hour-solid.png'),

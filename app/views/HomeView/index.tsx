@@ -9,7 +9,7 @@ import { withTheme } from '../../theme';
 import { mainTiles } from './data';
 import * as allStyles from './styles';
 import { Tileprops } from './interfaces';
-import { navToTechSupport, navigateTo247Chat, navigateToVirtualHappyHour } from './helpers';
+import { navToTechSupport, navigateTo247Chat, navigateToVirtualHuddle } from './helpers';
 import Navigation from '../../lib/navigation/appNavigation';
 import { IApplicationState } from '../../definitions';
 import { getFetchedEventsSelector } from '../../selectors/event';
@@ -80,8 +80,8 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 					if (screen) {
 						if (screen === '24Chat') {
 							navigateTo247Chat(Navigation);
-						} else if (screen === 'VirtualHappyHour') {
-							navigateToVirtualHappyHour(Navigation);
+						} else if (screen === 'VirtualHuddle') {
+							navigateToVirtualHuddle(Navigation);
 						} else if (screen === 'TechSupport') {
 							navToTechSupport(Navigation);
 						} else {
