@@ -121,12 +121,29 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 
 	const isVideoUrlPresent = !!videoUrl && videoUrl !== '' && videoUrl !== '?autoplay=1';
 
-	// Generate all possible peer supporter role combinations
+	// Generate all possible peer mentor role combinations (including legacy peer supporter patterns)
 	const generateRolePatterns = () => {
 		const roleTypes = ['CASUAL', 'FORMAL', 'INFORMAL', 'SOUNDING BOARD'];
 		const patterns = [];
 		
-		// Hybrid roles with slashes (all combinations)
+		// Hybrid roles with slashes (all combinations) - NEW PEER MENTOR FORMAT
+		for (let i = 0; i < roleTypes.length; i++) {
+			for (let j = 0; j < roleTypes.length; j++) {
+				if (i !== j) {
+					const type1 = roleTypes[i];
+					const type2 = roleTypes[j];
+					const displayType1 = type1.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+					const displayType2 = type2.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+					
+					patterns.push({
+						pattern: new RegExp(`^${type1}\\s*\\/\\s*${type2}\\s+PEER MENTOR\\.?\\s*`, 'i'),
+						displayName: `${displayType1}/${displayType2} Peer Mentor`
+					});
+				}
+			}
+		}
+		
+		// Hybrid roles with slashes (all combinations) - LEGACY PEER SUPPORTER FORMAT
 		for (let i = 0; i < roleTypes.length; i++) {
 			for (let j = 0; j < roleTypes.length; j++) {
 				if (i !== j) {
@@ -137,22 +154,35 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 					
 					patterns.push({
 						pattern: new RegExp(`^${type1}\\s*\\/\\s*${type2}\\s+PEER SUPPORTER\\.?\\s*`, 'i'),
-						displayName: `${displayType1}/${displayType2} Peer Supporter`
+						displayName: `${displayType1}/${displayType2} Peer Mentor`
 					});
 				}
 			}
 		}
 		
-		// Single role types with period variations
+		// Single role types with period variations - NEW PEER MENTOR FORMAT
+		roleTypes.forEach(type => {
+			const displayType = type.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+			patterns.push({
+				pattern: new RegExp(`^${type}\\.?\\s+PEER MENTOR\\.?\\s*`, 'i'),
+				displayName: `${displayType} Peer Mentor`
+			});
+			patterns.push({
+				pattern: new RegExp(`^PEER MENTOR\\s+${type}\\.?\\s*`, 'i'),
+				displayName: `${displayType} Peer Mentor`
+			});
+		});
+		
+		// Single role types with period variations - LEGACY PEER SUPPORTER FORMAT
 		roleTypes.forEach(type => {
 			const displayType = type.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
 			patterns.push({
 				pattern: new RegExp(`^${type}\\.?\\s+PEER SUPPORTER\\.?\\s*`, 'i'),
-				displayName: `${displayType} Peer Supporter`
+				displayName: `${displayType} Peer Mentor`
 			});
 			patterns.push({
 				pattern: new RegExp(`^PEER SUPPORTER\\s+${type}\\.?\\s*`, 'i'),
-				displayName: `${displayType} Peer Supporter`
+				displayName: `${displayType} Peer Mentor`
 			});
 		});
 		
@@ -162,10 +192,16 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 			displayName: 'Casual'
 		});
 		
-		// Generic peer supporter
+		// Generic peer mentor (NEW FORMAT)
+		patterns.push({
+			pattern: /^PEER MENTOR\.?\s*/i,
+			displayName: 'Peer Mentor'
+		});
+		
+		// Generic peer supporter (LEGACY FORMAT - displays as mentor)
 		patterns.push({
 			pattern: /^PEER SUPPORTER\.?\s*/i,
-			displayName: 'Peer Supporter'
+			displayName: 'Peer Mentor'
 		});
 		
 		return patterns;
@@ -187,12 +223,21 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 		return { role: '', cleanedBio: bioText };
 	};
 
-	// Extract role information
-	const roleFromArray = roles?.find(role => role.toLowerCase().includes('peer supporter')) || '';
+	// Extract role information (handle both legacy peer supporter and new peer mentor)
+	const roleFromArray = roles?.find(role => 
+		role.toLowerCase().includes('peer mentor') || 
+		role.toLowerCase().includes('peer supporter')
+	) || '';
+	
+	// Convert legacy peer supporter roles to peer mentor for display
+	const displayRoleFromArray = roleFromArray.toLowerCase().includes('peer supporter') 
+		? roleFromArray.toLowerCase().replace('peer supporter', 'peer mentor')
+		: roleFromArray;
+	
 	const { role: roleFromBio, cleanedBio } = extractRoleFromBio(bio || '');
 	
 	// Use the more specific role from bio if available, otherwise fall back to roles array
-	const displayRole = roleFromBio || roleFromArray;
+	const displayRole = roleFromBio || displayRoleFromArray;
 	const bioDescription = cleanedBio;
 
 	return (

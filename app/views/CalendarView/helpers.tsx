@@ -52,7 +52,7 @@ export const useLoadPeers = () => {
 					if (!userIds.current.has(item._id)) {
 						userIds.current.add(item._id);
 						const user = await RocketChat.getUserInfo(item._id);
-						if (user.user.roles.includes('Peer Supporter')) {
+						if (user.user.roles.includes('Peer Mentor')) {
 							newResults.push({ ...item, customFields: user.user.customFields });
 						}
 					}

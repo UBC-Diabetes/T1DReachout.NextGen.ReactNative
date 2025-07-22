@@ -29,7 +29,7 @@ import Options from './Options';
 class ProfileLibraryView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
-			title: I18n.t('PeerSupporterLibrary')
+			title: I18n.t('PeerMentorLibrary')
 		};
 		if (!isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} testID='profile-library-view-drawer' />;
@@ -130,8 +130,8 @@ class ProfileLibraryView extends React.Component {
 				await Promise.all(
 					results.map(async (item, index) => {
 						const user = await RocketChat.getUserInfo(item._id);
-						//Only keep users that are Peer Supporters
-						if (user.user.roles.includes('Peer Supporter')) {
+						//Only keep users that are Peer Mentors (including legacy Peer Supporters)
+						if (user.user.roles.includes('Peer Mentor') || user.user.roles.includes('Peer Supporter')) {
 							combinedResults.push({ ...item, customFields: user.user.customFields });
 						}
 					})

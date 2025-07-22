@@ -195,7 +195,7 @@ const CreateEventView = () => {
 					onFocus={onLastInputFocus}
 				/>
 				<View style={styles.rowContainer}>
-					<Text style={styles.sectionTitle}>Peer Supporters</Text>
+					<Text style={styles.sectionTitle}>Peer Mentors</Text>
 					<TouchableOpacity style={styles.addPeersButton} onPress={() => navigation.navigate('SearchPeersView')}>
 						<Text style={styles.addPeersButtonText}>Add Peers</Text>
 					</TouchableOpacity>

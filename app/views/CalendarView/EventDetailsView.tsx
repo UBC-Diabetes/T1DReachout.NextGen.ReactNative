@@ -171,7 +171,7 @@ const EventDetailsView = () => {
 			<AddToCalendarButton />
 			<View style={{ height: 1, backgroundColor: '#E3E3E3', width: '100%', marginBottom: 24 }} />
 
-			<Text style={styles.sectionTitle}>Peer Supporters</Text>
+			<Text style={styles.sectionTitle}>Peer Mentors</Text>
 			{peers?.map((peer, index) => (
 				<View key={index} style={styles.peerItem}>
 					<View style={styles.peerInfo}>

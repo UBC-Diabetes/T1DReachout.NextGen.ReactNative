@@ -2,11 +2,11 @@ import { SizeTypes } from './interfaces';
 
 export const mainTiles = [
 	{
-		title: 'Peer Supporter Library',
+		title: 'Peer Mentor Library',
 		screen: 'ProfileLibraryView',
 		size: SizeTypes.LARGE,
 		color: 'mossGreen',
-		icon: require('../../static/images/peer-supporter-solid.png'),
+		icon: require('../../static/images/peer-mentor-solid.png'),
 		disabled: false
 	},
 	{

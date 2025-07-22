@@ -38,7 +38,7 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 	// Get calendar events from Redux
 	const agendaItems = useSelector((state: IApplicationState) => getFetchedEventsSelector(state));
 	const upcomingEvents = getUpcomingEvents(agendaItems || []);
-	
+
 	// Get server information for Avatar component
 	const server = useSelector((state: IApplicationState) => state.server.server);
 
@@ -53,7 +53,7 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 	// Subscribe to saved posts updates when screen is focused
 	useFocusEffect(
 		React.useCallback(() => {
-			const subscription = observeSavedPosts(3, posts => {
+			const subscription = observeSavedPosts(4, posts => {
 				setSavedPosts(posts);
 			});
 
