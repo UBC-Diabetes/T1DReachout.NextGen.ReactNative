@@ -25,6 +25,8 @@ import {
 	getPostRepliesCount
 } from './savedPostsHelpers';
 import { handleStar } from '../DiscussionBoard/helpers';
+import { loadMissedMessages } from '../../lib/methods';
+import moment from 'moment';
 import { getIcon } from '../DiscussionBoard/helpers';
 import Avatar from '../../containers/Avatar';
 
@@ -53,7 +55,7 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 	// Subscribe to saved posts updates when screen is focused
 	useFocusEffect(
 		React.useCallback(() => {
-			const subscription = observeSavedPosts(4, posts => {
+			const subscription = observeSavedPosts(5, posts => {
 				setSavedPosts(posts);
 			});
 
@@ -204,11 +206,10 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 												<Text style={styles.savedPostDate}>{formatSavedPostDate(post._raw?.ts || post.ts)}</Text>
 											</View>
 											<Touchable
-												onPress={async () => {
+												onPress={() => {
 													// Toggle the star/bookmark status
-													await handleStar(post._raw || post, () => {
-														// Refresh saved posts after toggling
-														// The observeSavedPosts will automatically update the list
+													handleStar(post._raw || post, async () => {
+														await loadMissedMessages({ rid: post.rid, lastOpen: moment().subtract(7, 'days').toDate() });
 													});
 												}}
 												style={styles.bookmarkButton}
