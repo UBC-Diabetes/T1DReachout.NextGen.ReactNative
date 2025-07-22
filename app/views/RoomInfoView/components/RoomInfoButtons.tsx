@@ -99,7 +99,7 @@ export const RoomInfoButtons = ({
 
 	return (
 		<View style={styles.roomButtonsContainer}>
-			<BaseButton onPress={handleCreateDirectMessage} label={i18n.t('Message')} iconName='message' />
+			<BaseButton onPress={handleCreateDirectMessage} label={i18n.t('Message')} iconName='message' showIcon={!isDmWithMyself} />
 			{hasE2EEWarning ? null : <CallButton isDirect={isDirect} rid={rid} roomFromRid={!!roomFromRid} />}
 			<BaseButton
 				onPress={handleIgnoreUser}

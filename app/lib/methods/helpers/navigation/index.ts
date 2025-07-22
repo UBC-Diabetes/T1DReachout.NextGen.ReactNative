@@ -29,7 +29,7 @@ export const navigationTheme = (theme: TSupportedThemes) => {
 		colors: {
 			...defaultNavTheme.colors,
 			background: themes[theme].surfaceRoom,
-			border: themes[theme].strokeLight
+			border: 'transparent'
 		}
 	};
 };
