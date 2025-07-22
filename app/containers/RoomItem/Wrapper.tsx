@@ -17,7 +17,7 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, roomName, view, ..
 		roomName &&
 		[
 			'Insulin Pump Users',
-			'Virtual Happy Hours',
+			'Virtual Huddles',
 			'Travelling',
 			'CGM Users',
 			'MDI Users',

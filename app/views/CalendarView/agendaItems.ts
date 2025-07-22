@@ -28,10 +28,10 @@ export const agendaItems = [
 	{
 		title: dates[0],
 		data: [
-			{ title: 'Happy Hour', date: dates[0], isZoom: true, users: [{ username: 'timq' }, { username: 'abigaildemian' }] },
+			{ title: 'Huddle', date: dates[0], isZoom: true, users: [{ username: 'timq' }, { username: 'abigaildemian' }] },
 			{ title: 'Meet & Greet', date: dates[0], isZoom: true, users: [{ username: 'timq' }] },
 			{
-				title: 'Happy Hour',
+				title: 'Huddle',
 				date: dates[0],
 				isZoom: true,
 				users: [{ username: 'timq' }, { username: 'yipannie' }, { username: 'alaana.s' }]
@@ -45,10 +45,10 @@ export const agendaItems = [
 	{
 		title: dates[2],
 		data: [
-			{ title: 'Happy Hour', date: dates[2], isZoom: true, users: [{ username: 'timq' }, { username: 'abigaildemian' }] },
+			{ title: 'Huddle', date: dates[2], isZoom: true, users: [{ username: 'timq' }, { username: 'abigaildemian' }] },
 			{ title: 'Meet & Greet', date: dates[2], isZoom: true, users: [{ username: 'timq' }] },
 			{
-				title: 'Happy Hour',
+				title: 'Huddle',
 				date: dates[2],
 				isZoom: true,
 				users: [{ username: 'timq' }, { username: 'yipannie' }, { username: 'alaana.s' }]
@@ -62,10 +62,10 @@ export const agendaItems = [
 	{
 		title: dates[4],
 		data: [
-			{ title: 'Happy Hour', date: dates[4], isZoom: true, users: [{ username: 'timq' }, { username: 'abigaildemian' }] },
+			{ title: 'Huddle', date: dates[4], isZoom: true, users: [{ username: 'timq' }, { username: 'abigaildemian' }] },
 			{ title: 'Meet & Greet', date: dates[4], isZoom: true, users: [{ username: 'timq' }] },
 			{
-				title: 'Happy Hour',
+				title: 'Huddle',
 				date: dates[4],
 				isZoom: true,
 				users: [{ username: 'timq' }, { username: 'yipannie' }, { username: 'alaana.s' }]

@@ -16,7 +16,7 @@ const ConfirmationPopup = ({ event, userName }) => {
 		return event?.title
 			? event
 			: {
-					title: 'Happy Hour (Zoom)',
+					title: 'Huddle (Zoom)',
 					guests: 10,
 					dateTime: new Date().toISOString(),
 					meetingLink: 'https://ubc.meeting.us/j/69367593586?pwd=VXE1MUVkc1hERmd4SFZiWjlsMDdrZz09'

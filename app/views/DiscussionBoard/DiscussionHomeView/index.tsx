@@ -33,7 +33,7 @@ import { goRoom } from '../../../lib/methods/helpers/goRoom';
 // const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 // const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
-const VIRTUAL_HAPPY_HOUR = {
+const VIRTUAL_HUDDLE = {
 	ROOM_RID: 'jRXA42HyPKpjAmZpX'
 };
 
@@ -134,7 +134,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 
 				const boards = formattedData.filter(d => {
 					// removing direct messages
-					return d.t !== 'd' && d.id !== 'GENERAL' && d.rid !== VIRTUAL_HAPPY_HOUR.ROOM_RID;
+					return d.t !== 'd' && d.id !== 'GENERAL' && d.rid !== VIRTUAL_HUDDLE.ROOM_RID;
 					// return true;
 				});
 
@@ -197,20 +197,14 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 		}
 	}, [route?.params?.selectedTab]);
 
-
 	return (
 		<View style={styles.mainContainer}>
-			<Header 
-				selectedTab={selectedTab}
-				onTabChange={(tab: DiscussionTabs) => setSelectedTab(tab)} 
-			/>
+			<Header selectedTab={selectedTab} onTabChange={(tab: DiscussionTabs) => setSelectedTab(tab)} />
 			<View style={{ width: '100%', flex: 1 }}>
 				{selectedTab === DiscussionTabs.DISCUSSION_BOARDS && (
 					<FlatList
 						data={boards}
-						renderItem={({ item }) => (
-							<DiscussionBoardCard item={item} onPress={() => goRoom({ item, isMasterDetail })} />
-						)}
+						renderItem={({ item }) => <DiscussionBoardCard item={item} onPress={() => goRoom({ item, isMasterDetail })} />}
 						keyExtractor={(item, id) => item.title + id}
 						style={{ padding: 16 }}
 						ListFooterComponent={<View style={styles.footer} />}

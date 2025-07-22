@@ -7,7 +7,7 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 
 const CHAT247ROOMID = '24-7-chatroom';
-const VIRTUAL_HAPPY_HOUR_ROOMID = 'virtual-happy-hours';
+const VIRTUAL_HUDDLE_ROOMID = 'virtual-happy-hours';
 const TECH_SUPPORT_USERNAME = 'tech_support';
 
 export const navToTechSupport = async (Navigation: any): Promise<void> => {
@@ -33,12 +33,12 @@ export const navToTechSupport = async (Navigation: any): Promise<void> => {
 	}
 };
 
-export const navigateToVirtualHappyHour = async (Navigation: any) => {
+export const navigateToVirtualHuddle = async (Navigation: any) => {
 	if (Navigation) {
 		try {
 			const db = database.active;
 			const subsCollection = db.get('subscriptions');
-			const query = await subsCollection.query(Q.where('name', VIRTUAL_HAPPY_HOUR_ROOMID)).fetch();
+			const query = await subsCollection.query(Q.where('name', VIRTUAL_HUDDLE_ROOMID)).fetch();
 
 			if (query.length > 0) {
 				const chatRoom = query[0];

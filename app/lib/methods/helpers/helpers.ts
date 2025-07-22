@@ -50,10 +50,20 @@ export function getRoomTitle(room) {
 			.sort((u1, u2) => u1.localeCompare(u2))
 			.join(', ');
 	}
+	
+	let roomTitle;
 	if (allowSpecialChars && room.t !== 'd') {
-		return room.fname || room.name;
+		roomTitle = room.fname || room.name;
+	} else {
+		roomTitle = ((room?.prid || useRealName) && room?.fname) || room?.name;
 	}
-	return ((room?.prid || useRealName) && room?.fname) || room?.name;
+	
+	// Override server-side room name for Happy Hour -> Huddle transition
+	if (roomTitle === 'Virtual Happy Hours') {
+		return 'Virtual Huddles';
+	}
+	
+	return roomTitle;
 }
 
 export function getSenderName(sender) {
