@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 8
 	},
 	button: {
-		backgroundColor: '#112D4E', // Dark blue from Peer Supporter Library search bar
+		backgroundColor: '#112D4E', // Dark blue from Peer Mentor Library search bar
 		borderRadius: 25, // Fully rounded corners
 		height: 48, // Standard input height
 		paddingHorizontal: 16,

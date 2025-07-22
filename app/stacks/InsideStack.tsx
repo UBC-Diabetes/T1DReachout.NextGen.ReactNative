@@ -305,7 +305,7 @@ const InsideStackNavigator = () => {
 				name='VideoPlayerView'
 				component={VideoPlayerView}
 				options={{
-					title: 'Peer Supporter Video',
+					title: 'Peer Mentor Video',
 					headerShown: true,
 					headerLeft: () => (
 						<HeaderBackButton labelVisible={false} onPress={() => goBack()} tintColor={themes[theme].fontDefault} />
