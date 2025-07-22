@@ -20,7 +20,7 @@ export default StyleSheet.create({
 		backgroundColor: '#FFFFFF', // White card background
 		marginVertical: 12, // Further increased margin for better card separation
 		marginHorizontal: 16,
-		borderRadius: 0,
+		borderRadius: 8,
 		paddingVertical: 16, // Increased padding for better spacing
 		position: 'relative' // Enable absolute positioning for badge
 	},

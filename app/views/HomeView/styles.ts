@@ -67,7 +67,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			backgroundColor: colors[theme].nextGenSurface,
 			marginVertical: 4,
 			marginHorizontal: 4,
-			borderRadius: 0
+			borderRadius: 8
 		},
 		eventContent: {
 			padding: 12
@@ -103,7 +103,7 @@ export const createMainStyles = ({ theme }: { theme: any }) =>
 			backgroundColor: colors[theme].nextGenSurface,
 			marginVertical: 4,
 			marginHorizontal: 4,
-			borderRadius: 0
+			borderRadius: 8
 		},
 		savedPostContent: {
 			padding: 12

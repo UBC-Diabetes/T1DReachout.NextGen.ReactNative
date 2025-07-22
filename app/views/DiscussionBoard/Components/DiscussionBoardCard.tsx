@@ -50,7 +50,7 @@ const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: Discus
 						sourceType={item.source}
 						iconSize={90}
 						containerStyles={{ backgroundColor: themes[theme][randomColor], marginLeft: 10 }}
-						borderRadius={10}
+						borderRadius={8}
 					/>
 				</View>
 				<View style={styles.textSection}>
@@ -89,9 +89,9 @@ const makeStyles = themeColors =>
 		cardContainer: {
 			width: '100%',
 			backgroundColor: themeColors.nextGenSurface, // NextGen surface background
-			borderRadius: 12,
+			borderRadius: 8,
 			marginVertical: 6,
-			marginHorizontal: 4
+			overflow: 'hidden' // Ensure child components respect parent border radius
 		},
 		cardContent: {
 			flexDirection: 'row',
@@ -100,8 +100,8 @@ const makeStyles = themeColors =>
 		iconSection: {
 			width: '25%', // 1/4 of the card width for icon area
 			backgroundColor: themeColors.nextGenPrimary,
-			borderTopLeftRadius: 12,
-			borderBottomLeftRadius: 12,
+			borderTopLeftRadius: 8,
+			borderBottomLeftRadius: 8,
 			justifyContent: 'center',
 			alignItems: 'center',
 			alignSelf: 'stretch' // Fill the full height of the card

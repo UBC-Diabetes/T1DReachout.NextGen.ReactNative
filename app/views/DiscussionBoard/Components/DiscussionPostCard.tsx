@@ -198,7 +198,7 @@ const makeStyles = (theme: string, themes: any) =>
 			backgroundColor: '#ffffff',
 			marginVertical: 4,
 			marginHorizontal: 16, // To match the list padding in DiscussionHomeView
-			borderRadius: 0,
+			borderRadius: 8,
 			padding: 12
 		},
 		header: {
