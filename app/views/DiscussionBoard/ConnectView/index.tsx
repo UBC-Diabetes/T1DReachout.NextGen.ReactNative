@@ -250,7 +250,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 						<View style={styles.avatarContainer}>
 							{username && (
 								<>
-									<Avatar text={username} style={styles.circularAvatar} size={80} server={server} borderRadius={40} />
+									<Avatar text={username} style={styles.circularAvatar} size={100} server={server} borderRadius={50} />
 									{isVideoUrlPresent && (
 										<TouchableOpacity
 											style={styles.playButtonContainer}

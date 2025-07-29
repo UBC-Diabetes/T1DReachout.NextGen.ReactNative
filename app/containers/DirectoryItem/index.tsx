@@ -54,7 +54,7 @@ const DirectoryItem = ({
 	return (
 		<Touch onPress={onPress} style={[styles.directoryItemButton, style]} testID={testID}>
 			<View style={styles.directoryItemContainer}>
-				<Avatar text={avatar} size={48} type={type} rid={rid} style={styles.directoryItemAvatar} borderRadius={24} />
+				<Avatar text={avatar} size={64} type={type} rid={rid} style={styles.directoryItemAvatar} borderRadius={32} />
 				<View style={styles.directoryItemTextContainer}>
 					<View style={styles.directoryItemTextTitle}>
 						{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
