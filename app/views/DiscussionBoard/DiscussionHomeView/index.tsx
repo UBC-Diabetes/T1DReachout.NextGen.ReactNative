@@ -11,7 +11,7 @@ import { MESSAGE_TYPE_ANY_LOAD, SortBy, themes } from '../../../lib/constants';
 import { withTheme } from '../../../theme';
 import { IApplicationState } from '../../../definitions';
 import DiscussionBoardCard from '../Components/DiscussionBoardCard';
-import DiscussionPostCard from '../Components/DiscussionPostCard';
+import SavedPostCard from '../Components/SavedPostCard';
 import Header from '../Components/Header';
 import { DiscussionTabs } from './interaces';
 import makeStyles from './styles';
@@ -42,6 +42,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const { sortBy, showUnread, showFavorites, groupByType } = useSelector((state: IApplicationState) => state.sortPreferences);
 	const useRealName = useSelector((state: IApplicationState) => state.settings.UI_Use_Real_Name);
+	const server = useSelector((state: IApplicationState) => state.server.server);
 
 	const [selectedTab, setSelectedTab] = useState(route?.params?.selectedTab ?? DiscussionTabs.DISCUSSION_BOARDS);
 	const [searchCount, setSearchCount] = useState(0);
@@ -200,7 +201,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 	return (
 		<View style={styles.mainContainer}>
 			<Header selectedTab={selectedTab} onTabChange={(tab: DiscussionTabs) => setSelectedTab(tab)} />
-			<View style={{ width: '100%', flex: 1 }}>
+			<View style={{ width: '100%', flex: 1, backgroundColor: themeColors.nextGenBackground }}>
 				{selectedTab === DiscussionTabs.DISCUSSION_BOARDS && (
 					<FlatList
 						data={boards}
@@ -215,19 +216,14 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 					<FlatList
 						data={starredPosts}
 						renderItem={({ item }) => (
-							<DiscussionPostCard
-								{...item}
-								onPress={(params: any) => navigation.navigate('DiscussionPostView', params)}
-								starPost={(message: any) =>
-									handleStar(message, async () => {
-										await loadMissedMessages({ rid: message.rid, lastOpen: moment().subtract(7, 'days').toDate() });
-										getSavedChat();
-									})
-								}
+							<SavedPostCard
+								post={item}
+								theme={theme}
+								server={server}
 							/>
 						)}
 						keyExtractor={(item, id) => item.title + id}
-						ItemSeparatorComponent={() => <View style={{ height: 24 }} />}
+						style={{ paddingHorizontal: 20, paddingVertical: 4, marginBottom: 32 }}
 						ListFooterComponent={<View style={styles.footer} />}
 					/>
 				)}
