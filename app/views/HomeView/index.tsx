@@ -29,6 +29,7 @@ import { loadMissedMessages } from '../../lib/methods';
 import moment from 'moment';
 import { getIcon } from '../DiscussionBoard/helpers';
 import Avatar from '../../containers/Avatar';
+import SavedPostCard from '../DiscussionBoard/Components/SavedPostCard';
 
 const HomeView: React.FC = ({ theme, switchTab }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -178,54 +179,7 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 					{savedPosts.length > 0 ? (
 						<View style={styles.savedPostsContainer}>
 							{savedPosts.map((post, index) => (
-								<Touchable
-									key={post.id || index}
-									style={styles.savedPostItem}
-									onPress={() => {
-										// Navigate directly to the post details view like in DiscussionHomeView
-										// Pass the whole post object, not just _raw, to match DiscussionPostCard pattern
-										navigation.navigate('DiscussionPostView', { item: post });
-									}}
-									activeOpacity={0.7}>
-									<View style={styles.savedPostContent}>
-										<View style={styles.savedPostHeader}>
-											<View style={styles.profileImageContainer}>
-												<Avatar
-													text={getPostAuthorUsername(post)}
-													style={styles.profileImage}
-													size={24}
-													server={server}
-													borderRadius={12}
-													rid={post.rid}
-												/>
-											</View>
-											<View style={styles.savedPostInfo}>
-												<Text style={styles.savedPostAuthor} numberOfLines={1}>
-													{getPostAuthorName(post)}
-												</Text>
-												<Text style={styles.savedPostDate}>{formatSavedPostDate(post._raw?.ts || post.ts)}</Text>
-											</View>
-											<Touchable
-												onPress={() => {
-													// Toggle the star/bookmark status
-													handleStar(post._raw || post, async () => {
-														await loadMissedMessages({ rid: post.rid, lastOpen: moment().subtract(7, 'days').toDate() });
-													});
-												}}
-												style={styles.bookmarkButton}
-												activeOpacity={0.7}>
-												<Image source={getIcon('solidSave')} style={styles.bookmarkIcon} resizeMode='contain' />
-											</Touchable>
-										</View>
-										<Text style={styles.savedPostText} numberOfLines={2}>
-											{truncatePostContent(post._raw?.msg || post.msg, 100)}
-										</Text>
-										<View style={styles.savedPostStats}>
-											<Text style={styles.savedPostStat}>❤️ {getPostReactionsCount(post)}</Text>
-											<Text style={styles.savedPostStat}>💬 {getPostRepliesCount(post)}</Text>
-										</View>
-									</View>
-								</Touchable>
+								<SavedPostCard key={index} post={post} server={server} theme={theme} />
 							))}
 						</View>
 					) : (
