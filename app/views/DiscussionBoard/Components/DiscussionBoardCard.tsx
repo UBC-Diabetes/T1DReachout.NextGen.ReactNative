@@ -15,6 +15,42 @@ import { useAppSelector } from '../../../lib/hooks';
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
 const cardColors = ['magenta', 'mossGreen', 'dreamBlue', 'creamsicleYellow', 'pink', 'superGray', 'forestGreen'];
 
+// Icon-specific color mapping
+const getIconBackgroundColor = (avatar, type, sourceType) => {
+	// Exact avatar string matches
+	if (avatar && typeof avatar === 'string') {
+		switch (avatar) {
+			case 'insurance':
+				return '#799A79';
+			case 'insulin-pump-users':
+				return '#F9B6DF';
+			case 'cgm-users':
+				return '#FFEA9B';
+			case 'travelling':
+				return '#F483C2'; // Bright Pink
+			case 'exercising':
+				return '#9ABAF3'; // Dark Green
+			case 'mdi-users':
+				return '#FEBD59';
+			case 'app-tutorials':
+				return '#F0C48A'; // Golden Yellow
+			case 'test-channel':
+				return '#FFC107'; // Light Pink
+			default:
+				break;
+		}
+	}
+
+	// Fallback based on type or sourceType
+	if (type === 'c') return '#5B9360'; // Channels - Dark Green
+	if (type === 'p') return '#F7BFE3'; // Private messages - Light Pink
+	if (type === 'd') return '#FDE48C'; // Direct messages - Pale Yellow
+	if (sourceType === 'livechat') return '#F483C2'; // Livechat - Bright Pink
+
+	// Default transparent fallback
+	return 'transparent';
+};
+
 const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: DiscussionBoardCardProps) => {
 	const { title, description, saved = false, icon, color, onSaveClick, avatar, f, usersCount } = item;
 	// const [savedDiscussion, setSavedDiscussion] = React.useState(saved);
@@ -29,13 +65,14 @@ const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: Discus
 	const userStatus = useAppSelector(state => state.activeUsers[id || '']?.status);
 	const status = item.t === 'l' ? item.visitor?.status || item.v?.status : userStatus;
 	const randomColor = cardColors[Math.floor(Math.random() * cardColors.length)];
+	const iconBackgroundColor = getIconBackgroundColor(avatar, item.t, item.source);
 
 	const styles = makeStyles(colors);
 
 	return (
 		<TouchableOpacity style={styles.cardContainer} onPress={() => onPress && onPress()}>
 			<View style={styles.cardContent}>
-				<View style={{ ...styles.iconContainer }}>
+				<View style={[styles.iconContainer, { backgroundColor: iconBackgroundColor }]}>
 					<IconOrAvatar
 						displayMode={displayMode}
 						avatar={avatar}
@@ -49,7 +86,9 @@ const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: Discus
 						showLastMessage={StoreLastMessage}
 						sourceType={item.source}
 						iconSize={90}
-						containerStyles={{ backgroundColor: themes[theme][randomColor], marginLeft: 10 }}
+						containerStyles={{
+							backgroundColor: 'transparent'
+						}}
 						borderRadius={8}
 					/>
 				</View>
@@ -107,7 +146,8 @@ const makeStyles = themeColors =>
 			alignSelf: 'stretch' // Fill the full height of the card
 		},
 		iconContainer: {
-			// Remove specific dimensions and background - parent handles it
+			width: '25%',
+			alignSelf: 'stretch',
 			justifyContent: 'center',
 			alignItems: 'center'
 		},
