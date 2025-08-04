@@ -16,10 +16,12 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: '#000',
 		borderRadius: 8,
-		padding: 10
+		paddingHorizontal: 10,
+		paddingVertical: 5
 	},
 	textInput: {
-		flex: 1
+		flex: 1,
+		height: 40
 	},
 	searchItemContainer: {
 		backgroundColor: '#fff',

@@ -115,7 +115,6 @@ const SearchView: React.FC<SearchProps> = ({ route }) => {
 				<TextInput
 					placeholder='Search...'
 					style={styles.textInput}
-					multiline
 					maxLength={150}
 					value={searchText}
 					onChangeText={text => setSearchText(text)}
