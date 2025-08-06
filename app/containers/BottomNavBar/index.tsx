@@ -50,7 +50,7 @@ const BottomNavBar: React.FC<IBottomNavBar> = ({ currentRoute }) => {
 	};
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { backgroundColor: colors.nextGenSurface, borderTopColor: colors.nextGenBorder }]}>
 			{NAV_ITEMS.map((item, index) => {
 				const active = isActive(item.screen);
 				return (
@@ -64,13 +64,13 @@ const BottomNavBar: React.FC<IBottomNavBar> = ({ currentRoute }) => {
 						<CustomIcon
 							name={item.icon}
 							size={24}
-							color={active ? colors.actionTintColor : '#1D1B20'}
+							color={active ? colors.actionTintColor : colors.nextGenText}
 						/>
 						<Text
 							style={[
 								styles.navText,
 								{
-									color: active ? colors.actionTintColor : '#1D1B20'
+									color: active ? colors.actionTintColor : colors.nextGenText
 								}
 							]}
 						>
@@ -86,13 +86,11 @@ const BottomNavBar: React.FC<IBottomNavBar> = ({ currentRoute }) => {
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		backgroundColor: '#EBEDF0',
 		paddingVertical: 8,
 		paddingHorizontal: 16,
 		justifyContent: 'space-around',
 		alignItems: 'center',
-		borderTopWidth: 1,
-		borderTopColor: '#D1D5DB'
+		borderTopWidth: 1
 	},
 	navItem: {
 		flex: 1,

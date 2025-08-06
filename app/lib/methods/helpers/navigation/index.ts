@@ -15,9 +15,9 @@ export const drawerStyle = {
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {
-		backgroundColor: themes[theme].nextGenLightGray
+		backgroundColor: themes[theme].nextGenBackground
 	},
-	headerTintColor: themes[theme].fontDefault,
+	headerTintColor: themes[theme].nextGenText,
 	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].fontTitlesLabels, fontSize: 18 }
 });
 

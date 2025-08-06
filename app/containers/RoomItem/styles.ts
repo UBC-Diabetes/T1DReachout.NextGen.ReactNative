@@ -17,7 +17,6 @@ export default StyleSheet.create({
 		alignItems: 'center', // Changed from center to flex-start for better content layout
 		paddingLeft: 14,
 		height: ROW_HEIGHT,
-		backgroundColor: '#FFFFFF', // White card background
 		marginVertical: 12, // Further increased margin for better card separation
 		marginHorizontal: 16,
 		borderRadius: 8,
@@ -35,8 +34,7 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 18,
-		fontWeight: 'bold',
-		color: '#191C20'
+		fontWeight: 'bold'
 	},
 	alert: {
 		...sharedStyles.textSemibold
@@ -143,7 +141,6 @@ export default StyleSheet.create({
 	discussionIconContainer: {
 		width: 40,
 		height: 40,
-		backgroundColor: '#112D4E', // Same blue as boards view
 		borderRadius: 8,
 		justifyContent: 'center',
 		alignItems: 'center',

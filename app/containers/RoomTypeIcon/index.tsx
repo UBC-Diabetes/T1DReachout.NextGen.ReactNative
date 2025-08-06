@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
 	discussionIconContainer: {
 		width: 40,
 		height: 40,
-		backgroundColor: '#112D4E', // Same blue as boards view
 		borderRadius: 8,
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -42,7 +41,7 @@ interface IRoomTypeIcon {
 
 const RoomTypeIcon = React.memo(
 	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType, roomName }: IRoomTypeIcon) => {
-		const { theme } = useTheme();
+		const { theme, colors } = useTheme();
 
 		if (!type) {
 			return null;

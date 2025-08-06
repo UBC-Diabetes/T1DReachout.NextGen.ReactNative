@@ -13,7 +13,7 @@ import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import messageStyles from '../../../../containers/message/styles';
 
 // Custom styles for oval-shaped reaction bubbles
-const customStyles = StyleSheet.create({
+const createCustomStyles = (colors: any) => StyleSheet.create({
 	reactionButton: {
 		marginRight: 6,
 		marginBottom: 6,
@@ -23,9 +23,25 @@ const customStyles = StyleSheet.create({
 		minWidth: 48,
 		paddingHorizontal: 4,
 		height: 28,
-		backgroundColor: '#FFF',
+		// backgroundColor will be set dynamically in component
 		borderWidth: 1,
-		borderColor: '#CBCED1',
+		borderColor: colors.nextGenBorder,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	addReactionButton: {
+		width: 28,
+		height: 28,
+		borderRadius: 14,
+		backgroundColor: colors.nextGenSurface,
+		borderWidth: 1,
+		borderColor: colors.nextGenBorder,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginRight: 6,
+		marginBottom: 6
+	},
+	addReactionContainer: {
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
@@ -39,7 +55,7 @@ const customStyles = StyleSheet.create({
 		fontSize: 13,
 		marginLeft: 3,
 		marginRight: 6,
-		color: '#1E2A3A',
+		color: colors.nextGenText,
 		fontWeight: '600'
 	},
 	reactionEmoji: {
@@ -79,7 +95,8 @@ interface IReactionBubbleProps {
  */
 const ReactionBubble = React.memo(({ reaction, getCustomEmoji }: IReactionBubbleProps) => {
 	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
+	const customStyles = createCustomStyles(colors);
 	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
 
 	return (
@@ -88,8 +105,8 @@ const ReactionBubble = React.memo(({ reaction, getCustomEmoji }: IReactionBubble
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
-			style={customStyles.reactionButton}
-			background={Touchable.Ripple('#EEE')}
+			style={[customStyles.reactionButton, { backgroundColor: colors.nextGenSurface }]}
+			background={Touchable.Ripple(colors.nextGenBorder)}
 			hitSlop={BUTTON_HIT_SLOP}>
 			<View style={customStyles.reactionContainer}>
 				<Emoji
@@ -110,18 +127,19 @@ const ReactionBubble = React.memo(({ reaction, getCustomEmoji }: IReactionBubble
  */
 const AddReaction = React.memo(() => {
 	const { reactionInit } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
+	const customStyles = createCustomStyles(colors);
 
 	return (
 		<Touchable
 			onPress={reactionInit}
 			key='message-add-reaction'
 			testID='message-add-reaction'
-			style={messageStyles.reactionButton}
-			background={Touchable.Ripple('#EEE')}
+			style={customStyles.addReactionButton}
+			background={Touchable.Ripple(colors.nextGenBorder)}
 			hitSlop={BUTTON_HIT_SLOP}>
-			<View style={messageStyles.reactionContainer}>
-				<CustomIcon name='reaction-add' size={18} color={'#1E2A3A'} style={{ marginHorizontal: 6 }} />
+			<View style={customStyles.addReactionContainer}>
+				<CustomIcon name='reaction-add' size={18} color={colors.nextGenText} style={{ marginHorizontal: 6 }} />
 			</View>
 		</Touchable>
 	);
@@ -133,6 +151,9 @@ const AddReaction = React.memo(() => {
  * For other messages: Shows both existing reactions and the "Add Reaction" button
  */
 const CustomReactions = ({ reactions, getCustomEmoji, isOwn }: ICustomReactionsProps) => {
+	const { colors } = useTheme();
+	const customStyles = createCustomStyles(colors);
+	
 	// If it's own message and there are no reactions, don't show anything
 	if (isOwn && (!reactions || reactions.length === 0)) {
 		return null;

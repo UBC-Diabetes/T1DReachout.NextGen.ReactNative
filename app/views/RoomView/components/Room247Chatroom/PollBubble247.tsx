@@ -27,7 +27,8 @@ interface IPollBubble247Props {
 }
 
 const PollBubble247 = ({ blocks, creator, timestamp, rid, user, messageId, blockAction }: IPollBubble247Props) => {
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
+	const styles = createStyles(colors);
 	const [showOverflowMenu, setShowOverflowMenu] = useState(false);
 
 
@@ -156,7 +157,7 @@ const PollBubble247 = ({ blocks, creator, timestamp, rid, user, messageId, block
 
 	return (
 		<>
-			<View style={styles.bubble}>
+			<View style={[styles.bubble, { backgroundColor: colors.nextGenSurface }]}>
 				<View style={styles.header}>
 					<View style={styles.headerLeft}>
 						<Text style={styles.creator}>{creator?.username || 'Poll Creator'}</Text>
@@ -194,7 +195,7 @@ const PollBubble247 = ({ blocks, creator, timestamp, rid, user, messageId, block
 					/* @ts-ignore*/
 					fromView={overflowButtonRef.current}
 					onRequestClose={() => setShowOverflowMenu(false)}>
-					<View style={styles.menuContainer}>
+					<View style={[styles.menuContainer, { backgroundColor: colors.nextGenSurface }]}>
 						{menuOptions.map((option, index) => (
 							<Touchable
 								key={index}
@@ -215,9 +216,9 @@ const PollBubble247 = ({ blocks, creator, timestamp, rid, user, messageId, block
 	);
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
 	bubble: {
-		backgroundColor: 'white',
+		backgroundColor: colors.nextGenSurface,
 		borderRadius: 16,
 		padding: 12,
 		marginVertical: 4,
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	menuContainer: {
-		backgroundColor: 'white',
+		backgroundColor: colors.nextGenSurface,
 		borderRadius: 8,
 		paddingVertical: 4,
 		minWidth: 120,
@@ -279,16 +280,16 @@ const styles = StyleSheet.create({
 	},
 	optionRow: { marginBottom: 16 },
 	optionButton: {
-		backgroundColor: '#112D4E', // dark navy
+		backgroundColor: colors.nextGenPrimary, // Use theme primary color
 		borderRadius: 999,
 		paddingVertical: 8,
 		paddingHorizontal: 24,
 		marginBottom: 2
 	},
-	optionText: { color: 'white', fontWeight: 'bold' },
-	result: { color: '#888', fontSize: 12, marginTop: 2, marginBottom: 8 },
-	voters: { color: '#888', fontSize: 12, marginTop: 2 },
-	timestamp: { fontSize: 12, color: '#888', marginTop: 8, alignSelf: 'flex-end' }
+	optionText: { color: colors.nextGenSurface, fontWeight: 'bold' },
+	result: { color: colors.nextGenTextSecondary, fontSize: 12, marginTop: 2, marginBottom: 8 },
+	voters: { color: colors.nextGenTextSecondary, fontSize: 12, marginTop: 2 },
+	timestamp: { fontSize: 12, color: colors.nextGenTextSecondary, marginTop: 8, alignSelf: 'flex-end' }
 });
 
 export default PollBubble247;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { TSupportedThemes } from '../../../theme';
+import { TSupportedThemes, useTheme } from '../../../theme';
 import Navigation from '../../../lib/navigation/appNavigation';
 
 interface IBrandingFooterProps {
@@ -9,15 +9,27 @@ interface IBrandingFooterProps {
 }
 
 const BrandingFooter = ({ theme }: IBrandingFooterProps) => {
+	const { colors } = useTheme();
+	
 	const handlePress = () => {
 		// Navigate to home page (BottomTabNavigator with HomeView)
 		Navigation.navigate('BottomTabNavigator', { initialTab: 'HomeView' });
 	};
 
+	// Adjust opacity based on theme - lighter for dark themes for better visibility
+	const logoOpacity = theme === 'light' ? 0.8 : 1.0;
+	const logoStyle = theme === 'light' 
+		? styles.brandingImage 
+		: [styles.brandingImage, { opacity: logoOpacity, tintColor: colors.nextGenText }];
+
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity onPress={handlePress} testID='sidebar-t1d-brand'>
-				<Image source={require('../../../static/images/T1DBrand.png')} style={styles.brandingImage} resizeMode='contain' />
+				<Image 
+					source={require('../../../static/images/T1DBrand.png')} 
+					style={logoStyle} 
+					resizeMode='contain' 
+				/>
 			</TouchableOpacity>
 		</View>
 	);

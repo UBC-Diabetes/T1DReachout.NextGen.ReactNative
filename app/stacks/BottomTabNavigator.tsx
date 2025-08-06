@@ -110,7 +110,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 		if (!headerConfig || isMasterDetail) return null;
 
 		return (
-			<View style={[styles.header, { backgroundColor: themes[theme].nextGenLightGray }]}>
+			<View style={[styles.header, { backgroundColor: colors.nextGenSurface }]}>
 				<View style={styles.headerLeft}>
 					{headerConfig.showDrawer && (
 						<HeaderButton.Drawer navigation={navigation} testID='bottom-tab-drawer' onPress={() => navigation.toggleDrawer()} />
@@ -119,7 +119,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 
 				<View style={styles.headerCenter}>
 					{headerConfig.title && (
-						<Text style={[styles.headerTitle, { color: themes[theme].titleText }]}>{headerConfig.title}</Text>
+						<Text style={[styles.headerTitle, { color: colors.nextGenText }]}>{headerConfig.title}</Text>
 					)}
 				</View>
 
@@ -135,7 +135,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 						<HeaderButton.Container>
 							<HeaderButton.Item
 								iconName='search'
-								color={themes[theme].titleText}
+								color={colors.nextGenText}
 								onPress={() => {
 									// Handle search based on active tab
 									if (activeTab === 'DiscussionHomeView') {
@@ -156,7 +156,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 	};
 
 	const renderTabBar = () => (
-		<View style={styles.tabBarContainer}>
+		<View style={[styles.tabBarContainer, { backgroundColor: colors.nextGenSurface, borderTopColor: colors.nextGenBorder }]}>
 			{NAV_ITEMS.map((item, index) => {
 				const active = activeTab === item.screen;
 				return (
@@ -166,12 +166,12 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 						onPress={() => handleTabPress(item.screen)}
 						testID={item.testID}
 						activeOpacity={0.7}>
-						<CustomIcon name={item.icon} size={24} color={active ? colors.actionTintColor : '#1D1B20'} />
+						<CustomIcon name={item.icon} size={24} color={active ? colors.actionTintColor : colors.nextGenText} />
 						<Text
 							style={[
 								styles.tabText,
 								{
-									color: active ? colors.actionTintColor : '#1D1B20'
+									color: active ? colors.actionTintColor : colors.nextGenText
 								}
 							]}>
 							{item.title}
@@ -248,13 +248,11 @@ const styles = StyleSheet.create({
 	},
 	tabBarContainer: {
 		flexDirection: 'row',
-		backgroundColor: '#EBEDF0',
 		paddingVertical: 8,
 		paddingHorizontal: 16,
 		justifyContent: 'space-around',
 		alignItems: 'center',
-		borderTopWidth: 1,
-		borderTopColor: '#D1D5DB'
+		borderTopWidth: 1
 	},
 	tabItem: {
 		flex: 1,

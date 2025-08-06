@@ -198,7 +198,7 @@ const MainStackNavigator = () => {
 					title: '',
 					headerStyle: {
 						shadowColor: 'transparent',
-						backgroundColor: themes.light.nextGenBackground,
+						backgroundColor: themes[theme].nextGenBackground,
 						elevation: 0,
 						borderBottomWidth: 0
 					},
@@ -208,7 +208,7 @@ const MainStackNavigator = () => {
 							<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
 								<Image
 									source={require('../static/images/discussionboard/arrow_left.png')}
-									style={{ width: 11, height: 19, tintColor: themes.light.superGray }}
+									style={{ width: 11, height: 19, tintColor: themes[theme].nextGenText }}
 									resizeMode='contain'
 								/>
 							</TouchableOpacity>

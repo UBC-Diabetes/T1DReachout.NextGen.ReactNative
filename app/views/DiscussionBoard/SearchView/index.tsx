@@ -9,12 +9,12 @@ import { useDebounce } from 'use-debounce';
 import database from '../../../lib/database';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import {
-	// useTheme,
+	useTheme,
 	withTheme
 } from '../../../theme';
 import { IApplicationState } from '../../../definitions';
 import { themes } from '../../../lib/constants';
-import styles from './styles';
+import createStyles from './styles';
 import { searchItemProps } from './interfaces';
 import DiscussionPostCard from '../Components/DiscussionPostCard';
 import { handleStar } from '../helpers';
@@ -32,8 +32,8 @@ const SearchView: React.FC<SearchProps> = ({ route }) => {
 	const navigation = useNavigation<StackNavigationProp<any>>();
 
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
-	// const { theme } = useTheme();
-	const theme = 'light';
+	const { theme } = useTheme();
+	const styles = createStyles(theme);
 
 	const [searchText, setSearchText] = useState('');
 	const [debounceValue] = useDebounce(searchText, 1000);
@@ -114,12 +114,13 @@ const SearchView: React.FC<SearchProps> = ({ route }) => {
 			<View style={styles.searchContainer}>
 				<TextInput
 					placeholder='Search...'
+					placeholderTextColor={themes[theme].nextGenTextSecondary}
 					style={styles.textInput}
 					maxLength={150}
 					value={searchText}
 					onChangeText={text => setSearchText(text)}
 				/>
-				<HeaderButton.Item iconName='search' color={themes[theme].superGray} />
+				<HeaderButton.Item iconName='search' color={themes[theme].nextGenText} />
 			</View>
 			<FlatList
 				data={filteredData}

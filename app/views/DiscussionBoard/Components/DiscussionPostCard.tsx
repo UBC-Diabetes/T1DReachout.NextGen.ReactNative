@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 
-import { withTheme } from '../../../theme';
+import { withTheme, useTheme } from '../../../theme';
 import { SavedPostCardProps } from '../DiscussionHomeView/interaces';
 import { getDate, getIcon } from '../helpers';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers';
@@ -29,10 +29,9 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 	const customEmojis = useSelector((state: IApplicationState) => state.customEmojis);
 	const server = useSelector((state: IApplicationState) => state.server.server);
 
-	// const { theme } = useTheme();
-	const theme = 'light';
+	const { theme, colors } = useTheme();
 
-	const styles = makeStyles(theme, themes);
+	const styles = makeStyles(theme, themes, colors);
 
 	const { title, starPost, _raw, onPress, roomId } = item;
 	const { msg, id, ts, u: userObject, urls, attachments, replies, reactions, starred, rid } = _raw;
@@ -136,7 +135,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 					}}
 					hitSlop={hitSlop}
 				>
-					<Image source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} style={styles.saveIcon} resizeMode='contain' />
+					<Image source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} style={[styles.saveIcon, { tintColor: colors.nextGenText }]} resizeMode='contain' />
 				</TouchableOpacity>
 			</View>
 			{bannerImage && (
@@ -192,10 +191,10 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 });
 
 export default withTheme(DiscussionPostCard);
-const makeStyles = (theme: string, themes: any) =>
+const makeStyles = (theme: string, themes: any, colors: any) =>
 	StyleSheet.create({
 		container: {
-			backgroundColor: '#ffffff',
+			backgroundColor: colors.nextGenSurface,
 			marginVertical: 4,
 			marginHorizontal: 16, // To match the list padding in DiscussionHomeView
 			borderRadius: 8,
@@ -220,13 +219,14 @@ const makeStyles = (theme: string, themes: any) =>
 		nameText: {
 			fontSize: 14,
 			lineHeight: 20,
-			fontWeight: '400'
+			fontWeight: '400',
+			color: colors.nextGenText
 		},
 		dateText: {
 			fontSize: 12,
 			lineHeight: 15,
 			fontWeight: '400',
-			color: '#00000080'
+			color: colors.nextGenTextSecondary
 		},
 		saveIcon: {
 			width: 18,
@@ -262,7 +262,7 @@ const makeStyles = (theme: string, themes: any) =>
 			fontWeight: '500',
 			fontSize: 16,
 			lineHeight: 19,
-			color: '#000000'
+			color: colors.nextGenText
 		},
 		description: {
 			fontFamily: 'Inter',

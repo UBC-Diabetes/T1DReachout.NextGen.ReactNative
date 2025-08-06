@@ -8,7 +8,7 @@ import { TAnyMessageModel, TGetCustomEmoji, IAttachment } from '../../../../defi
 import { IRoomInfoParam } from '../../../SearchMessagesView';
 import Markdown from '../../../../containers/markdown';
 import Attachments from '../../../../containers/message/Components/Attachments';
-import styles from './styles';
+import { createStyles } from './styles';
 import { themes } from '../../../../lib/constants';
 import Avatar from '../../../../containers/Avatar';
 import { CustomIcon } from '../../../../containers/CustomIcon';
@@ -96,7 +96,8 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		useRealName = false
 	} = props;
 	const context = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
+	const styles = createStyles({ theme, colors });
 	const navigation: any = useNavigation();
 
 	const isMock = item.id === 'mock-own-message';
@@ -278,7 +279,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 										theme={theme}
 										username={user?.username}
 										getCustomEmoji={getCustomEmoji}
-										textColor={isOwn ? '#FFFFFF' : '#000000'}
+										textColor={isOwn ? colors.nextGenSurface : colors.nextGenText}
 										style={[styles.messageText]}
 									/>
 								) : null}
@@ -292,7 +293,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 								/>
 								{/* Timestamp */}
 								{timestamp ? (
-									<Text style={[styles.timestamp, isOwn ? { color: '#FFFFFF' } : { color: '#888888' }]}>{timestamp}</Text>
+									<Text style={[styles.timestamp, isOwn ? { color: colors.nextGenSurface } : { color: colors.nextGenTextSecondary }]}>{timestamp}</Text>
 								) : null}
 							</View>
 						</TouchableOpacity>
@@ -316,11 +317,11 @@ const Room247Message = (props: IRoom247MessageProps) => {
 									<Text style={styles.replyButtonText}>Reply</Text>
 								</TouchableOpacity>
 								<View style={styles.iconCount}>
-									<CustomIcon name='message' size={18} style={styles.icon} color='#1E2A3A' />
+									<CustomIcon name='message' size={18} style={styles.icon} color={colors.nextGenText} />
 									<Text style={styles.iconText}>{item.tcount ?? 0}</Text>
 								</View>
 								<View style={styles.iconCount}>
-									<CustomIcon name='user' size={18} style={styles.icon} color='#1E2A3A' />
+									<CustomIcon name='user' size={18} style={styles.icon} color={colors.nextGenText} />
 									<Text style={styles.iconText}>{item.replies ? item.replies.length : 0}</Text>
 								</View>
 								{/* Spacer to push icons to the right */}
@@ -345,7 +346,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 												props.toggleFollowThread(isFollowing, item.id);
 											}
 										}}>
-										<CustomIcon name={isFollowing ? 'notification' : 'notification-disabled'} size={18} color='#1E2A3A' />
+										<CustomIcon name={isFollowing ? 'notification' : 'notification-disabled'} size={18} color={colors.nextGenText} />
 									</TouchableOpacity>
 								)}
 								{/* Bookmark icon for save/unsave */}
@@ -354,7 +355,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 									onPress={handleSave}>
 									<Image 
 										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} 
-										style={{ width: 14, height: 14, tintColor: '#1E2A3A' }} 
+										style={{ width: 14, height: 14, tintColor: colors.nextGenText }} 
 										resizeMode='contain' 
 									/>
 								</TouchableOpacity>
@@ -371,7 +372,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 									onPress={handleSave}>
 									<Image 
 										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} 
-										style={{ width: 14, height: 14, tintColor: '#1E2A3A' }} 
+										style={{ width: 14, height: 14, tintColor: colors.nextGenText }} 
 										resizeMode='contain' 
 									/>
 								</TouchableOpacity>

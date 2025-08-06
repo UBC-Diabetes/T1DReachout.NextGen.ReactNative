@@ -23,8 +23,10 @@ export const getUnreadStyle = ({
 		return {};
 	}
 
-	let backgroundColor = '#112D4E'; // Dark blue for regular unread messages
+	// Use theme-aware colors for unread badges
+	let backgroundColor = themes[theme].nextGenPrimary; // Theme-aware primary color for regular unread messages
 	const color = themes[theme].fontWhite;
+
 	if ((userMentions && userMentions > 0) || tunreadUser?.length) {
 		backgroundColor = themes[theme].badgeBackgroundLevel4;
 	} else if ((groupMentions && groupMentions > 0) || tunreadGroup?.length) {

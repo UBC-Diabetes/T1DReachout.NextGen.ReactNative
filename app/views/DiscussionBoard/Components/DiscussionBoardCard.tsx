@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { themes } from '../../../lib/constants';
-import { withTheme } from '../../../theme';
+import { withTheme, useTheme } from '../../../theme';
 import { DiscussionBoardCardProps } from '../DiscussionHomeView/interaces';
 import { getIcon, getBoardIcon } from '../helpers';
 import { CustomIcon } from '../../../containers/CustomIcon';
@@ -51,7 +51,8 @@ const getIconBackgroundColor = (avatar, type, sourceType) => {
 	return 'transparent';
 };
 
-const DiscussionBoardCard = React.memo(({ item, onPress, theme, colors }: DiscussionBoardCardProps) => {
+const DiscussionBoardCard = React.memo(({ item, onPress, theme }: DiscussionBoardCardProps) => {
+	const { colors } = useTheme();
 	const { title, description, saved = false, icon, color, onSaveClick, avatar, f, usersCount } = item;
 	// const [savedDiscussion, setSavedDiscussion] = React.useState(saved);
 	const {
@@ -166,7 +167,7 @@ const makeStyles = themeColors =>
 			fontWeight: '600',
 			fontSize: 16,
 			lineHeight: 20,
-			color: '#191C20',
+			color: themeColors.nextGenText,
 			marginBottom: 4
 		},
 		description: {
@@ -174,7 +175,7 @@ const makeStyles = themeColors =>
 			fontWeight: '400',
 			fontSize: 14,
 			lineHeight: 18,
-			color: '#374151',
+			color: themeColors.nextGenTextSecondary,
 			marginBottom: 8
 		},
 		boardMembersContainer: {
@@ -185,7 +186,7 @@ const makeStyles = themeColors =>
 			width: 16,
 			height: 16,
 			marginRight: 6,
-			tintColor: '#6B7280'
+			tintColor: themeColors.nextGenTextSecondary
 		},
 		// Legacy styles for compatibility
 		mainContainer: {

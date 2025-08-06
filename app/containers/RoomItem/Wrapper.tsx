@@ -28,7 +28,11 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, roomName, view, ..
 
 	return (
 		<View
-			style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
+			style={[
+				styles.container, 
+				displayMode === DisplayMode.Condensed && styles.containerCondensed,
+				{ backgroundColor: colors.nextGenSurface }
+			]}
 			accessibilityLabel={accessibilityLabel}
 			accessible
 			accessibilityRole='button'>

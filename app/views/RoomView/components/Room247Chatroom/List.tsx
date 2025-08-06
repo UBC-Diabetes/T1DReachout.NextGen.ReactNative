@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { themes, colors } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import ActivityIndicator from '../../../../containers/ActivityIndicator';
 import { CustomIcon } from '../../../../containers/CustomIcon';
@@ -23,55 +23,57 @@ const SHOW_MOCK_OWN_MESSAGE = false;
 
 // Scroll button constants imported from RoomView/List/constants
 
-const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: colors[theme].nextGenBackground // NextGen background color
-	},
-	list: {
-		flex: 1
-	},
-	contentContainer: {
-		paddingHorizontal: 8,
-		paddingVertical: 16 // Increase padding for better visual spacing
-	},
-	loadingContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	emptyContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	emptyText: {
-		fontSize: 16,
-		fontWeight: '500',
-		color: colors[theme].nextGenTextSecondary,
-		textAlign: 'center',
-		marginHorizontal: 40
-	},
-	// Scroll to bottom button styles (adapted from NavBottomFAB)
-	scrollButton: {
-		position: 'absolute',
-		bottom: EDGE_DISTANCE,
-		right: EDGE_DISTANCE,
-		width: 50,
-		height: 50,
-		borderRadius: 25,
-		backgroundColor: colors[theme].nextGenPrimary, // NextGen primary color
-		borderWidth: 1,
-		borderColor: colors[theme].nextGenBorder,
-		alignItems: 'center',
-		justifyContent: 'center',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5
-	}
-});
+const createStyles = ({ theme }: { theme: any }) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: themes[theme].nextGenBackground // NextGen background color
+		},
+		list: {
+			flex: 1
+		},
+		contentContainer: {
+			paddingHorizontal: 8,
+			paddingVertical: 16 // Increase padding for better visual spacing
+		},
+		loadingContainer: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		emptyContainer: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center',
+			backgroundColor: themes[theme].nextGenBackground // NextGen background color
+		},
+		emptyText: {
+			fontSize: 16,
+			fontWeight: '500',
+			color: themes[theme].nextGenTextSecondary,
+			textAlign: 'center',
+			marginHorizontal: 40
+		},
+		// Scroll to bottom button styles (adapted from NavBottomFAB)
+		scrollButton: {
+			position: 'absolute',
+			bottom: EDGE_DISTANCE,
+			right: EDGE_DISTANCE,
+			width: 50,
+			height: 50,
+			borderRadius: 25,
+			backgroundColor: themes[theme].nextGenPrimary, // NextGen primary color
+			borderWidth: 1,
+			borderColor: themes[theme].nextGenBorder,
+			alignItems: 'center',
+			justifyContent: 'center',
+			shadowColor: '#000',
+			shadowOffset: { width: 0, height: 2 },
+			shadowOpacity: 0.25,
+			shadowRadius: 3.84,
+			elevation: 5
+		}
+	});
 
 // Legacy export for compatibility
 const styles = createStyles({ theme: 'light' });
@@ -79,8 +81,7 @@ const styles = createStyles({ theme: 'light' });
 const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IRoom247ListProps) => {
 	// FlatList ref for scroll control
 	const flatListRef = useRef<FlatList>(null);
-	
-	// Create theme-aware styles
+
 	const dynamicStyles = createStyles({ theme });
 
 	// Scroll button visibility state
@@ -284,7 +285,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IR
 	// Empty state display
 	if (!displayMessages.length) {
 		return (
-			<View style={[styles.container, styles.emptyContainer]}>
+			<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={styles.emptyText}>No messages yet</Text>
 			</View>
 		);
@@ -365,7 +366,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IR
 			{/* Scroll to bottom button - only show when scrolled up */}
 			{showScrollButton && (
 				<TouchableOpacity style={dynamicStyles.scrollButton} onPress={handleScrollToBottom} testID='room-247-scroll-to-bottom'>
-					<CustomIcon name='chevron-down' size={24} color={colors[theme].nextGenSurface} />
+					<CustomIcon name='chevron-down' size={24} color={themes[theme].nextGenSurface} />
 				</TouchableOpacity>
 			)}
 		</View>

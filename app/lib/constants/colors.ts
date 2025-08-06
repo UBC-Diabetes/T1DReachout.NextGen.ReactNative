@@ -22,10 +22,10 @@ export const nextGenColors = {
 		nextGenAccent: '#156FF5'          // Blue accent
 	},
 	dark: {
-		nextGenPrimary: '#1A3A5C',        // Slightly lighter dark blue primary
+		nextGenPrimary: '#1E4A6F',        // Use same lighter blue as black mode for better visibility
 		nextGenSecondary: '#4A4A52',      // Darker secondary for dark mode
 		nextGenBackground: '#1F2329',     // Dark background
-		nextGenSurface: '#262931',        // Dark surface
+		nextGenSurface: '#2A2E36',        // Lighter dark surface for better contrast
 		nextGenBorder: '#333842',         // Dark border
 		nextGenText: '#E4E7EA',           // Light text
 		nextGenTextSecondary: '#9EA2A8',  // Secondary light text
@@ -35,7 +35,7 @@ export const nextGenColors = {
 		nextGenPrimary: '#1E4A6F',        // Adjusted blue for black theme
 		nextGenSecondary: '#3A3A3A',      // Dark gray secondary for black mode
 		nextGenBackground: '#000000',     // True black background
-		nextGenSurface: '#0d0d0d',        // Slightly off-black surface
+		nextGenSurface: '#1A1A1A',        // Lighter off-black surface for better contrast
 		nextGenBorder: '#1f2329',         // Very dark border
 		nextGenText: '#F2F3F5',           // Bright light text
 		nextGenTextSecondary: '#B2B8C6',  // Secondary bright text
@@ -344,7 +344,7 @@ export const colors = {
 	light: {
 		...light,
 		backdropColor,
-		backgroundColor: '#ffffff',
+		backgroundColor: '#EBEDF0',
 		focusedBackground: '#ffffff',
 		chatComponentBackground: '#f3f4f5',
 		peerMentorBackground: '#ffffff',
@@ -420,7 +420,7 @@ export const colors = {
 	dark: {
 		...dark,
 		backdropColor,
-		backgroundColor: '#030b1b',
+		backgroundColor: '#1F2329',
 		boardMembersText: '#cbced1',
 		focusedBackground: '#0b182c',
 		chatComponentBackground: '#192132',

@@ -2,14 +2,13 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 import sharedStyles from '../../../Styles';
 import { isTablet } from '../../../../lib/methods/helpers';
-import { colors } from '../../../../lib/constants';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Helper function to get responsive padding/margin
 const getResponsiveSpacing = (baseSize: number) => Math.max(baseSize, SCREEN_WIDTH * 0.03); // Minimum 3% of screen width
 
-export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
+export const createStyles = ({ theme, colors }: { theme: any; colors: any }) => StyleSheet.create({
 	root: {
 		flexDirection: 'row'
 	},
@@ -18,7 +17,7 @@ export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 		width: '100%',
 		paddingHorizontal: getResponsiveSpacing(14),
 		flexDirection: 'column',
-		backgroundColor: colors[theme].nextGenBackground
+		backgroundColor: colors.nextGenBackground
 	},
 	contentContainer: {
 		flex: 1
@@ -221,20 +220,20 @@ export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 	},
 	ownMessage: {
 		maxWidth: '90%',
-		backgroundColor: colors[theme].nextGenPrimary,
+		backgroundColor: colors.nextGenAccent,
 		borderRadius: 12,
 		borderWidth: 1,
-		borderColor: colors[theme].nextGenBorder,
+		borderColor: colors.nextGenBorder,
 		overflow: 'hidden',
 		marginRight: getResponsiveSpacing(8),
 		position: 'relative'
 	},
 	otherMessage: {
 		maxWidth: '90%',
-		backgroundColor: colors[theme].nextGenSurface,
+		backgroundColor: colors.nextGenSurface,
 		borderRadius: 12,
 		borderWidth: 1,
-		borderColor: colors[theme].nextGenBorder,
+		borderColor: colors.nextGenBorder,
 		overflow: 'hidden',
 		marginLeft: getResponsiveSpacing(8),
 		position: 'relative'
@@ -260,7 +259,7 @@ export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 		top: 0,
 		width: getResponsiveSpacing(8),
 		height: getResponsiveSpacing(16),
-		backgroundColor: colors[theme].nextGenPrimary, // Match ownMessage background color
+		backgroundColor: colors.nextGenAccent, // Match ownMessage background color
 		borderTopRightRadius: getResponsiveSpacing(8)
 	},
 	otherTail: {
@@ -269,7 +268,7 @@ export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 		top: 0,
 		width: getResponsiveSpacing(8),
 		height: getResponsiveSpacing(16),
-		backgroundColor: colors[theme].nextGenSurface, // Match otherMessage background color
+		backgroundColor: colors.nextGenSurface, // Match otherMessage background color
 		borderTopLeftRadius: getResponsiveSpacing(8)
 	},
 	// Add extra styling for user name in group chats
@@ -297,14 +296,14 @@ export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 		marginBottom: 18
 	},
 	replyButton: {
-		backgroundColor: colors[theme].nextGenPrimary,
+		backgroundColor: colors.nextGenAccent,
 		borderRadius: 16,
 		paddingHorizontal: 16,
 		paddingVertical: 6,
 		marginRight: 8
 	},
 	replyButtonText: {
-		color: colors[theme].nextGenSurface,
+		color: colors.nextGenSurface,
 		fontSize: 14,
 		fontWeight: '600'
 	},
@@ -317,17 +316,17 @@ export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 		marginRight: 4
 	},
 	iconText: {
-		color: colors[theme].nextGenText,
+		color: colors.nextGenText,
 		fontSize: 14,
 		fontWeight: '600'
 	},
 	// Message text color for own messages
 	ownMessageText: {
-		color: colors[theme].nextGenSurface
+		color: colors.nextGenSurface
 	},
 	// Message text color for other messages
 	otherMessageText: {
-		color: colors[theme].nextGenText
+		color: colors.nextGenText
 	},
 	// New flex-based layout styles
 	actionsContainer: {
@@ -342,6 +341,6 @@ export const createStyles = ({ theme }: { theme: any }) => StyleSheet.create({
 	}
 });
 
-// Keep legacy export for compatibility
-const styles = createStyles({ theme: 'light' });
+// Keep legacy export for compatibility - will be replaced by dynamic theming
+const styles = createStyles({ theme: 'light', colors: { nextGenBackground: '#ffffff', nextGenPrimary: '#1E4A6F', nextGenSurface: '#ffffff', nextGenBorder: '#E0E0E0', nextGenText: '#000000' } });
 export default styles;

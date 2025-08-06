@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
+import { useTheme } from '../../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -9,7 +10,6 @@ const styles = StyleSheet.create({
 		marginBottom: 12
 	},
 	bubble: {
-		backgroundColor: '#fff',
 		borderRadius: 20,
 		paddingHorizontal: 18,
 		paddingVertical: 4,
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 12,
-		color: '#000',
 		fontWeight: '400'
 	}
 });
@@ -36,12 +35,14 @@ const getDateLabel = (ts?: Date | string | null) => {
 };
 
 const Room247MessageSeparator = ({ ts }: { ts?: Date | string | null }) => {
+	const { colors } = useTheme();
+	
 	if (!ts) return null;
 	const label = getDateLabel(ts);
 	return (
 		<View style={styles.container}>
-			<View style={styles.bubble}>
-				<Text style={styles.text}>{label}</Text>
+			<View style={[styles.bubble, { backgroundColor: colors.nextGenSurface }]}>
+				<Text style={[styles.text, { color: colors.nextGenText }]}>{label}</Text>
 			</View>
 		</View>
 	);

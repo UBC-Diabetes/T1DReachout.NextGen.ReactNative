@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { themes } from '../../../lib/constants';
+import { TSupportedThemes } from '../../../theme';
 
-const styles = StyleSheet.create({
+const createStyles = (theme: TSupportedThemes) => StyleSheet.create({
 	mainContainer: {
-		backgroundColor: themes.light.nextGenBackground,
+		backgroundColor: themes[theme].nextGenBackground,
 		flex: 1
 	},
 	searchContainer: {
@@ -14,20 +15,22 @@ const styles = StyleSheet.create({
 		marginBottom: 24,
 		marginTop: 24,
 		borderWidth: 1,
-		borderColor: '#000',
+		borderColor: themes[theme].nextGenBorder,
 		borderRadius: 8,
 		paddingHorizontal: 10,
-		paddingVertical: 5
+		paddingVertical: 5,
+		backgroundColor: themes[theme].nextGenSurface
 	},
 	textInput: {
 		flex: 1,
-		height: 40
+		height: 40,
+		color: themes[theme].nextGenText
 	},
 	searchItemContainer: {
-		backgroundColor: '#fff',
+		backgroundColor: themes[theme].nextGenSurface,
 		borderRadius: 20,
 		padding: 20,
-		shadowColor: '#000',
+		shadowColor: themes[theme].nextGenBorder,
 		shadowOffset: { width: 1, height: 1 },
 		shadowOpacity: 0.05,
 		shadowRadius: 30,
@@ -38,12 +41,14 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 19,
 		fontWeight: '500',
-		marginBottom: 8
+		marginBottom: 8,
+		color: themes[theme].nextGenText
 	},
 	description: {
 		fontSize: 14,
 		lineHeight: 19,
-		fontWeight: '400'
+		fontWeight: '400',
+		color: themes[theme].nextGenTextSecondary
 	},
 	searchItemArrow: {
 		alignSelf: 'flex-end'
@@ -55,4 +60,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default styles;
+export default createStyles;
