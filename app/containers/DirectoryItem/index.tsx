@@ -27,6 +27,8 @@ interface IDirectoryItem {
 	rid?: string;
 	age?: string;
 	teamMain?: boolean;
+	t1dSince?: string;
+	devices?: string[];
 }
 
 const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
@@ -47,35 +49,40 @@ const DirectoryItem = ({
 	type,
 	rid,
 	age,
-	teamMain
+	teamMain,
+	t1dSince,
+	devices
 }: IDirectoryItem): React.ReactElement => {
 	const { theme } = useTheme();
 
 	return (
 		<Touch onPress={onPress} style={[styles.directoryItemButton, style]} testID={testID}>
 			<View style={styles.directoryItemContainer}>
-				<Avatar text={avatar} size={64} type={type} rid={rid} style={styles.directoryItemAvatar} borderRadius={32} />
+				<Avatar text={avatar} size={96} type={type} rid={rid} style={styles.directoryItemAvatar} borderRadius={8} />
 				<View style={styles.directoryItemTextContainer}>
 					<View style={styles.directoryItemTextTitle}>
 						{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
 						<View style={styles.directoryItemNameContainer}>
 							<Text style={[styles.directoryItemName, { color: '#1D1B20' }]} numberOfLines={1}>
-								{title}
+								{title}{age ? `, ${age}` : ''}
 							</Text>
-							{age ? (
-								<Text style={[styles.directoryItemAge, { color: '#49454F' }]} numberOfLines={1}>
-									{` — ${age}`}
-								</Text>
-							) : null}
 						</View>
 					</View>
-					{description ? (
-						<Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-							{description}
+					{t1dSince ? (
+						<Text style={[styles.directoryItemInfo, { color: '#1D1B20' }]} numberOfLines={1}>
+							Age of diagnosis: {t1dSince} years old
+						</Text>
+					) : null}
+					{devices && devices.length > 0 ? (
+						<Text style={[styles.directoryItemInfo, { color: '#1D1B20' }]} numberOfLines={1}>
+							Devices: {devices.join(', ')}
 						</Text>
 					) : null}
 				</View>
-				<DirectoryItemLabel text={rightLabel} theme={theme} />
+				<View style={styles.directoryItemRightContainer}>
+					<DirectoryItemLabel text={rightLabel} theme={theme} />
+					<CustomIcon name="chevron-right" size={20} color={themes[theme].auxiliaryText} />
+				</View>
 			</View>
 		</Touch>
 	);

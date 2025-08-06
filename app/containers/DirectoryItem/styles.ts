@@ -55,5 +55,14 @@ export default StyleSheet.create({
 		fontSize: 14,
 		fontWeight: '500',
 		...sharedStyles.textRegular
+	},
+	directoryItemInfo: {
+		fontSize: 14,
+		marginTop: 2,
+		...sharedStyles.textRegular
+	},
+	directoryItemRightContainer: {
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });

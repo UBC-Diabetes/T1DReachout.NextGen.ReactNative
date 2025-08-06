@@ -244,14 +244,37 @@ class ProfileLibraryView extends React.Component {
 		};
 
 		if (type === 'users') {
+			// Get T1D Since field and clean it up
+			const rawT1dSince = item.customFields?.['T1D Since'];
+			let cleanedT1dSince = '';
+			
+			if (rawT1dSince) {
+				// Clean up the T1D Since data to extract just the number
+				// Remove common prefixes and suffixes like "age", "years old", etc.
+				cleanedT1dSince = rawT1dSince
+					.replace(/^age\s*/i, '') // Remove "age" at the start
+					.replace(/\s*years?\s*old$/i, '') // Remove "years old" or "year old" at the end  
+					.replace(/\s*years?$/i, '') // Remove "years" or "year" at the end
+					.trim();
+			}
+			
+			// Get devices array
+			const devices = [];
+			if (item.customFields?.['Glucose Monitoring Method']) {
+				devices.push(item.customFields['Glucose Monitoring Method']);
+			}
+			if (item.customFields?.['Insulin Delivery Method']) {
+				devices.push(item.customFields['Insulin Delivery Method']);
+			}
+			
 			return (
 				<DirectoryItem
 					avatar={item?.username}
-					description={item?.customFields?.Location ?? ''}
 					rightLabel={item?.federation && item?.federation.peer}
 					type='d'
-					icon={<CustomIcon name='pin-map' size={15} color='#161a1d' />}
-					age={item.customFields?.Age ? `${item.customFields?.Age} years old` : ''}
+					age={item.customFields?.Age ? `${item.customFields?.Age}` : ''}
+					t1dSince={cleanedT1dSince}
+					devices={devices}
 					{...commonProps}
 				/>
 			);
