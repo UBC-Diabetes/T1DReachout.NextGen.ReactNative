@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, TouchableOpacity, TextInput, FlatList, ActivityIndicator } from 'react-native';
+import { Text, View, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useDebounce } from 'use-debounce';
 
 import database from '../../../lib/database';
-import * as HeaderButton from '../../../containers/HeaderButton';
+import SearchBox from '../../../containers/SearchBox';
 import {
 	useTheme,
 	withTheme
@@ -111,17 +111,7 @@ const SearchView: React.FC<SearchProps> = ({ route }) => {
 	return (
 		<View style={styles.mainContainer}>
 			{isLoading && <ActivityIndicator size='large' color={themes[theme].auxiliaryText} />}
-			<View style={styles.searchContainer}>
-				<TextInput
-					placeholder='Search...'
-					placeholderTextColor={themes[theme].nextGenTextSecondary}
-					style={styles.textInput}
-					maxLength={150}
-					value={searchText}
-					onChangeText={text => setSearchText(text)}
-				/>
-				<HeaderButton.Item iconName='search' color={themes[theme].nextGenText} />
-			</View>
+			<SearchBox onChangeText={setSearchText} onSubmitEditing={search} />
 			<FlatList
 				data={filteredData}
 				renderItem={searchItem}

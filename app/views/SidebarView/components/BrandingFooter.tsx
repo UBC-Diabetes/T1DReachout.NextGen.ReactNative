@@ -35,13 +35,17 @@ const BrandingFooter = ({ theme }: IBrandingFooterProps) => {
 	);
 };
 
+
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		justifyContent: 'flex-end',
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		bottom: 32,
 		alignItems: 'center',
-		paddingBottom: 80, // Position higher up from bottom
-		paddingHorizontal: 20
+		paddingHorizontal: 20,
+		// Let touches pass through empty areas so list items remain clickable
+		pointerEvents: 'box-none'
 	},
 	brandingImage: {
 		width: 180, // Adjust size as needed

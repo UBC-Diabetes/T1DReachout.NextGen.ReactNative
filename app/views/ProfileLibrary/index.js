@@ -92,7 +92,10 @@ class ProfileLibraryView extends React.Component {
 	}
 
 	onSearchChangeText = text => {
-		this.setState({ text });
+		// Update text and trigger a debounced search
+		this.setState({ text }, () => {
+			this.load({ newSearch: true });
+		});
 	};
 
 	load = debounce(async ({ newSearch = false }) => {

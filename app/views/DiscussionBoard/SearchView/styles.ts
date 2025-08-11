@@ -7,25 +7,7 @@ const createStyles = (theme: TSupportedThemes) => StyleSheet.create({
 		backgroundColor: themes[theme].nextGenBackground,
 		flex: 1
 	},
-	searchContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginHorizontal: 20,
-		marginBottom: 24,
-		marginTop: 24,
-		borderWidth: 1,
-		borderColor: themes[theme].nextGenBorder,
-		borderRadius: 8,
-		paddingHorizontal: 10,
-		paddingVertical: 5,
-		backgroundColor: themes[theme].nextGenSurface
-	},
-	textInput: {
-		flex: 1,
-		height: 40,
-		color: themes[theme].nextGenText
-	},
+	// Search UI handled by shared SearchBox component
 	searchItemContainer: {
 		backgroundColor: themes[theme].nextGenSurface,
 		borderRadius: 20,
