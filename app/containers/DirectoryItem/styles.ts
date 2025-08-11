@@ -57,7 +57,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	directoryItemInfo: {
-		fontSize: 14,
+		fontSize: 12,
 		marginTop: 2,
 		...sharedStyles.textRegular
 	},
