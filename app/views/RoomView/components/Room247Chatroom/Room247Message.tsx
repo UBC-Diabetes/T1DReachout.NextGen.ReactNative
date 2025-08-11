@@ -95,6 +95,18 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		autoTranslateLanguage,
 		useRealName = false
 	} = props;
+	
+	// Force re-render when WatermelonDB model changes
+	const [reactiveReactions, setReactiveReactions] = useState(item.reactions);
+	
+	useEffect(() => {
+		const subscription = item.observe().subscribe((updatedItem) => {
+			setReactiveReactions(updatedItem.reactions);
+		});
+		
+		return () => subscription.unsubscribe();
+	}, [item]);
+	
 	const context = useContext(MessageContext);
 	const { theme, colors } = useTheme();
 	const styles = createStyles({ theme, colors });
@@ -200,14 +212,28 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		}
 	};
 
+	// Reaction init wrapper that provides the message ID
+	const handleReactionInit = () => {
+		if (props.reactionInit) {
+			props.reactionInit(item.id);
+		}
+	};
+
+	// Reaction press wrapper that provides the message ID
+	const handleReactionPress = (emoji: string) => {
+		if (props.onReactionPress) {
+			props.onReactionPress(emoji, item.id);
+		}
+	};
+
 	// Create a message context with all necessary values, including proper translateLanguage
 	const messageContextValue = {
 		user,
 		onPress: handlePress,
 		onLongPress: handleLongPress,
-		onReactionPress: props.onReactionPress,
+		onReactionPress: handleReactionPress,
 		onReactionLongPress: props.onReactionLongPress,
-		reactionInit: props.reactionInit,
+		reactionInit: handleReactionInit,
 		translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 		rid: props.rid,
 		baseUrl: props.baseUrl
@@ -293,7 +319,10 @@ const Room247Message = (props: IRoom247MessageProps) => {
 								/>
 								{/* Timestamp */}
 								{timestamp ? (
-									<Text style={[styles.timestamp, isOwn ? { color: colors.nextGenSurface } : { color: colors.nextGenTextSecondary }]}>{timestamp}</Text>
+									<Text
+										style={[styles.timestamp, isOwn ? { color: colors.nextGenSurface } : { color: colors.nextGenTextSecondary }]}>
+										{timestamp}
+									</Text>
 								) : null}
 							</View>
 						</TouchableOpacity>
@@ -302,7 +331,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 					<View style={[styles.actionsContainer, isOwn ? { alignItems: 'flex-end' } : { alignItems: 'flex-start' }]}>
 						{/* Reactions positioned with flex */}
 						<View style={[styles.reactionsContainer, isOwn ? { marginRight: 12 } : { marginLeft: 12 }]}>
-							<CustomReactions reactions={item.reactions || []} getCustomEmoji={getCustomEmoji} isOwn={isOwn} />
+							<CustomReactions reactions={reactiveReactions || []} getCustomEmoji={getCustomEmoji} isOwn={isOwn} />
 						</View>
 						{/* Reply button and icons row below the reactions row */}
 						{!props.isThreadRoom && (
@@ -346,17 +375,19 @@ const Room247Message = (props: IRoom247MessageProps) => {
 												props.toggleFollowThread(isFollowing, item.id);
 											}
 										}}>
-										<CustomIcon name={isFollowing ? 'notification' : 'notification-disabled'} size={18} color={colors.nextGenText} />
+										<CustomIcon
+											name={isFollowing ? 'notification' : 'notification-disabled'}
+											size={18}
+											color={colors.nextGenText}
+										/>
 									</TouchableOpacity>
 								)}
 								{/* Bookmark icon for save/unsave */}
-								<TouchableOpacity
-									style={styles.threadBellBetweenBubbleAndEdge}
-									onPress={handleSave}>
-									<Image 
-										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} 
-										style={{ width: 14, height: 14, tintColor: colors.nextGenText }} 
-										resizeMode='contain' 
+								<TouchableOpacity style={styles.threadBellBetweenBubbleAndEdge} onPress={handleSave}>
+									<Image
+										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')}
+										style={{ width: 14, height: 14, tintColor: colors.nextGenText }}
+										resizeMode='contain'
 									/>
 								</TouchableOpacity>
 							</View>
@@ -367,13 +398,11 @@ const Room247Message = (props: IRoom247MessageProps) => {
 								{/* Spacer to push bookmark icon to the right */}
 								<View style={{ flex: 1 }} />
 								{/* Bookmark icon for save/unsave in thread */}
-								<TouchableOpacity
-									style={styles.threadBellBetweenBubbleAndEdge}
-									onPress={handleSave}>
-									<Image 
-										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} 
-										style={{ width: 14, height: 14, tintColor: colors.nextGenText }} 
-										resizeMode='contain' 
+								<TouchableOpacity style={styles.threadBellBetweenBubbleAndEdge} onPress={handleSave}>
+									<Image
+										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')}
+										style={{ width: 14, height: 14, tintColor: colors.nextGenText }}
+										resizeMode='contain'
 									/>
 								</TouchableOpacity>
 							</View>

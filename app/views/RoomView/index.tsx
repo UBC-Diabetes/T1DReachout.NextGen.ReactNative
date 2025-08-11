@@ -830,6 +830,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		hideActionSheet();
 	};
 
+
 	onMessageLongPress = (message: TAnyMessageModel) => {
 		const { action } = this.state;
 		if (action && action !== 'quote') {
@@ -848,15 +849,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	onReactionPress = async (emoji: IEmoji, messageId: string) => {
+	onReactionPress = async (emoji: IEmoji, messageId?: string) => {
 		try {
+			const { user } = this.props;
+			const { selectedMessages } = this.state;
+			const msgId = messageId || selectedMessages[0];
+
+			if (!msgId) {
+				return;
+			}
+
 			let shortname = '';
 			if (typeof emoji === 'string') {
 				shortname = emoji;
 			} else {
 				shortname = emoji.name;
 			}
-			await Services.setReaction(shortname, messageId);
+			
+			await Services.setReaction(shortname, msgId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
 		} catch (e) {
