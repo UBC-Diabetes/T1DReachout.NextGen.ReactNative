@@ -15,7 +15,7 @@ export const nextGenColors = {
 		nextGenPrimary: '#112D4E',        // Dark blue primary
 		nextGenSecondary: '#CAC4D0',      // Light gray/purple secondary
 		nextGenBackground: '#EBEDF0',     // Light gray background
-		nextGenSurface: '#FFFFFF',        // White surface
+		nextGenSurface: '#EBEDF0',        // Light gray surface (same as background)
 		nextGenBorder: '#E1E5E8',         // Light border
 		nextGenText: '#2F343D',           // Dark text
 		nextGenTextSecondary: '#6C727A',  // Secondary text
