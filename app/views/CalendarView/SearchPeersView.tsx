@@ -21,11 +21,8 @@ export interface IUser {
 }
 
 const SearchPeersView = () => {
-	// const theme = useTheme();
 	const dispatch = useDispatch();
-
-	// const { colors } = theme;
-	const colors = themes.light;
+	const { colors } = useTheme();
 	const styles = makeStyles(colors);
 
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -35,9 +32,15 @@ const SearchPeersView = () => {
 	const { peers } = useSelector((state: IApplicationState) => getDraftEventSelector(state));
 
 	useEffect(() => {
-		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
+		navigation.setOptions({ 
+			title: '', 
+			headerStyle: { 
+				backgroundColor: colors.nextGenSurface,
+				shadowColor: 'transparent' 
+			}
+		});
 		loadPeers({});
-	}, []);
+	}, [colors.nextGenSurface]);
 
 	useEffect(() => {
 		if (peers) {
@@ -94,7 +97,7 @@ const SearchPeersView = () => {
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]} testID='calendar-view'>
+		<View style={[styles.container, { backgroundColor: colors.nextGenBackground }]} testID='calendar-view'>
 			<View style={styles.headerContainer}>
 				<View style={styles.searchContainer}>
 					<SearchBox
@@ -112,7 +115,13 @@ const SearchPeersView = () => {
 			</View>
 			{loading && data.length === 0 ? (
 				<View style={styles.centerContent}>
-					<ActivityIndicator size='large' color={colors.primary} />
+					<ActivityIndicator size='large' color={colors.nextGenAccent} />
+					<Text style={[styles.loadingText, { color: colors.nextGenText }]}>Loading peer mentors...</Text>
+				</View>
+			) : data.length === 0 ? (
+				<View style={styles.centerContent}>
+					<Text style={[styles.emptyText, { color: colors.nextGenTextSecondary }]}>No peer mentors found</Text>
+					<Text style={[styles.emptySubText, { color: colors.nextGenTextSecondary }]}>Try searching or check back later</Text>
 				</View>
 			) : (
 				<FlatList
@@ -121,7 +130,7 @@ const SearchPeersView = () => {
 					keyExtractor={item => item._id}
 					onEndReached={handleLoadMore}
 					onEndReachedThreshold={0.5}
-					ListFooterComponent={loading ? <ActivityIndicator color={colors.primary} /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator color={colors.nextGenAccent} /> : null}
 				/>
 			)}
 		</View>
@@ -142,7 +151,7 @@ const makeStyles = (colors: any) => {
 			marginBottom: 15
 		},
 		doneButtonText: {
-			color: '#ff69b4',
+			color: colors.nextGenAccent,
 			fontSize: 16
 		},
 		searchContainer: {
@@ -155,7 +164,22 @@ const makeStyles = (colors: any) => {
 		},
 		centerContent: {
 			justifyContent: 'center',
-			alignItems: 'center'
+			alignItems: 'center',
+			flex: 1,
+			padding: 20
+		},
+		loadingText: {
+			marginTop: 10,
+			fontSize: 16
+		},
+		emptyText: {
+			fontSize: 18,
+			fontWeight: '600',
+			marginBottom: 8
+		},
+		emptySubText: {
+			fontSize: 14,
+			textAlign: 'center'
 		},
 		peerItem: {
 			flexDirection: 'row',
@@ -163,7 +187,7 @@ const makeStyles = (colors: any) => {
 			alignItems: 'center',
 			padding: 10,
 			borderBottomWidth: 1,
-			borderBottomColor: '#E0E0E0'
+			borderBottomColor: colors.nextGenBorder
 		},
 		peerInfo: {
 			flexDirection: 'row',
@@ -172,18 +196,18 @@ const makeStyles = (colors: any) => {
 		peerName: {
 			fontSize: 16,
 			marginLeft: 10,
-			color: colors.bodyText
+			color: colors.nextGenText
 		},
 		checkMark: {
 			width: 24,
 			height: 24,
 			borderRadius: 12,
-			backgroundColor: '#F5F4F2',
+			backgroundColor: colors.nextGenAccent,
 			justifyContent: 'center',
 			alignItems: 'center'
 		},
 		checkMarkText: {
-			color: '#000000',
+			color: colors.fontWhite,
 			fontSize: 16
 		}
 	});

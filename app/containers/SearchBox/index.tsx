@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		margin: 16,
 		marginBottom: 16,
-		backgroundColor: '#112D4E',
 		borderRadius: 25,
 		paddingHorizontal: 16
 	}
@@ -26,18 +25,18 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID, placeholder, themeCo
 		onChangeText?.(value);
 	}, []);
 
-	// Custom colors for the dark blue search bar
+	// Custom colors for the search bar using theme-aware accent color
 	const customColors = {
 		...colors,
-		surfaceRoom: '#112D4E',
-		strokeLight: '#112D4E',
-		fontTitlesLabels: '#FFFFFF',
-		fontAnnotation: '#FFFFFF',
-		fontDefault: '#FFFFFF'
+		surfaceRoom: colors.nextGenAccent,
+		strokeLight: colors.nextGenAccent,
+		fontTitlesLabels: colors.fontWhite,
+		fontAnnotation: colors.fontWhite,
+		fontDefault: colors.fontWhite
 	};
 
 	return (
-		<View testID='searchbox' style={{ backgroundColor: colors.nextGenLightGray }}>
+		<View testID='searchbox' style={{ backgroundColor: colors.nextGenBackground }}>
 			<FormTextInput
 				autoCapitalize='none'
 				autoCorrect={false}
@@ -45,7 +44,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID, placeholder, themeCo
 				placeholder={placeholder ?? I18n.t('Search')}
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
-				containerStyle={styles.inputContainer}
+				containerStyle={[styles.inputContainer, { backgroundColor: colors.nextGenAccent }]}
 				onChangeText={internalOnChangeText}
 				onSubmitEditing={onSubmitEditing}
 				value={text}

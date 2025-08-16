@@ -17,7 +17,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { format, parseISO } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 
-// import { useTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { cancelEventEdit, createEventDraft, createEventRequest, updateEventRequest } from '../../actions/calendarEvents';
@@ -40,8 +40,7 @@ const CreateEventView = () => {
 	const draftEvent = useSelector((state: IApplicationState) => getDraftEventSelector(state));
 	const userName = user?.username || '';
 
-	// let { colors } = useTheme();
-	const colors = themes.light;
+	const { colors } = useTheme();
 	const styles = makeStyles(colors);
 
 	const backAction = () => {
@@ -52,11 +51,21 @@ const CreateEventView = () => {
 	};
 
 	useEffect(() => {
-		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
-		navigation.setOptions({
+		navigation.setOptions({ 
+			title: isEditing ? 'Edit Event' : 'Create Event', 
+			headerStyle: { 
+				backgroundColor: colors.nextGenSurface,
+				shadowColor: 'transparent' 
+			},
+			headerTitleStyle: { 
+				color: colors.nextGenText,
+				fontSize: 18,
+				fontWeight: '400'
+			},
+			headerTitleAlign: 'center',
 			headerLeft: () => (
 				<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => backAction()}>
-					<Image source={leftArrow} style={{ width: 11, height: 19 }} resizeMode='contain' />
+					<Image source={leftArrow} style={{ width: 11, height: 19, tintColor: colors.nextGenText }} resizeMode='contain' />
 				</TouchableOpacity>
 			),
 			headerRight: () => (
@@ -78,7 +87,7 @@ const CreateEventView = () => {
 			};
 			dispatch(createEventDraft(defaultEvent));
 		}
-	}, []);
+	}, [colors.nextGenSurface, colors.nextGenText, isEditing]);
 
 	const onTitleChange = (title: string) => {
 		dispatch(createEventDraft({ title }));
@@ -141,7 +150,6 @@ const CreateEventView = () => {
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 			keyboardVerticalOffset={Platform.OS === 'ios' ? 15 : 0}>
 			<ScrollView style={styles.container} contentInset={{ bottom: 100 }} ref={scrollViewRef}>
-				<Text style={styles.header}>Create Event</Text>
 				<Text style={styles.label}>Title</Text>
 				<TextInput
 					style={styles.input}
@@ -223,28 +231,17 @@ const makeStyles = (colors: any) => {
 			flex: 1,
 			padding: 20,
 			paddingBottom: 10,
-			backgroundColor: colors.auxiliaryBackground
-		},
-		header: {
-			fontSize: 22,
-			fontWeight: 'bold',
-			marginBottom: 20,
-			textAlign: 'center',
-			color: colors.controlText
-		},
-		headerText: {
-			fontSize: 20,
-			fontWeight: 'bold',
-			marginLeft: 20
+			backgroundColor: colors.nextGenBackground
 		},
 		input: {
 			borderWidth: 1,
-			borderColor: '#e0e0e0',
+			borderColor: colors.nextGenBorder,
 			borderRadius: 8,
 			padding: 15,
 			marginBottom: 15,
 			fontSize: 16,
-			color: colors.fontSecondaryInfo
+			backgroundColor: colors.nextGenSurface,
+			color: colors.nextGenText
 		},
 		textArea: {
 			height: 100,
@@ -253,7 +250,7 @@ const makeStyles = (colors: any) => {
 		label: {
 			fontSize: 16,
 			marginBottom: 8,
-			color: colors.controlText
+			color: colors.nextGenText
 		},
 		rowContainer: {
 			flexDirection: 'row',
@@ -269,24 +266,24 @@ const makeStyles = (colors: any) => {
 		},
 		dateTimeText: {
 			fontWeight: 'bold',
-			color: colors.controlText
+			color: colors.nextGenText
 		},
 		sectionTitle: {
 			fontSize: 18,
 			marginTop: 20,
 			marginBottom: 10,
-			color: colors.controlText
+			color: colors.nextGenText
 		},
 		addPeersButton: {
 			borderWidth: 1,
-			borderColor: '#ff69b4',
+			borderColor: colors.nextGenAccent,
 			borderRadius: 25,
 			padding: 10,
 			alignItems: 'center',
 			marginBottom: 15
 		},
 		addPeersButtonText: {
-			color: '#ff69b4',
+			color: colors.nextGenAccent,
 			fontSize: 16
 		},
 		peerItem: {
@@ -297,10 +294,10 @@ const makeStyles = (colors: any) => {
 		},
 		peerName: {
 			fontSize: 16,
-			color: colors.controlText
+			color: colors.nextGenText
 		},
 		removePeerButton: {
-			backgroundColor: '#F5F4F2',
+			backgroundColor: colors.nextGenBorder,
 			borderRadius: 15,
 			width: 32,
 			height: 32,
@@ -308,12 +305,12 @@ const makeStyles = (colors: any) => {
 			alignItems: 'center'
 		},
 		removePeerButtonText: {
-			color: '#000000',
+			color: colors.nextGenText,
 			fontSize: 16,
 			marginBottom: 5
 		},
 		createEventButton: {
-			backgroundColor: '#799A79',
+			backgroundColor: colors.nextGenAccent,
 			borderRadius: 25,
 			padding: 15,
 			alignItems: 'center',
@@ -321,7 +318,7 @@ const makeStyles = (colors: any) => {
 			marginBottom: 20
 		},
 		createEventButtonText: {
-			color: '#fff',
+			color: colors.fontWhite,
 			fontSize: 18,
 			fontWeight: 'bold'
 		}

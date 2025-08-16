@@ -238,7 +238,7 @@ const dark = {
 	buttonFontSuccess: '#FFFFFF',
 	buttonSuccessDisabled: '#757575',
 	
-	viewAllText: '#384454'
+	viewAllText: '#9EA2A8'
 };
 
 const black = {
@@ -337,7 +337,7 @@ const black = {
 	buttonFontSuccess: '#FFFFFF',
 	buttonSuccessDisabled: '#757575',
 	
-	viewAllText: '#384454'
+	viewAllText: '#B2B8C6'
 };
 
 export const colors = {

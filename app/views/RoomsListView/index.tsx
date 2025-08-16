@@ -493,9 +493,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	setHeader = () => {
-		const { navigation } = this.props;
-		const options = this.getHeader();
-		navigation.setOptions(options);
+		const { navigation, isMasterDetail } = this.props;
+		// Only set header options in master detail mode
+		// In normal mode, BottomTabNavigator handles the header
+		if (isMasterDetail) {
+			const options = this.getHeader();
+			navigation.setOptions(options);
+		}
 	};
 
 	internalSetState = (

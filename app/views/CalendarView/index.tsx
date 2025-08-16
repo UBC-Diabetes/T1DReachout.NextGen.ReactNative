@@ -39,8 +39,18 @@ const CalendarView = (): React.ReactElement => {
 	const styles = makeStyles(theme);
 
 	useEffect(() => {
-		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
-		navigation.setOptions({
+		navigation.setOptions({ 
+			title: 'Calendar', 
+			headerStyle: { 
+				backgroundColor: colors.nextGenSurface,
+				shadowColor: 'transparent' 
+			},
+			headerTitleStyle: { 
+				color: colors.nextGenText,
+				fontSize: 18,
+				fontWeight: '400'
+			},
+			headerTitleAlign: 'center',
 			headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='calendar-view-drawer' />,
 			headerRight: () => (
 				<HeaderButton.Container>
@@ -52,7 +62,7 @@ const CalendarView = (): React.ReactElement => {
 		});
 
 		dispatch(fetchEventRequest());
-	}, [navigation, userName, dispatch]);
+	}, [navigation, userName, dispatch, colors.nextGenSurface, colors.nextGenText]);
 
 	const createEvent = useCallback(() => {
 		dispatch(createEventDraft({ author: userName }));
@@ -66,15 +76,29 @@ const CalendarView = (): React.ReactElement => {
 	return (
 		<View style={{ flex: 1, backgroundColor: colors.backgroundColor }} testID='calendar-view'>
 			<StatusBar />
-			<Text style={styles.title}>Calendar</Text>
 			<CalendarProvider date={todaysDate}>
 				<ExpandableCalendar
 					testID={testIDs.expandableCalendar.CONTAINER}
 					theme={{ 
-						...theme, 
-						dotColor: colors.nextGenAccent, 
-						arrowColor: colors.nextGenAccent, 
-						selectedDayBackgroundColor: colors.nextGenPrimary 
+						backgroundColor: colors.nextGenBackground,
+						calendarBackground: colors.nextGenBackground,
+						textSectionTitleColor: colors.nextGenTextSecondary,
+						selectedDayBackgroundColor: colors.nextGenAccent,
+						selectedDayTextColor: colors.fontWhite,
+						todayTextColor: colors.nextGenAccent,
+						dayTextColor: colors.nextGenText,
+						textDisabledColor: colors.nextGenTextSecondary,
+						dotColor: colors.nextGenAccent,
+						selectedDotColor: colors.fontWhite,
+						arrowColor: colors.nextGenAccent,
+						monthTextColor: colors.nextGenText,
+						indicatorColor: colors.nextGenAccent,
+						textDayFontWeight: '500',
+						textMonthFontWeight: '600',
+						textDayHeaderFontWeight: '600',
+						textDayFontSize: 16,
+						textMonthFontSize: 18,
+						textDayHeaderFontSize: 14
 					}}
 					firstDay={0}
 					markedDates={marked}
@@ -111,19 +135,6 @@ const CalendarView = (): React.ReactElement => {
 
 const makeStyles = (theme: any) =>
 	StyleSheet.create({
-		title: {
-			color: theme.colors.titleText,
-			marginLeft: 20,
-			marginBottom: 10,
-			fontSize: 24,
-			lineHeight: 29,
-			fontWeight: '600'
-		},
-		tileContainer: {
-			flexDirection: 'row',
-			justifyContent: 'space-around',
-			flexWrap: 'wrap'
-		},
 		adminButtonContainer: {
 			marginTop: 20,
 			bottom: 20,
@@ -132,7 +143,7 @@ const makeStyles = (theme: any) =>
 		},
 		adminButton: {
 			margin: 10,
-			backgroundColor: theme.colors.nextGenPrimary,
+			backgroundColor: theme.colors.nextGenAccent,
 			paddingVertical: 15,
 			paddingHorizontal: 20,
 			borderRadius: 50,
@@ -140,7 +151,7 @@ const makeStyles = (theme: any) =>
 			justifyContent: 'center'
 		},
 		adminButtonText: {
-			color: theme.colors.nextGenSurface,
+			color: theme.colors.fontWhite,
 			fontSize: 20,
 			fontWeight: 'bold'
 		}
