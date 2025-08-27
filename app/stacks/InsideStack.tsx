@@ -98,6 +98,7 @@ import ConnectView from '../views/DiscussionBoard/ConnectView';
 import BottomTabNavigator from './BottomTabNavigator';
 
 import { HeaderBackButton } from '@react-navigation/elements';
+import LeftCaret from '../components/LeftCaret';
 
 import { themes } from '../lib/constants';
 
@@ -202,18 +203,7 @@ const MainStackNavigator = () => {
 						elevation: 0,
 						borderBottomWidth: 0
 					},
-					headerLeft: () => {
-						const navigation = useNavigation();
-						return (
-							<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
-								<Image
-									source={require('../static/images/discussionboard/arrow_left.png')}
-									style={{ width: 11, height: 19, tintColor: themes[theme].nextGenText }}
-									resizeMode='contain'
-								/>
-							</TouchableOpacity>
-						);
-					}
+					headerLeft: () => <LeftCaret theme={theme} />
 				}}
 			/>
 			{/* AdminPanelStackNavigator */}
