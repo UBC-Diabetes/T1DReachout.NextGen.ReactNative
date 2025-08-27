@@ -219,7 +219,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 					<FlatList
 						data={boards}
 						renderItem={({ item }) => <DiscussionBoardCard item={item} onPress={() => goRoom({ item, isMasterDetail })} />}
-						keyExtractor={(item, id) => item.title + id}
+						keyExtractor={item => item._raw.id}
 						style={{ padding: 16 }}
 						ListFooterComponent={<View style={styles.footer} />}
 						showsVerticalScrollIndicator={false}
@@ -235,7 +235,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 								server={server}
 							/>
 						)}
-						keyExtractor={(item, id) => item.title + id}
+						keyExtractor={item => item._raw.id}
 						style={{ paddingHorizontal: 20, paddingVertical: 4, marginBottom: 32 }}
 						ListFooterComponent={<View style={styles.footer} />}
 					/>
