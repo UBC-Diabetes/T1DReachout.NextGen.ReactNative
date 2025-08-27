@@ -184,7 +184,6 @@ const MainStackNavigator = () => {
 			<MainStack.Screen
 				name='DiscussionBoardView'
 				component={DiscussionBoardView}
-				options={DiscussionBoardView.navigationOptions}
 			/>
 			<MainStack.Screen
 				name='DiscussionPostView'

@@ -85,7 +85,6 @@ const DiscussionPostCard = React.memo(({ item, onPress, starPost }: SavedPostCar
 	};
 
 	useEffect(() => {
-		console.log('DPC useEffect', { id: item._raw?.id, rid: item._raw?.rid, ts: Date.now() });
 		if (item) {
 			setIsSaved(starred);
 			setDescription(msg);
@@ -107,11 +106,11 @@ const DiscussionPostCard = React.memo(({ item, onPress, starPost }: SavedPostCar
 				const likes = reactions?.filter((reaction: any) => reaction?.emoji === ':thumbsup:') || [];
 				const likedReaction = likes?.find((reaction: any) => {
 					const hasReacted = reaction?.usernames?.find((name: string) => name === user.username);
-					return hasReacted ? true : false;
+					return !!hasReacted;
 				});
 				const count = likes[0]?.usernames?.length || 0;
 				setLikeCount(count);
-				setHasLiked(likedReaction ? true : false);
+				setHasLiked(!!likedReaction);
 			}
 		}
 	}, [item]);

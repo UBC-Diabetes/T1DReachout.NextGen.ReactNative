@@ -9,6 +9,7 @@ import { isIOS } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
 import { getIcon } from '../DiscussionBoard/helpers';
 import { HeaderBackButton } from '@react-navigation/elements';
+import LeftCaret from '../../components/LeftCaret';
 
 const hitSlop = { top: 15, bottom: 15, left: 15, right: 15 };
 
@@ -78,19 +79,7 @@ const LeftButtons = ({
 			marginLeft = -2 * labelLength;
 			fontSize = labelLength > 1 ? 14 : 17;
 		}
-		return (
-			<HeaderBackButton
-				label={label}
-				onPress={handleGoBack}
-				labelStyle={{
-					fontSize,
-					marginLeft
-				}}
-				backImage={() => <Image source={getIcon('arrowLeft')} style={{ width: 11, height: 19 }} resizeMode='contain' />}
-				tintColor={themes[theme].headerTintColor}
-				testID='header-back'
-			/>
-		);
+		return <LeftCaret theme={theme} onPress={handleGoBack} />;
 	}
 
 	if (baseUrl && userId && token) {

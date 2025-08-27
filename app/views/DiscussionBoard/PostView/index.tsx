@@ -173,7 +173,13 @@ const PostView: React.FC = ({ route }) => {
 	};
 
 	useEffect(() => {
-		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
+		navigation.setOptions({ 
+			title: '', 
+			headerStyle: { 
+				shadowColor: 'transparent',
+				backgroundColor: themes[theme].nextGenBackground
+			} 
+		});
 		if (!isMasterDetail) {
 			navigation.setOptions({
 				headerLeft: () => <LeftCaret theme={theme} />,

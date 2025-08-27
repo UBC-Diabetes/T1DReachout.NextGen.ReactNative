@@ -228,4 +228,6 @@ const DiscussionView: React.FC<ScreenProps> = ({ route }) => {
 	);
 };
 
+DiscussionView.navigationOptions = {};
+
 export default withTheme(DiscussionView);
