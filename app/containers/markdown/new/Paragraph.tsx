@@ -32,7 +32,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		forceTrim = true;
 	}
 	return (
-		<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
+		<Text style={[styles.text, { color: themes[theme].fontDefault }]} key={JSON.stringify(value)}>
 			<Inline value={value} forceTrim={forceTrim} />
 		</Text>
 	);

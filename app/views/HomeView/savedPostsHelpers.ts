@@ -246,20 +246,20 @@ export const observeSavedPosts = (limit: number = 5, callback: (posts: SavedPost
       const formattedPosts = filteredMessages.slice(0, limit).map(m => {
         let object = { ...m };
         try {
-          if (m?._raw?.u?.length && m._raw.u.length > 0 && m._raw.u !== '[]') {
+          if (typeof m?._raw?.u === 'string' && m._raw.u.length > 0 && m._raw.u !== '[]') {
             object._raw.u = JSON.parse(m._raw.u);
           }
-          if (m?._raw?.attachments?.length && m._raw.attachments.length > 0) {
+          if (typeof m?._raw?.attachments === 'string' && m._raw.attachments.length > 0) {
             object._raw.attachments = JSON.parse(m._raw.attachments);
           }
-          if (m?._raw?.replies?.length && m._raw.replies.length > 0 && m._raw.replies !== '[]') {
+          if (typeof m?._raw?.replies === 'string' && m._raw.replies.length > 0 && m._raw.replies !== '[]') {
             object._raw.replies = JSON.parse(m._raw.replies);
           }
-          if (m?._raw?.reactions?.length && m._raw.reactions.length > 0 && m._raw.reactions !== '[]') {
+          if (typeof m?._raw?.reactions === 'string' && m._raw.reactions.length > 0 && m._raw.reactions !== '[]') {
             object._raw.reactions = JSON.parse(m._raw.reactions);
           }
         } catch (error) {
-          console.warn('Error parsing saved post JSON fields:', error);
+          console.log('Error parsing saved post JSON fields:', m._raw);
         }
 
         return object as SavedPost;
