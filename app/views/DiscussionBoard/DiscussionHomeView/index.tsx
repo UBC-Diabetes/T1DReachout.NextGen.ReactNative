@@ -196,7 +196,20 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 		if (route?.params?.selectedTab !== undefined && route.params.selectedTab !== selectedTab) {
 			setSelectedTab(route.params.selectedTab);
 		}
-	}, [route?.params?.selectedTab]);
+		// Check if there's a post to open from navigation params
+		if (route?.params?.postToOpen) {
+			const { postToOpen } = route.params;
+			// Navigate to the post view
+			navigation.navigate('RoomView', {
+				rid: postToOpen.rid,
+				tmid: postToOpen.id,
+				name: makeThreadName(postToOpen),
+				t: SubscriptionType.THREAD
+			});
+			// Clear the param so it doesn't trigger again on re-render
+			navigation.setParams({ postToOpen: null });
+		}
+	}, [route?.params?.selectedTab, route?.params?.postToOpen]);
 
 	return (
 		<View style={styles.mainContainer}>
