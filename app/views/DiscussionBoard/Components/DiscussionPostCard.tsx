@@ -3,28 +3,25 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
+import { ResizeMode, Video } from 'expo-av';
+import { useSelector } from 'react-redux';
 
-import { withTheme, useTheme } from '../../../theme';
 import { SavedPostCardProps } from '../DiscussionHomeView/interaces';
 import { getDate, getIcon } from '../helpers';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers';
-import { useSelector } from 'react-redux';
-import { IApplicationState } from '../../../definitions';
+import { IApplicationState, TThreadMessageModel } from '../../../definitions';
 import { getUserSelector } from '../../../selectors/login';
 import { themes } from '../../../lib/constants';
 import Markdown from '../../../containers/markdown';
 import Avatar from '../../../containers/Avatar/Avatar';
 import { Services } from '../../../lib/services';
-import RoomServices from './../../RoomView/services';
-import { TThreadMessageModel } from '../../../definitions';
-
+import RoomServices from '../../RoomView/services';
+import { withTheme, useTheme } from '../../../theme';
 import { loadThreadMessages } from '../../../lib/methods';
-
-import { ResizeMode, Video } from 'expo-av';
 
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
 
-const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
+const DiscussionPostCard = React.memo(({ item, onPress, starPost }: SavedPostCardProps) => {
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const customEmojis = useSelector((state: IApplicationState) => state.customEmojis);
 	const server = useSelector((state: IApplicationState) => state.server.server);
@@ -33,8 +30,8 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 
 	const styles = makeStyles(theme, themes, colors);
 
-	const { title, starPost, _raw, onPress, roomId } = item;
-	const { msg, id, ts, u: userObject, urls, attachments, replies, reactions, starred, rid } = _raw;
+	const { title, roomId } = item;
+	const { msg, id, ts, u: userObject, attachments, reactions, starred, rid } = item._raw;
 
 	const [isSaved, setIsSaved] = useState(false);
 	const [replyList, setReplyList] = useState<void | TThreadMessageModel[]>([]);
@@ -43,7 +40,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 	const [videoUri, setVideoUri] = useState<string | null>(null);
 	const [likeCount, setLikeCount] = useState(0);
 	const [hasLiked, setHasLiked] = useState(false);
-	let userName = userObject?.username;
+	const userName = userObject?.username;
 
 	const ImageProgress = createImageProgress(FastImage);
 
@@ -88,6 +85,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 	};
 
 	useEffect(() => {
+		console.log('DPC useEffect', { id: item._raw?.id, rid: item._raw?.rid, ts: Date.now() });
 		if (item) {
 			setIsSaved(starred);
 			setDescription(msg);
@@ -129,13 +127,16 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 				<TouchableOpacity
 					onPress={() => {
 						if (starPost) {
-							starPost(_raw);
+							starPost(item._raw);
 							setIsSaved(!isSaved);
 						}
 					}}
-					hitSlop={hitSlop}
-				>
-					<Image source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} style={[styles.saveIcon, { tintColor: colors.nextGenText }]} resizeMode='contain' />
+					hitSlop={hitSlop}>
+					<Image
+						source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')}
+						style={[styles.saveIcon, { tintColor: colors.nextGenText }]}
+						resizeMode='contain'
+					/>
 				</TouchableOpacity>
 			</View>
 			{bannerImage && (

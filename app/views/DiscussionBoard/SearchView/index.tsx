@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -8,28 +8,22 @@ import { useDebounce } from 'use-debounce';
 
 import database from '../../../lib/database';
 import SearchBox from '../../../containers/SearchBox';
-import {
-	useTheme,
-	withTheme
-} from '../../../theme';
-import { IApplicationState } from '../../../definitions';
+import { useTheme, withTheme } from '../../../theme';
+import { IApplicationState, SubscriptionType } from '../../../definitions';
 import { themes } from '../../../lib/constants';
 import createStyles from './styles';
-import { searchItemProps } from './interfaces';
 import DiscussionPostCard from '../Components/DiscussionPostCard';
 import { handleStar } from '../helpers';
 import { loadMissedMessages } from '../../../lib/methods';
 import moment from 'moment';
-
-const leftArrow = require('../../../static/images/discussionboard/arrow_left.png');
-const rightArrow = require('../../../static/images/discussionboard/arrow_right.png');
+import { makeThreadName } from '../../../lib/methods/helpers';
 
 type SearchProps = {
 	route: any;
 };
 
 const SearchView: React.FC<SearchProps> = ({ route }) => {
-	const navigation = useNavigation<StackNavigationProp<any>>();
+	const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const { theme } = useTheme();
@@ -62,8 +56,7 @@ const SearchView: React.FC<SearchProps> = ({ route }) => {
 
 		return (
 			<DiscussionPostCard
-				{...formattedItem}
-				_raw={formattedItem._raw}
+				item={formattedItem}
 				onPress={(params: any) => navigation.navigate('DiscussionPostView', params)}
 				starPost={(message: any) =>
 					handleStar(message, async () => {

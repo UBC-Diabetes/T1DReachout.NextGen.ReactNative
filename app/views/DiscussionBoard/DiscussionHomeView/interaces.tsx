@@ -14,6 +14,7 @@ export type DiscussionBoardCardProps = {
 };
 
 export type SavedPostCardProps = {
+	item: any;
 	user: {
 		name: string;
 		profile_image: string;
