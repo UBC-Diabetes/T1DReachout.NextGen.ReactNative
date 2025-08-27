@@ -78,7 +78,8 @@ const DiscussionPostCard = React.memo(({ item, onPress, starPost }: SavedPostCar
 	};
 
 	const getReplies = async () => {
-		const repliesList = await loadThreadMessages({ tmid: id, rid: rid });
+		const { tmid } = item._raw;
+		const repliesList = await loadThreadMessages({ tmid: tmid || id, rid: rid });
 		if (repliesList?.length) {
 			setReplyList(repliesList);
 		}
@@ -161,7 +162,7 @@ const DiscussionPostCard = React.memo(({ item, onPress, starPost }: SavedPostCar
 				{title ? <Text style={styles.title}>{title}</Text> : <></>}
 				{description ? (
 					<Markdown
-						msg={`${description?.slice(0, 300)}${description?.length > 300 ? '...' : ''}`}
+						msg={`${description?.slice(0, 300)}${item.msg?.length > 300 ? '...' : ''}`}
 						// style={[isReply && style]}
 						style={[styles.description]}
 						username={user.username}

@@ -152,7 +152,7 @@ const PostView: React.FC = ({ route }) => {
 
 	const loadComments = async () => {
 		const post = route.params?.item._raw;
-		const repliesList = await loadThreadMessages({ tmid: post.id, rid: post.rid });
+		const repliesList = await loadThreadMessages({ tmid: post.tmid || post.id, rid: post.rid });
 		if (repliesList && repliesList?.length > 0) {
 			let formattedReplies = repliesList?.map(item => ({
 				user: item.u,
@@ -375,7 +375,8 @@ const PostView: React.FC = ({ route }) => {
 	};
 
 	const sendReply = (message: string) => {
-		sendMessage(post?.rid, message, post?.id, user).then(() => {
+		const tmid = post?.tmid ? post.tmid : undefined;
+		sendMessage(post?.rid, message, tmid, user).then(() => {
 			loadComments();
 			setNewComment('');
 		});

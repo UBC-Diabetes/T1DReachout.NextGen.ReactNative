@@ -176,10 +176,10 @@ export default async function updateMessages({
 							newThreadMessage.blocks = null;
 						}
 						Object.assign(tm, newThreadMessage);
-						if (threadMessage.tmid) {
-							tm.rid = threadMessage.tmid;
+						if (newThreadMessage?.tmid) {
+							tm.rid = newThreadMessage.tmid;
+							delete newThreadMessage.tmid;
 						}
-						delete threadMessage.tmid;
 					})
 				);
 			} catch {

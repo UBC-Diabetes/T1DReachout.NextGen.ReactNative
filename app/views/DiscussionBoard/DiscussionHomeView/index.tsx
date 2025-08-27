@@ -202,7 +202,7 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 			// Navigate to the post view
 			navigation.navigate('RoomView', {
 				rid: postToOpen.rid,
-				tmid: postToOpen.id,
+				tmid: postToOpen.tmid || postToOpen.id,
 				name: makeThreadName(postToOpen),
 				t: SubscriptionType.THREAD
 			});

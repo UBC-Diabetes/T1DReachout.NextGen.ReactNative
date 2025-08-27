@@ -163,11 +163,11 @@ export async function sendMessage(
 						tm.ts = messageDate;
 						tm._updatedAt = messageDate;
 						tm.status = messagesStatus.TEMP;
-						tm.u = {
+						tm.u = JSON.stringify({
 							_id: user.id || '1',
 							username: user.username,
 							name: user.name
-						};
+						});
 						tm.t = message.t;
 						if (message.t === E2E_MESSAGE_TYPE) {
 							tm.e2e = E2E_STATUS.DONE as E2EType;
@@ -190,11 +190,11 @@ export async function sendMessage(
 				m.ts = messageDate;
 				m._updatedAt = messageDate;
 				m.status = messagesStatus.TEMP;
-				m.u = {
+				m.u = JSON.stringify({
 					_id: user.id || '1',
 					username: user.username,
 					name: user.name
-				};
+				});
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
 					// m.tlm = messageDate; // I don't think this is necessary... leaving it commented just in case...

@@ -33,7 +33,8 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 					data = await Encryption.decryptMessages(data);
 					const db = database.active;
 					const threadMessagesCollection = db.get('thread_messages');
-					const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('rid', tmid)).fetch();
+					const ids = data.map((m: TThreadMessageModel) => m._id);
+					const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('id', Q.oneOf(ids))).fetch();
 					const filterThreadMessagesToCreate = data.filter(
 						(i1: TThreadMessageModel) => !allThreadMessagesRecords.find(i2 => i1._id === i2.id)
 					);
@@ -51,8 +52,8 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 								}
 								if (threadMessage.tmid) {
 									tm.rid = threadMessage.tmid;
+									delete threadMessage.tmid;
 								}
-								delete threadMessage.tmid;
 							})
 						)
 					);
@@ -61,13 +62,11 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 						const newThreadMessage = data.find((t: TThreadMessageModel) => t._id === threadMessage.id);
 						return threadMessage.prepareUpdate(
 							protectedFunction((tm: TThreadMessageModel) => {
-								const { attachments } = tm;
 								Object.assign(tm, newThreadMessage);
-								tm.attachments = attachments;
-								if (threadMessage.tmid) {
-									tm.rid = threadMessage.tmid;
+								if (newThreadMessage?.tmid) {
+									tm.rid = newThreadMessage.tmid;
+									delete newThreadMessage.tmid;
 								}
-								delete threadMessage.tmid;
 							})
 						);
 					});
