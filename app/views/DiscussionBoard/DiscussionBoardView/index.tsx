@@ -11,6 +11,7 @@ import {
 	// useTheme,
 	withTheme
 } from '../../../theme';
+import LeftCaret from '../../../components/LeftCaret';
 import styles from './styles';
 import { IApplicationState, TMessageModel, TThreadModel } from '../../../definitions';
 import PostCard from '../Components/DiscussionPostCard';
@@ -63,16 +64,7 @@ const DiscussionView: React.FC<ScreenProps> = ({ route }) => {
 		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
 		if (!isMasterDetail) {
 			navigation.setOptions({
-				headerLeft: () => (
-					<TouchableOpacity
-						style={{ marginLeft: 20 }}
-						onPress={() => {
-							navigation.goBack();
-						}}
-						hitSlop={hitSlop}>
-						<Image source={getIcon('arrowLeft')} style={{ width: 11, height: 19 }} resizeMode='contain' />
-					</TouchableOpacity>
-				),
+				headerLeft: () => <LeftCaret theme={theme} />,
 				headerRight: () => (
 					<View style={{ marginRight: 8 }}>
 						<HeaderButton.Container>

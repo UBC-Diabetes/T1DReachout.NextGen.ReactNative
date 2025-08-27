@@ -24,9 +24,10 @@ import {
 	//  useTheme,
 	withTheme
 } from '../../../theme';
+import LeftCaret from '../../../components/LeftCaret';
 import { IApplicationState } from '../../../definitions';
 import { themes } from '../../../lib/constants';
-import styles from './styles';
+import createStyles from './styles';
 import CommentOptionsModal from './PostOptions';
 import PostDeleteModal from './PostDelete';
 import PostReportModal from './PostReport';
@@ -72,6 +73,7 @@ const PostView: React.FC = ({ route }) => {
 
 	// const { theme } = useTheme();
 	const theme = 'light';
+	const styles = createStyles(theme);
 
 	const [postUser, setPostUser] = useState(null);
 	const [post, setPost] = useState(null);
@@ -174,15 +176,7 @@ const PostView: React.FC = ({ route }) => {
 		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
 		if (!isMasterDetail) {
 			navigation.setOptions({
-				headerLeft: () => (
-					<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
-						<Image
-							source={require('../../../static/images/discussionboard/arrow_left.png')}
-							style={{ width: 11, height: 19 }}
-							resizeMode='contain'
-						/>
-					</TouchableOpacity>
-				),
+				headerLeft: () => <LeftCaret theme={theme} />,
 				headerRight: () => (
 					<View style={{ marginRight: 8 }}>
 						<HeaderButton.Container>

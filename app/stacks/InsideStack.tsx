@@ -126,7 +126,7 @@ const MainStackNavigator = () => {
 		<MainStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), headerShadowVisible: false }}>
 			{/* Tab Navigator for main screens */}
 			<MainStack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
-			
+
 			{/* Other screens */}
 			<MainStack.Screen name='RoomView' component={RoomView} options={{ headerBackVisible: false }} />
 			<MainStack.Screen name='CalendarView' component={CalendarView} />
@@ -186,7 +186,20 @@ const MainStackNavigator = () => {
 				component={DiscussionBoardView}
 				options={DiscussionBoardView.navigationOptions}
 			/>
-			<MainStack.Screen name='DiscussionPostView' component={DiscussionPostView} options={DiscussionPostView.navigationOptions} />
+			<MainStack.Screen
+				name='DiscussionPostView'
+				component={DiscussionPostView}
+				options={{
+					title: '',
+					headerStyle: {
+						shadowColor: 'transparent',
+						backgroundColor: themes[theme].nextGenBackground,
+						elevation: 0,
+						borderBottomWidth: 0
+					},
+					headerLeft: () => <LeftCaret theme={theme} />
+				}}
+			/>
 			<MainStack.Screen
 				name='DiscussionNewPostView'
 				component={DiscussionNewPostView}

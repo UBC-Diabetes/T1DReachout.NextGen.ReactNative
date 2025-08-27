@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { themes } from '../../../lib/constants';
 
-const styles = StyleSheet.create({
+const createStyles = (theme: string) => StyleSheet.create({
 	mainContainer: {
 		flex: 1,
-		backgroundColor: '#fff',
+		backgroundColor: themes[theme].nextGenBackground,
 		padding: 20
 	},
 	header: {
@@ -22,7 +23,8 @@ const styles = StyleSheet.create({
 	profileName: {
 		fontWeight: '400',
 		fontSize: 14,
-		lineHeight: 20
+		lineHeight: 20,
+		color: themes[theme].nextGenText
 	},
 	moreMenuIcon: {
 		width: 14,
@@ -43,8 +45,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 20,
 		fontWeight: '400',
-		color: '#000'
-		// marginBottom: 8
+		color: themes[theme].nextGenText
 	},
 	postDate: {
 		marginTop: 8,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
 	},
 	reactionText: {
 		marginLeft: 6,
-		color: '#000',
+		color: themes[theme].nextGenText,
 		fontSize: 10,
 		lineHeight: 12,
 		fontWeight: '400',
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 20,
 		fontWeight: '400',
-		color: '#000',
+		color: themes[theme].nextGenText,
 		marginBottom: 30
 	},
 	comment: {
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
 		fontWeight: '400',
 		fontSize: 12,
 		lineHeight: 15,
-		color: '#000'
+		color: themes[theme].nextGenText
 	},
 	commentOptions: {
 		height: 16,
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		lineHeight: 20,
 		fontWeight: '400',
-		color: '#000'
+		color: themes[theme].nextGenText
 	},
 	commentFooter: {
 		marginVertical: 10,
@@ -152,28 +153,27 @@ const styles = StyleSheet.create({
 		fontSize: 10,
 		lineHeight: 12,
 		fontWeight: '400',
-		color: '#000000'
+		color: themes[theme].nextGenText
 	},
 	addCommentContainer: {
 		position: 'absolute',
-		bottom: 10,
-		// elevation: 10,
+		bottom: 0,
 		left: 0,
 		right: 0,
-		backgroundColor: '#fff',
+		backgroundColor: themes[theme].nextGenBackground,
 		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 0 },
-		shadowOpacity: 0.15,
-		shadowRadius: 100,
-		borderTopLeftRadius: 25,
-		borderTopRightRadius: 25,
-		paddingTop: 33,
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		borderTopWidth: 1,
+		borderTopColor: themes[theme].nextGenBorder,
+		paddingTop: 16,
 		paddingHorizontal: 20,
 		elevation: 5
 	},
 	textInputContainer: {
 		width: '100%',
-		backgroundColor: '#efefef80',
+		backgroundColor: themes[theme].nextGenSurface,
 		borderRadius: 8,
 		minHeight: 48,
 		flexDirection: 'row',
@@ -186,12 +186,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginRight: 8,
 		fontSize: 14,
-		lineHeight: 20
+		lineHeight: 20,
+		color: themes[theme].nextGenText
 	},
 	sendIcon: {
 		height: 20,
-		width: 20
+		width: 20,
+		tintColor: themes[theme].actionTintColor
 	}
 });
 
-export default styles;
+export default createStyles;
