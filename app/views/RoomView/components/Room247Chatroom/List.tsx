@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import { themes } from '../../../../lib/constants';
@@ -16,6 +16,7 @@ interface IRoom247ListProps {
 	renderItem: (item: TAnyMessageModel, prevItem: TAnyMessageModel) => React.ReactElement;
 	loading: boolean;
 	fetchMessages: () => void;
+	jumpToMessageId?: string;
 }
 
 // DEVELOPMENT: Toggle to enable/disable mock own message
@@ -78,14 +79,42 @@ const createStyles = ({ theme }: { theme: any }) =>
 // Legacy export for compatibility
 const styles = createStyles({ theme: 'light' });
 
-const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IRoom247ListProps) => {
+const Room247List = ({ theme, messages, renderItem, loading, fetchMessages, jumpToMessageId }: IRoom247ListProps) => {
 	// FlatList ref for scroll control
 	const flatListRef = useRef<FlatList>(null);
+	const [hasScrolled, setHasScrolled] = useState(false);
 
 	const dynamicStyles = createStyles({ theme });
 
 	// Scroll button visibility state
 	const [showScrollButton, setShowScrollButton] = useState(false);
+
+	const viewabilityConfig = {
+		itemVisiblePercentThreshold: 50
+	};
+
+	const onViewableItemsChanged = useCallback(
+		({ viewableItems }) => {
+			if (jumpToMessageId && !hasScrolled && viewableItems.length > 0) {
+				const index = messages.findIndex(m => m.id === jumpToMessageId);
+				if (index > -1) {
+					flatListRef.current?.scrollToIndex({ index, animated: true });
+					setHasScrolled(true);
+				} else {
+					console.log('[Room247List] Message not found in onViewableItemsChanged', {
+						jumpToMessageId,
+						totalMessages: messages.length
+					});
+				}
+			}
+		},
+		[jumpToMessageId, messages, hasScrolled]
+	);
+
+	const handleScrollToIndexFailed = (info: { index: number; highestMeasuredFrameIndex: number; averageItemLength: number }) => {
+		// Fallback to scrolling to offset if index fails
+		flatListRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: true });
+	};
 
 	// Mock own message for development
 	let displayMessages = messages;
@@ -361,6 +390,9 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages }: IR
 				onEndReached={fetchMessages}
 				onScroll={handleScroll}
 				scrollEventThrottle={16}
+				onViewableItemsChanged={onViewableItemsChanged}
+				viewabilityConfig={viewabilityConfig}
+				onScrollToIndexFailed={handleScrollToIndexFailed}
 				{...scrollPersistTaps}
 			/>
 			{/* Scroll to bottom button - only show when scrolled up */}

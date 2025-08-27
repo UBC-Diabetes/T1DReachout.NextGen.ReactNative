@@ -28,6 +28,7 @@ interface IRoom247ChatroomProps {
 	hideSystemMessages: string[];
 	showMessageInMainThread: boolean;
 	useRealName?: boolean;
+	jumpToMessageId?: string;
 }
 
 const Room247Chatroom = ({
@@ -44,7 +45,8 @@ const Room247Chatroom = ({
 	renderRow,
 	hideSystemMessages,
 	showMessageInMainThread,
-	useRealName
+	useRealName,
+	jumpToMessageId
 }: IRoom247ChatroomProps) => {
 	const [messages, messagesIds, fetchMessages] = useMessages({
 		rid,
@@ -65,6 +67,7 @@ const Room247Chatroom = ({
 			renderItem={(item, prevItem) => renderRow(item, prevItem, null)}
 			loading={loading}
 			fetchMessages={fetchMessages}
+			jumpToMessageId={jumpToMessageId}
 		/>
 	);
 };

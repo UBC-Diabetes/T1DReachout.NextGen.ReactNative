@@ -1601,6 +1601,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 							hideSystemMessages={this.hideSystemMessages}
 							showMessageInMainThread={user.showMessageInMainThread ?? false}
 							useRealName={useRealName}
+							jumpToMessageId={this.jumpToMessageId}
 						/>
 					) : (
 						<List
