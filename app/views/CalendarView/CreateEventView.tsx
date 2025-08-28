@@ -51,13 +51,13 @@ const CreateEventView = () => {
 	};
 
 	useEffect(() => {
-		navigation.setOptions({ 
-			title: isEditing ? 'Edit Event' : 'Create Event', 
-			headerStyle: { 
+		navigation.setOptions({
+			title: isEditing ? 'Edit Event' : 'Create Event',
+			headerStyle: {
 				backgroundColor: colors.nextGenSurface,
-				shadowColor: 'transparent' 
+				shadowColor: 'transparent'
 			},
-			headerTitleStyle: { 
+			headerTitleStyle: {
 				color: colors.nextGenText,
 				fontSize: 18,
 				fontWeight: '400'
@@ -79,8 +79,8 @@ const CreateEventView = () => {
 
 		if (!isEditing) {
 			const defaultEvent = {
-				description: draftEvent?.description ?? 'Event description',
-				title: draftEvent?.title ?? 'Event title',
+				description: draftEvent?.description ?? '',
+				title: draftEvent?.title ?? '',
 				dateTime: new Date().toISOString(),
 				peers: draftEvent?.peers ?? [],
 				attendees: draftEvent?.attendees ?? []
@@ -153,7 +153,7 @@ const CreateEventView = () => {
 				<Text style={styles.label}>Title</Text>
 				<TextInput
 					style={styles.input}
-					value={isEditing && draftEvent.title}
+					value={draftEvent?.title || ''}
 					onChangeText={onTitleChange}
 					placeholder='Enter event title'
 					placeholderTextColor={colors.placeholderText}
@@ -188,7 +188,7 @@ const CreateEventView = () => {
 					style={[styles.input, styles.textArea]}
 					placeholder='Describe your event'
 					placeholderTextColor={colors.placeholderText}
-					value={isEditing && draftEvent.description}
+					value={draftEvent.description || ''}
 					onChangeText={onDescriptionChange}
 					multiline
 					numberOfLines={4}
@@ -276,14 +276,14 @@ const makeStyles = (colors: any) => {
 		},
 		addPeersButton: {
 			borderWidth: 1,
-			borderColor: colors.nextGenAccent,
+			borderColor: colors.nextGenPrimary,
 			borderRadius: 25,
 			padding: 10,
 			alignItems: 'center',
 			marginBottom: 15
 		},
 		addPeersButtonText: {
-			color: colors.nextGenAccent,
+			color: colors.nextGenPrimary,
 			fontSize: 16
 		},
 		peerItem: {
@@ -310,7 +310,7 @@ const makeStyles = (colors: any) => {
 			marginBottom: 5
 		},
 		createEventButton: {
-			backgroundColor: colors.nextGenAccent,
+			backgroundColor: colors.nextGenPrimary,
 			borderRadius: 25,
 			padding: 15,
 			alignItems: 'center',

@@ -166,12 +166,12 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 						onPress={() => handleTabPress(item.screen)}
 						testID={item.testID}
 						activeOpacity={0.7}>
-						<CustomIcon name={item.icon} size={24} color={active ? colors.actionTintColor : colors.nextGenText} />
+						<CustomIcon name={item.icon} size={24} color={active ? colors.nextGenPrimary : colors.nextGenText} />
 						<Text
 							style={[
 								styles.tabText,
 								{
-									color: active ? colors.actionTintColor : colors.nextGenText
+									color: active ? colors.nextGenPrimary : colors.nextGenText
 								}
 							]}>
 							{item.title}

@@ -25,11 +25,11 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID, placeholder, themeCo
 		onChangeText?.(value);
 	}, []);
 
-	// Custom colors for the search bar using theme-aware accent color
+	// Custom colors for the search bar using theme-aware primary color
 	const customColors = {
 		...colors,
-		surfaceRoom: colors.nextGenAccent,
-		strokeLight: colors.nextGenAccent,
+		surfaceRoom: colors.nextGenPrimary,
+		strokeLight: colors.nextGenPrimary,
 		fontTitlesLabels: colors.fontWhite,
 		fontAnnotation: colors.fontWhite,
 		fontDefault: colors.fontWhite
@@ -44,7 +44,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID, placeholder, themeCo
 				placeholder={placeholder ?? I18n.t('Search')}
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
-				containerStyle={[styles.inputContainer, { backgroundColor: colors.nextGenAccent }]}
+				containerStyle={[styles.inputContainer, { backgroundColor: colors.nextGenPrimary }]}
 				onChangeText={internalOnChangeText}
 				onSubmitEditing={onSubmitEditing}
 				value={text}

@@ -62,7 +62,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 							{roomUser.roles.map(role =>
 								role ? (
 									<View
-										style={[styles.roleBadge, { backgroundColor: colors.nextGenLightGray }]}
+										style={[styles.roleBadge, { backgroundColor: colors.nextGenBackground }]}
 										key={role}
 										testID={`user-role-${role.replace(/ /g, '-')}`}
 									>

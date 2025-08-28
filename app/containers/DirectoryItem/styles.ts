@@ -9,7 +9,6 @@ export default StyleSheet.create({
 		height: ROW_HEIGHT,
 		marginVertical: 12,
 		marginHorizontal: 16,
-		backgroundColor: '#FFFFFF',
 		borderRadius: 10
 	},
 	directoryItemContainer: {

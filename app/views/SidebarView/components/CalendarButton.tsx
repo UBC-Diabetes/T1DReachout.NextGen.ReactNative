@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { CustomIcon } from '../../../containers/CustomIcon';
-import { TSupportedThemes } from '../../../theme';
+import { TSupportedThemes, useTheme } from '../../../theme';
 import { getUpcomingEventsCountSelector } from '../../../selectors/event';
 import I18n from '../../../i18n';
 
@@ -15,6 +15,7 @@ interface ICalendarButtonProps {
 const CalendarButton = ({ theme }: ICalendarButtonProps) => {
 	const navigation = useNavigation();
 	const upcomingEventsCount = useSelector(getUpcomingEventsCountSelector);
+	const { colors } = useTheme();
 
 	const handlePress = () => {
 		// Navigate to calendar view
@@ -25,7 +26,7 @@ const CalendarButton = ({ theme }: ICalendarButtonProps) => {
 		<View style={styles.container}>
 			<TouchableOpacity 
 				onPress={handlePress}
-				style={styles.button}
+				style={[styles.button, { backgroundColor: colors.nextGenPrimary, borderColor: colors.nextGenPrimary }]}
 				testID='sidebar-calendar-button'
 			>
 				{/* Left side: Calendar icon + Calendar text */}
@@ -60,7 +61,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 8
 	},
 	button: {
-		backgroundColor: '#112D4E', // Dark blue from Peer Mentor Library search bar
 		borderRadius: 25, // Fully rounded corners
 		height: 48, // Standard input height
 		paddingHorizontal: 16,
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		borderWidth: 1,
-		borderColor: '#112D4E',
 		elevation: 2,
 		shadowColor: '#000',
 		shadowOffset: {

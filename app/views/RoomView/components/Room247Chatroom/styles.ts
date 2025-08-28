@@ -296,7 +296,7 @@ export const createStyles = ({ theme, colors }: { theme: any; colors: any }) => 
 		marginBottom: 18
 	},
 	replyButton: {
-		backgroundColor: colors.nextGenAccent,
+		backgroundColor: colors.nextGenPrimary,
 		borderRadius: 16,
 		paddingHorizontal: 16,
 		paddingVertical: 6,

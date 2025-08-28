@@ -46,7 +46,7 @@ export const createSavedPostCardStyles = ({ theme }: { theme: any }) => {
 		bookmarkIcon: {
 			width: 18,
 			height: 18,
-			tintColor: colors[theme].actionTintColor
+			tintColor: colors[theme].nextGenPrimary
 		},
 		savedPostText: {
 			fontSize: 14,

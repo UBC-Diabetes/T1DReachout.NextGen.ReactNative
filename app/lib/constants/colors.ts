@@ -12,34 +12,34 @@ export const themeColors = {
 
 export const nextGenColors = {
 	light: {
-		nextGenPrimary: '#112D4E',        // Dark blue primary
-		nextGenSecondary: '#CAC4D0',      // Light gray/purple secondary
-		nextGenBackground: '#EBEDF0',     // Light gray background
-		nextGenSurface: '#EBEDF0',        // Light gray surface (same as background)
-		nextGenBorder: '#E1E5E8',         // Light border
-		nextGenText: '#2F343D',           // Dark text
-		nextGenTextSecondary: '#6C727A',  // Secondary text
-		nextGenAccent: '#156FF5'          // Blue accent
+		nextGenPrimary: '#112D4E', // Dark blue primary
+		nextGenSecondary: '#CAC4D0', // Light gray/purple secondary
+		nextGenBackground: '#EBEDF0', // Light gray background
+		nextGenSurface: '#EBEDF0', // Light gray surface (same as background)
+		nextGenBorder: '#E1E5E8', // Light border
+		nextGenText: '#2F343D', // Dark text
+		nextGenTextSecondary: '#6C727A', // Secondary text
+		nextGenAccent: '#156FF5' // Blue accent
 	},
 	dark: {
-		nextGenPrimary: '#1E4A6F',        // Use same lighter blue as black mode for better visibility
-		nextGenSecondary: '#4A4A52',      // Darker secondary for dark mode
-		nextGenBackground: '#1F2329',     // Dark background
-		nextGenSurface: '#2A2E36',        // Lighter dark surface for better contrast
-		nextGenBorder: '#333842',         // Dark border
-		nextGenText: '#E4E7EA',           // Light text
-		nextGenTextSecondary: '#9EA2A8',  // Secondary light text
-		nextGenAccent: '#549DF9'          // Lighter blue accent for dark mode
+		nextGenPrimary: '#549df9', // Light blue for dark mode
+		nextGenSecondary: '#4A4A52', // Darker secondary for dark mode
+		nextGenBackground: '#1F2329', // Dark background
+		nextGenSurface: '#2A2E36', // Lighter dark surface for better contrast
+		nextGenBorder: '#333842', // Dark border
+		nextGenText: '#E4E7EA', // Light text
+		nextGenTextSecondary: '#9EA2A8', // Secondary light text
+		nextGenAccent: '#549DF9' // Lighter blue accent for dark mode
 	},
 	black: {
-		nextGenPrimary: '#1E4A6F',        // Adjusted blue for black theme
-		nextGenSecondary: '#3A3A3A',      // Dark gray secondary for black mode
-		nextGenBackground: '#000000',     // True black background
-		nextGenSurface: '#1A1A1A',        // Lighter off-black surface for better contrast
-		nextGenBorder: '#1f2329',         // Very dark border
-		nextGenText: '#F2F3F5',           // Bright light text
-		nextGenTextSecondary: '#B2B8C6',  // Secondary bright text
-		nextGenAccent: '#76B7FC'          // Bright blue accent for black mode
+		nextGenPrimary: '#549df9', // Light blue for black mode
+		nextGenSecondary: '#3A3A3A', // Dark gray secondary for black mode
+		nextGenBackground: '#000000', // True black background
+		nextGenSurface: '#1A1A1A', // Lighter off-black surface for better contrast
+		nextGenBorder: '#1f2329', // Very dark border
+		nextGenText: '#F2F3F5', // Bright light text
+		nextGenTextSecondary: '#B2B8C6', // Secondary bright text
+		nextGenAccent: '#76B7FC' // Bright blue accent for black mode
 	}
 };
 
@@ -52,7 +52,7 @@ const light = {
 	surfaceLight: '#FFFFFF',
 	surfaceTint: '#F7F8FA',
 	surfaceRoom: '#EBEDF0', // same as nextGenLightGray
-	surfaceNeutral: '#E4E7EA',
+	surfaceNeutral: '#EBEDF0',
 	surfaceDisabled: '#F7F8FA',
 	surfaceHover: '#F2F3F5',
 	surfaceSelected: '#D7DBE0',
@@ -108,7 +108,7 @@ const light = {
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#F38C39',
 
-	buttonBackgroundPrimaryDefault: '#156FF5',
+	buttonBackgroundPrimaryDefault: '#112D4E',
 	buttonBackgroundPrimaryPress: '#10529E',
 	buttonBackgroundPrimaryDisabled: '#D1EBFE',
 
@@ -138,7 +138,7 @@ const light = {
 	buttonDangerDisabled: '#FFFFFF',
 	buttonFontSuccess: '#FFFFFF',
 	buttonSuccessDisabled: '#FFFFFF',
-	
+
 	viewAllText: '#384454'
 };
 
@@ -207,7 +207,7 @@ const dark = {
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
 
-	buttonBackgroundPrimaryDefault: '#095AD2',
+	buttonBackgroundPrimaryDefault: '#549df9',
 	buttonBackgroundPrimaryPress: '#245399',
 	buttonBackgroundPrimaryDisabled: '#1D3963',
 
@@ -237,7 +237,7 @@ const dark = {
 	buttonDangerDisabled: '#757575',
 	buttonFontSuccess: '#FFFFFF',
 	buttonSuccessDisabled: '#757575',
-	
+
 	viewAllText: '#9EA2A8'
 };
 
@@ -306,7 +306,7 @@ const black = {
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
 
-	buttonBackgroundPrimaryDefault: '#3976D1',
+	buttonBackgroundPrimaryDefault: '#549df9',
 	buttonBackgroundPrimaryPress: '#245399',
 	buttonBackgroundPrimaryDisabled: '#1D3963',
 
@@ -336,7 +336,7 @@ const black = {
 	buttonDangerDisabled: '#757575',
 	buttonFontSuccess: '#FFFFFF',
 	buttonSuccessDisabled: '#757575',
-	
+
 	viewAllText: '#B2B8C6'
 };
 

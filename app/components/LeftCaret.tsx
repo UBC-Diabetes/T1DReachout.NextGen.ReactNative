@@ -28,7 +28,7 @@ const LeftCaret: React.FC<ILeftCaretProps> = ({
 		}
 	});
 
-	const iconColor = tintColor || themes[theme].actionTintColor;
+	const iconColor = tintColor || themes[theme].nextGenPrimary;
 
 	return (
 		<TouchableOpacity

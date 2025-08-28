@@ -65,7 +65,7 @@ export const createStyles = ({ theme }: { theme: any }) =>
 		nameText: {
 			fontSize: 24, // M3 Headline Small
 			fontWeight: '400',
-			color: '#1d1b20',
+			color: colors[theme].nextGenText,
 			marginRight: 8
 		},
 		onlineStatusDot: {
@@ -83,7 +83,7 @@ export const createStyles = ({ theme }: { theme: any }) =>
 		hometownText: {
 			fontSize: 16, // M3 Title Medium
 			fontWeight: '500',
-			color: '#49454f',
+			color: colors[theme].nextGenTextSecondary,
 			marginBottom: 12
 		},
 
@@ -142,7 +142,7 @@ export const createStyles = ({ theme }: { theme: any }) =>
 		aboutHeader: {
 			fontSize: 22, // M3 Title Large
 			fontWeight: '400',
-			color: '#49454f',
+			color: colors[theme].nextGenText,
 			marginBottom: 12
 		},
 		aboutText: {

@@ -386,7 +386,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 								<TouchableOpacity style={styles.threadBellBetweenBubbleAndEdge} onPress={handleSave}>
 									<Image
 										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')}
-										style={{ width: 14, height: 14, tintColor: colors.nextGenText }}
+										style={{ width: 14, height: 14, tintColor: colors.nextGenPrimary }}
 										resizeMode='contain'
 									/>
 								</TouchableOpacity>
@@ -401,7 +401,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 								<TouchableOpacity style={styles.threadBellBetweenBubbleAndEdge} onPress={handleSave}>
 									<Image
 										source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')}
-										style={{ width: 14, height: 14, tintColor: colors.nextGenText }}
+										style={{ width: 14, height: 14, tintColor: colors.nextGenPrimary }}
 										resizeMode='contain'
 									/>
 								</TouchableOpacity>

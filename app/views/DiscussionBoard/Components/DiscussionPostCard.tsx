@@ -134,7 +134,7 @@ const DiscussionPostCard = React.memo(({ item, onPress, starPost }: SavedPostCar
 					hitSlop={hitSlop}>
 					<Image
 						source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')}
-						style={[styles.saveIcon, { tintColor: colors.nextGenText }]}
+						style={[styles.saveIcon, { tintColor: colors.nextGenPrimary }]}
 						resizeMode='contain'
 					/>
 				</TouchableOpacity>
