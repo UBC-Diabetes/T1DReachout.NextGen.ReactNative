@@ -160,7 +160,8 @@
 	"resolutions": {
 		"ua-parser-js": "1.0.2",
 		"jpeg-js": "0.4.4",
-		"react-native-reanimated": "3.8.1"
+		"react-native-reanimated": "3.8.1",
+		"expo-modules-core": "1.11.12"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.24.3",
