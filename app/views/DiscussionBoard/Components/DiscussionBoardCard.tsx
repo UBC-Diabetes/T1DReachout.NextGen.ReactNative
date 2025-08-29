@@ -36,7 +36,7 @@ const DiscussionBoardCard = React.memo(({ item, onPress, theme }: DiscussionBoar
 	return (
 		<TouchableOpacity style={styles.cardContainer} onPress={() => onPress && onPress()}>
 			<View style={styles.cardContent}>
-				<BoardIconStrip avatarText={avatar} type={item.t} rid={item.rid} style={styles.iconContainer} resizeMode='contain' />
+				<BoardIconStrip avatarText={avatar} type={item.t} rid={item.rid} style={styles.iconContainer} resizeMode='cover' />
 				<View style={styles.textSection}>
 					<Text style={styles.title}>{title}</Text>
 					{description ? (
@@ -90,19 +90,19 @@ const makeStyles = themeColors =>
 			alignItems: 'center',
 			alignSelf: 'stretch' // Fill the full height of the card
 		},
-			iconContainer: {
-				width: '30%',
-				alignSelf: 'stretch',
-				justifyContent: 'center',
-				alignItems: 'center'
-			},
+		iconContainer: {
+			width: '30%',
+			alignSelf: 'stretch',
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
 		boardIcon: {
 			width: 50,
 			height: 50
 		},
 		textSection: {
 			flex: 1, // 3/4 of the card width for text content
-			paddingVertical: 16,
+			paddingVertical: 12,
 			paddingHorizontal: 16,
 			justifyContent: 'center'
 		},
@@ -111,16 +111,15 @@ const makeStyles = themeColors =>
 			fontWeight: '600',
 			fontSize: 16,
 			lineHeight: 20,
-			color: themeColors.nextGenText,
-			marginBottom: 4
+			color: themeColors.nextGenText
 		},
 		description: {
 			fontFamily: 'Inter',
 			fontWeight: '400',
 			fontSize: 14,
 			lineHeight: 18,
-			color: themeColors.nextGenTextSecondary,
-			marginBottom: 8
+			marginBottom: 8,
+			color: themeColors.nextGenTextSecondary
 		},
 		boardMembersContainer: {
 			flexDirection: 'row',
