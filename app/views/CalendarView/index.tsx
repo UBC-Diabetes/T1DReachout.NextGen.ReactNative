@@ -42,7 +42,7 @@ const CalendarView = (): React.ReactElement => {
 		navigation.setOptions({ 
 			title: 'Calendar', 
 			headerStyle: { 
-				backgroundColor: colors.nextGenSurface,
+				backgroundColor: colors.nextGenBackground,
 				shadowColor: 'transparent' 
 			},
 			headerTitleStyle: { 
