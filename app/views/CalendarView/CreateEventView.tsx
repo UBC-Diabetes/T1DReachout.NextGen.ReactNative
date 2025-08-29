@@ -54,7 +54,7 @@ const CreateEventView = () => {
 		navigation.setOptions({
 			title: isEditing ? 'Edit Event' : 'Create Event',
 			headerStyle: {
-				backgroundColor: colors.nextGenSurface,
+				backgroundColor: colors.nextGenBackground,
 				shadowColor: 'transparent'
 			},
 			headerTitleStyle: {

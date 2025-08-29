@@ -110,7 +110,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 		if (!headerConfig || isMasterDetail) return null;
 
 		return (
-			<View style={[styles.header, { backgroundColor: colors.nextGenSurface }]}>
+			<View style={[styles.header, { backgroundColor: colors.nextGenBackground }]}>
 				<View style={styles.headerLeft}>
 					{headerConfig.showDrawer && (
 						<HeaderButton.Drawer navigation={navigation} testID='bottom-tab-drawer' onPress={() => navigation.toggleDrawer()} />
@@ -156,7 +156,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 	};
 
 	const renderTabBar = () => (
-		<View style={[styles.tabBarContainer, { backgroundColor: colors.nextGenSurface, borderTopColor: colors.nextGenBorder }]}>
+		<View style={[styles.tabBarContainer, { backgroundColor: colors.nextGenBackground, borderTopColor: colors.nextGenBorder }]}>
 			{NAV_ITEMS.map((item, index) => {
 				const active = activeTab === item.screen;
 				return (
@@ -166,12 +166,12 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 						onPress={() => handleTabPress(item.screen)}
 						testID={item.testID}
 						activeOpacity={0.7}>
-						<CustomIcon name={item.icon} size={24} color={active ? colors.nextGenPrimary : colors.nextGenText} />
+						<CustomIcon name={item.icon} size={24} color={active ? themes.dark.nextGenPrimary : colors.nextGenText} />
 						<Text
 							style={[
 								styles.tabText,
 								{
-									color: active ? colors.nextGenPrimary : colors.nextGenText
+									color: active ? themes.dark.nextGenPrimary : colors.nextGenText
 								}
 							]}>
 							{item.title}

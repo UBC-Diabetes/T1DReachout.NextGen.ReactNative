@@ -15,7 +15,7 @@ export const nextGenColors = {
 		nextGenPrimary: '#112D4E', // Dark blue primary
 		nextGenSecondary: '#CAC4D0', // Light gray/purple secondary
 		nextGenBackground: '#EBEDF0', // Light gray background
-		nextGenSurface: '#EBEDF0', // Light gray surface (same as background)
+		nextGenSurface: '#FFFFFF', // Light gray surface (same as background)
 		nextGenBorder: '#E1E5E8', // Light border
 		nextGenText: '#2F343D', // Dark text
 		nextGenTextSecondary: '#6C727A', // Secondary text
@@ -197,7 +197,7 @@ const dark = {
 	statusFontService2: '#C393D2',
 
 	badgeBackgroundLevel1: '#484C51',
-	badgeBackgroundLevel2: '#112D4E',
+	badgeBackgroundLevel2: nextGenColors.dark.nextGenPrimary,
 	badgeBackgroundLevel3: '#955828',
 	badgeBackgroundLevel4: '#B43C4C',
 
@@ -296,7 +296,7 @@ const black = {
 	statusFontService2: '#C393D2',
 
 	badgeBackgroundLevel1: '#484C51',
-	badgeBackgroundLevel2: '#112D4E',
+	badgeBackgroundLevel2: nextGenColors.black.nextGenPrimary,
 	badgeBackgroundLevel3: '#955828',
 	badgeBackgroundLevel4: '#B43C4C',
 
