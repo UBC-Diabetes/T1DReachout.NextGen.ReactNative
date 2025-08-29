@@ -155,7 +155,7 @@ fi
 # Get app package name
 PACKAGE_NAME=$(grep "applicationId" android/app/build.gradle | cut -d'"' -f2 | tr -d ' ')
 if [ -z "$PACKAGE_NAME" ]; then
-    PACKAGE_NAME="com.t1dreachout.nextgen"  # fallback
+    PACKAGE_NAME="com.reachout.nexgen"  # fallback
 fi
 
 print_status "Package name: $PACKAGE_NAME"

@@ -2,21 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCalendarsUsageDescription</key>
-	<string>This app requires access to your calendar to create events.</string>
-	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>This app requires access to your calendar to create events.</string>
-	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
-	<string>This app requires access to your calendar to create events.</string>
 	<key>AppGroup</key>
-	<string>group.com.t1dreachout.app</string>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>apiKeyValue</string>
-	</dict>
-  <key>CADisableMinimumFrameDurationOnPhone</key>
-  <true/>
+	<string>group.com.reachout.nexgen</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -66,13 +55,19 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-  <key>NSAppTransportSecurity</key>
-  <dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <false/>
-    <key>NSAllowsLocalNetworking</key>
-    <true/>
-  </dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>This app requires access to your calendar to create events.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app requires access to your calendar to create events.</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>This app requires access to your calendar to create events.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Take photos to share with other users</string>
 	<key>NSFaceIDUsageDescription</key>
