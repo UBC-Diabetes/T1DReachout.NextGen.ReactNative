@@ -1993,7 +1993,7 @@
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "T1D Reachout";
+				INFOPLIST_KEY_CFBundleDisplayName = "Nexgen Reachout";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2057,7 +2057,7 @@
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "T1D Reachout";
+				INFOPLIST_KEY_CFBundleDisplayName = "Nexgen Reachout";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2359,7 +2359,7 @@
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "T1D REACHOUT";
+				INFOPLIST_KEY_CFBundleDisplayName = "NEXGEN REACHOUT";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2422,7 +2422,7 @@
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = RocketChatRN/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "T1D REACHOUT";
+				INFOPLIST_KEY_CFBundleDisplayName = "NEXGEN REACHOUT";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
