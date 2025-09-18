@@ -73,15 +73,15 @@ echo "✅ iOS icons generated."
 # --- Android Icon Generation ---
 echo "⚙️  Generating Android icons..."
 
-# Clean up old .webp files
-find "$ANDROID_RES_DIR" -name "ic_launcher*.webp" -delete
+# Clean up old .png files
+find "$ANDROID_RES_DIR" -name "ic_launcher*.png" -delete
 
 # --- Square Icons ---
-convert "$SOURCE_IMAGE" -resize 48x48 "$ANDROID_RES_DIR/mipmap-mdpi/ic_launcher.png"
-convert "$SOURCE_IMAGE" -resize 72x72 "$ANDROID_RES_DIR/mipmap-hdpi/ic_launcher.png"
-convert "$SOURCE_IMAGE" -resize 96x96 "$ANDROID_RES_DIR/mipmap-xhdpi/ic_launcher.png"
-convert "$SOURCE_IMAGE" -resize 144x144 "$ANDROID_RES_DIR/mipmap-xxhdpi/ic_launcher.png"
-convert "$SOURCE_IMAGE" -resize 192x192 "$ANDROID_RES_DIR/mipmap-xxxhdpi/ic_launcher.png"
+convert "$SOURCE_IMAGE" -resize 48x48 "$ANDROID_RES_DIR/mipmap-mdpi/ic_launcher.webp"
+convert "$SOURCE_IMAGE" -resize 72x72 "$ANDROID_RES_DIR/mipmap-hdpi/ic_launcher.webp"
+convert "$SOURCE_IMAGE" -resize 96x96 "$ANDROID_RES_DIR/mipmap-xhdpi/ic_launcher.webp"
+convert "$SOURCE_IMAGE" -resize 144x144 "$ANDROID_RES_DIR/mipmap-xxhdpi/ic_launcher.webp"
+convert "$SOURCE_IMAGE" -resize 192x192 "$ANDROID_RES_DIR/mipmap-xxxhdpi/ic_launcher.webp"
 
 # --- Round Icons ---
 MASK_FILE=$(mktemp)
@@ -97,19 +97,23 @@ create_round_icon() {
     convert "${input_file}" -matte "$ROUND_MASK_FILE" -compose DstIn -composite "${output_file}"
 }
 
-create_round_icon 48 "$ANDROID_RES_DIR/mipmap-mdpi/ic_launcher.png" "$ANDROID_RES_DIR/mipmap-mdpi/ic_launcher_round.png"
-create_round_icon 72 "$ANDROID_RES_DIR/mipmap-hdpi/ic_launcher.png" "$ANDROID_RES_DIR/mipmap-hdpi/ic_launcher_round.png"
-create_round_icon 96 "$ANDROID_RES_DIR/mipmap-xhdpi/ic_launcher.png" "$ANDROID_RES_DIR/mipmap-xhdpi/ic_launcher_round.png"
-create_round_icon 144 "$ANDROID_RES_DIR/mipmap-xxhdpi/ic_launcher.png" "$ANDROID_RES_DIR/mipmap-xxhdpi/ic_launcher_round.png"
-create_round_icon 192 "$ANDROID_RES_DIR/mipmap-xxxhdpi/ic_launcher.png" "$ANDROID_RES_DIR/mipmap-xxxhdpi/ic_launcher_round.png"
+create_round_icon 48 "$ANDROID_RES_DIR/mipmap-mdpi/ic_launcher.webp" "$ANDROID_RES_DIR/mipmap-mdpi/ic_launcher_round.webp"
+create_round_icon 72 "$ANDROID_RES_DIR/mipmap-hdpi/ic_launcher.webp" "$ANDROID_RES_DIR/mipmap-hdpi/ic_launcher_round.webp"
+create_round_icon 96 "$ANDROID_RES_DIR/mipmap-xhdpi/ic_launcher.webp" "$ANDROID_RES_DIR/mipmap-xhdpi/ic_launcher_round.webp"
+create_round_icon 144 "$ANDROID_RES_DIR/mipmap-xxhdpi/ic_launcher.webp" "$ANDROID_RES_DIR/mipmap-xxhdpi/ic_launcher_round.webp"
+create_round_icon 192 "$ANDROID_RES_DIR/mipmap-xxxhdpi/ic_launcher.webp" "$ANDROID_RES_DIR/mipmap-xxxhdpi/ic_launcher_round.webp"
 
 rm "$MASK_FILE" "$ROUND_MASK_FILE"
 
 # --- Foreground Icon (for adaptive icons) ---
 # This is a simple foreground layer. For best results on Android, you might want
 # to create a separate, transparent foreground image.
-convert "$SOURCE_IMAGE" -resize 108x108 "$ANDROID_RES_DIR/drawable-hdpi/ic_launcher_foreground.png"
+convert "$SOURCE_IMAGE" -resize 108x108 "$ANDROID_RES_DIR/mipmap-hdpi/ic_launcher_foreground.webp"
+convert "$SOURCE_IMAGE" -resize 81x81 "$ANDROID_RES_DIR/mipmap-mdpi/ic_launcher_foreground.webp"
+convert "$SOURCE_IMAGE" -resize 162x162 "$ANDROID_RES_DIR/mipmap-xhdpi/ic_launcher_foreground.webp"
+convert "$SOURCE_IMAGE" -resize 216x216 "$ANDROID_RES_DIR/mipmap-xxhdpi/ic_launcher_foreground.webp"
+convert "$SOURCE_IMAGE" -resize 324x324 "$ANDROID_RES_DIR/mipmap-xxxhdpi/ic_launcher_foreground.webp"
 
-echo "✅ Android icons generated as .png files."
+echo "✅ Android icons generated as .webp files."
 echo "🎉 Icon generation complete!"
-echo "NOTE: The original .webp files for Android were removed."
+echo "NOTE: The original .png files for Android were removed."
