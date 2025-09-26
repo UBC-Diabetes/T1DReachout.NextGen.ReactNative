@@ -19,6 +19,7 @@
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
+		<string>$(AppIdentifierPrefix)com.reachout.nexgen</string>
 	</array>
 </dict>
 </plist>
