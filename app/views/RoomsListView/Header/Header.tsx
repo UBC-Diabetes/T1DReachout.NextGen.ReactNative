@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInputProps, TouchableOpacityProps, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInputProps, TouchableOpacityProps, View } from 'react-native';
 
 import sharedStyles from '../../Styles';
 import { useTheme } from '../../../theme';
@@ -44,11 +44,11 @@ const Header = React.memo(({ serverName, showSearchHeader, onSearchChangeText }:
 	}
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
 				{serverName}
 			</Text>
-		</View>
+		</SafeAreaView>
 	);
 });
 

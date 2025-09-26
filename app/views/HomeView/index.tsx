@@ -15,20 +15,7 @@ import { IApplicationState } from '../../definitions';
 import { getFetchedEventsSelector } from '../../selectors/event';
 import { getUpcomingEvents, formatEventDate } from './calendarHelpers';
 import { fetchEventRequest, pressEventRequest } from '../../actions/calendarEvents';
-import {
-	observeSavedPosts,
-	formatSavedPostDate,
-	truncatePostContent,
-	getPostAuthorName,
-	getPostAuthorUsername,
-	getPostReactionsCount,
-	getPostRepliesCount
-} from './savedPostsHelpers';
-import { handleStar } from '../DiscussionBoard/helpers';
-import { loadMissedMessages } from '../../lib/methods';
-import moment from 'moment';
-import { getIcon } from '../DiscussionBoard/helpers';
-import Avatar from '../../containers/Avatar';
+import { observeSavedPosts } from './savedPostsHelpers';
 import SavedPostCard from '../DiscussionBoard/Components/SavedPostCard';
 
 const HomeView: React.FC = ({ theme, switchTab }) => {

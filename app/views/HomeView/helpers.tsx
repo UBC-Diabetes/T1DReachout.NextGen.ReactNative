@@ -7,7 +7,7 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 
 const CHAT247ROOMID = '24-7-chatroom';
-const VIRTUAL_HUDDLE_ROOMID = 'virtual-happy-hours';
+const VIRTUAL_HUDDLE_ROOMID = 'virtual-huddle';
 const TECH_SUPPORT_USERNAME = 'tech_support';
 
 export const navToTechSupport = async (Navigation: any): Promise<void> => {
@@ -36,14 +36,10 @@ export const navToTechSupport = async (Navigation: any): Promise<void> => {
 export const navigateToVirtualHuddle = async (Navigation: any) => {
 	if (Navigation) {
 		try {
-			const db = database.active;
-			const subsCollection = db.get('subscriptions');
-			const query = await subsCollection.query(Q.where('name', VIRTUAL_HUDDLE_ROOMID)).fetch();
-
-			if (query.length > 0) {
-				const chatRoom = query[0];
+			const room = await Services.getRoomByTypeAndName('c', VIRTUAL_HUDDLE_ROOMID);
+			if (room) {
 				await Navigation.navigate('RoomView');
-				goRoom({ item: chatRoom, isMasterDetail: true });
+				goRoom({ item: { rid: room._id, name: room.name, t: room.t }, isMasterDetail: true });
 			}
 		} catch (error) {
 			console.error('error', error);
@@ -54,30 +50,10 @@ export const navigateToVirtualHuddle = async (Navigation: any) => {
 export const navigateTo247Chat = async (Navigation: any) => {
 	if (Navigation) {
 		try {
-			console.log('CHAT247ROOMID:', CHAT247ROOMID);
-
-			console.log('Starting 247 navigation');
-			const db = database.active;
-			const subsCollection = db.get('subscriptions');
-
-			const allSubs = await subsCollection.query().fetch();
-			console.log(
-				'All subscription names:',
-				allSubs.map(s => s.name)
-			);
-
-			const query = await subsCollection.query(Q.where('name', CHAT247ROOMID)).fetch();
-			console.log('247 query result:', query.length > 0 ? 'found' : 'not found');
-
-			if (query.length > 0) {
-				console.log('About to navigate to 247');
-
-				const chatRoom = query[0];
+			const room = await Services.getRoomByTypeAndName('c', CHAT247ROOMID);
+			if (room) {
 				await Navigation.navigate('RoomView');
-				console.log('About to goRoom 247');
-
-				goRoom({ item: chatRoom, isMasterDetail: true });
-				console.log('247 navigation complete');
+				goRoom({ item: { rid: room._id, name: room.name, t: room.t }, isMasterDetail: true });
 			}
 		} catch (error) {
 			console.error('error', error);

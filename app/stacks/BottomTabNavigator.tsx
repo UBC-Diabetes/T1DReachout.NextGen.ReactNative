@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { withTheme } from '../theme';
 
@@ -11,6 +10,7 @@ import { IApplicationState } from '../definitions';
 import * as HeaderButton from '../containers/HeaderButton';
 import Avatar from '../containers/Avatar';
 import StatusBar from '../containers/StatusBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { themes } from '../lib/constants';
 import Touchable from 'react-native-platform-touchable';
 import HomeView from '../views/HomeView';
@@ -118,9 +118,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 				</View>
 
 				<View style={styles.headerCenter}>
-					{headerConfig.title && (
-						<Text style={[styles.headerTitle, { color: colors.nextGenText }]}>{headerConfig.title}</Text>
-					)}
+					{headerConfig.title && <Text style={[styles.headerTitle, { color: colors.nextGenText }]}>{headerConfig.title}</Text>}
 				</View>
 
 				<View style={styles.headerRight}>
@@ -183,7 +181,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 	);
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<StatusBar />
 			{renderHeader()}
 			<View style={styles.content}>
@@ -209,7 +207,7 @@ const BottomTabNavigator: React.FC<any> = ({ navigation, theme, route, ...props 
 				/>
 			</View>
 			{renderTabBar()}
-		</View>
+		</SafeAreaView>
 	);
 };
 
