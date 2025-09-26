@@ -61,7 +61,7 @@ platform :ios do
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
-      output_name: "T1D Reachout"
+      output_name: "Nexgen Reachout"
     )
   end
 
@@ -101,7 +101,7 @@ platform :ios do
       scheme: "RocketChat",
       workspace: "RocketChatRN.xcworkspace",
       xcargs: "-allowProvisioningUpdates",
-      output_name: "T1D Reachout"
+      output_name: "Nexgen Reachout"
     )
   end
 

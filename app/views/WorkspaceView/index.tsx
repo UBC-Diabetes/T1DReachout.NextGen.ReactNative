@@ -54,7 +54,7 @@ const WorkspaceView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('T1D_welcome')
+			title: I18n.t('Nexgen_welcome')
 		});
 	}, [navigation]);
 
