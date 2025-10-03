@@ -7,7 +7,7 @@ import { IUser } from '../../definitions';
 
 const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 	const { colors } = useTheme();
-	
+
 	// Extract custom fields following ProfileView order
 	const customFields = roomUser.customFields || {};
 	const age = customFields.Age;
@@ -17,7 +17,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 	const t1dSince = customFields['T1D Since'] || customFields.t1dSince;
 	const glucoseMethod = customFields['Glucose Monitoring Method'];
 	const insulinMethod = customFields['Insulin Delivery Method'];
-	
+
 	return (
 		<>
 			{/* Main Info Section - White background extending all the way down */}
@@ -29,7 +29,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.infoValue, { color: colors.nextGenText }]}>{t1dSince}</Text>
 					</View>
 				)}
-				
+
 				{/* Glucose Monitoring Method - moved to top */}
 				{glucoseMethod && (
 					<View style={styles.infoRow}>
@@ -37,7 +37,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.infoValue, { color: colors.nextGenText }]}>{glucoseMethod}</Text>
 					</View>
 				)}
-				
+
 				{/* Insulin Delivery Method - moved to top */}
 				{insulinMethod && (
 					<View style={styles.infoRow}>
@@ -45,7 +45,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.infoValue, { color: colors.nextGenText }]}>{insulinMethod}</Text>
 					</View>
 				)}
-				
+
 				{/* About (formerly Bio) - moved after device fields */}
 				{bio && (
 					<View style={styles.fieldRow}>
@@ -53,27 +53,36 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.fieldValue, { color: colors.nextGenText }]}>{bio}</Text>
 					</View>
 				)}
-				
+
 				{/* Roles - moved after device fields */}
 				{roomUser.roles?.length && (
 					<View style={styles.fieldRow}>
 						<Text style={[styles.fieldLabel, { color: colors.nextGenText }]}>Roles</Text>
 						<View style={styles.rolesContainer}>
-							{roomUser.roles.map(role =>
-								role ? (
+							{roomUser.roles.map(role => {
+								if (!role) return null;
+
+								// Convert legacy peer supporter roles to peer mentor for display, then capitalize
+								let displayRole = role.toLowerCase().includes('peer supporter')
+									? role.replace(/peer supporter/i, 'Peer Mentor')
+									: role;
+
+								// Capitalize each word
+								displayRole = displayRole.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+
+								return (
 									<View
 										style={[styles.roleBadge, { backgroundColor: colors.nextGenBackground }]}
 										key={role}
-										testID={`user-role-${role.replace(/ /g, '-')}`}
-									>
-										<Text style={[styles.role, { color: colors.fontTitlesLabels }]}>{role}</Text>
+										testID={`user-role-${role.replace(/ /g, '-')}`}>
+										<Text style={[styles.role, { color: colors.fontTitlesLabels }]}>{displayRole}</Text>
 									</View>
-								) : null
-							)}
+								);
+							})}
 						</View>
 					</View>
 				)}
-				
+
 				{/* Name */}
 				{roomUser.name && (
 					<View style={styles.fieldRow}>
@@ -81,7 +90,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.fieldValue, { color: colors.nextGenText }]}>{roomUser.name}</Text>
 					</View>
 				)}
-				
+
 				{/* Username */}
 				{roomUser.username && (
 					<View style={styles.fieldRow}>
@@ -89,7 +98,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.fieldValue, { color: colors.nextGenText }]}>{roomUser.username}</Text>
 					</View>
 				)}
-				
+
 				{/* Email */}
 				{roomUser.emails && roomUser.emails.length > 0 && (
 					<View style={styles.fieldRow}>
@@ -97,7 +106,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.fieldValue, { color: colors.nextGenText }]}>{roomUser.emails[0].address}</Text>
 					</View>
 				)}
-				
+
 				{/* Age */}
 				{age && (
 					<View style={styles.fieldRow}>
@@ -105,7 +114,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.fieldValue, { color: colors.nextGenText }]}>{age}</Text>
 					</View>
 				)}
-				
+
 				{/* Location */}
 				{location && (
 					<View style={styles.fieldRow}>
@@ -113,7 +122,7 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 						<Text style={[styles.fieldValue, { color: colors.nextGenText }]}>{location}</Text>
 					</View>
 				)}
-				
+
 				{/* Pronouns */}
 				{pronouns && pronouns !== 'Not Selected' && (
 					<View style={styles.fieldRow}>

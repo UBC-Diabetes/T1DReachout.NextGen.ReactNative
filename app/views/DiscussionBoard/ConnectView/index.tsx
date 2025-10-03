@@ -231,7 +231,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 	
 	// Convert legacy peer supporter roles to peer mentor for display
 	const displayRoleFromArray = roleFromArray.toLowerCase().includes('peer supporter') 
-		? roleFromArray.toLowerCase().replace('peer supporter', 'peer mentor')
+		? roleFromArray.replace(/peer supporter/i, 'Peer Mentor')
 		: roleFromArray;
 	
 	const { role: roleFromBio, cleanedBio } = extractRoleFromBio(bio || '');
@@ -317,10 +317,10 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 					<Text style={styles.aboutHeader}>About</Text>
 					{displayRole ? (
 						<>
-							<Text style={styles.aboutText}>{displayRole}</Text>
-							{bioDescription && (
-								<Text style={[styles.aboutText, { marginTop: 12 }]}>{bioDescription}</Text>
-							)}
+							<View style={styles.rolePill}>
+								<Text style={styles.rolePillText}>{displayRole}</Text>
+							</View>
+							{bioDescription && <Text style={styles.aboutText}>{bioDescription}</Text>}
 						</>
 					) : (
 						<Text style={styles.aboutText}>{bioDescription}</Text>

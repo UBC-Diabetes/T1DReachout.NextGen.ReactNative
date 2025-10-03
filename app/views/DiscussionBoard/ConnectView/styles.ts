@@ -149,6 +149,19 @@ export const createStyles = ({ theme }: { theme: any }) =>
 			fontSize: 16,
 			lineHeight: 22,
 			color: colors[theme].nextGenText
+		},
+		rolePill: {
+			backgroundColor: colors[theme].nextGenSurface,
+			paddingHorizontal: 12,
+			paddingVertical: 6,
+			borderRadius: 16,
+			alignSelf: 'flex-start',
+			marginBottom: 12
+		},
+		rolePillText: {
+			fontSize: 14,
+			fontWeight: '500',
+			color: colors[theme].nextGenText
 		}
 	});
 
