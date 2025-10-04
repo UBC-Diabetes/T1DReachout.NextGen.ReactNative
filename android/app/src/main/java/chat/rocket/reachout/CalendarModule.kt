@@ -1,4 +1,4 @@
-package chat.rocket.reachout
+package com.reachout.nexgen
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule

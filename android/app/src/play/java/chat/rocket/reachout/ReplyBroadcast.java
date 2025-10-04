@@ -1,4 +1,4 @@
-package chat.rocket.reachout;
+package com.reachout.nexgen;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

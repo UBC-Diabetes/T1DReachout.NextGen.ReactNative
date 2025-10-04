@@ -1,4 +1,4 @@
-package chat.rocket.reachout.share
+package com.reachout.nexgen.share
 
 import android.content.Intent
 import android.net.Uri

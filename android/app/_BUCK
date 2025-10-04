@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "chat.rocket.reachout",
+    package = "com.reachout.nexgen",
 )
 
 android_resource(
     name = "res",
-    package = "chat.rocket.reachout",
+    package = "com.reachout.nexgen",
     res = "src/main/res",
 )
 

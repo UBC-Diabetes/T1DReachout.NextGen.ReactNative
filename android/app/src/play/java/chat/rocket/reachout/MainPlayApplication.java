@@ -1,4 +1,4 @@
-package chat.rocket.reachout;
+package com.reachout.nexgen;
 
 import android.content.Context;
 import android.os.Bundle;

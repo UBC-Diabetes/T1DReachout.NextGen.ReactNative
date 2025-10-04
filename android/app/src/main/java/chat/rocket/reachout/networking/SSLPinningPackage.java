@@ -1,4 +1,4 @@
-package chat.rocket.reachout.networking;
+package com.reachout.nexgen.networking;
 
 import java.util.Arrays;
 import java.util.Collections;

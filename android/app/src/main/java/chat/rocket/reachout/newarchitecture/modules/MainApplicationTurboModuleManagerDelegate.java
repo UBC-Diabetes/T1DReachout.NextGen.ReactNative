@@ -1,4 +1,4 @@
-package chat.rocket.reachout.newarchitecture.modules;
+package com.reachout.nexgen.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

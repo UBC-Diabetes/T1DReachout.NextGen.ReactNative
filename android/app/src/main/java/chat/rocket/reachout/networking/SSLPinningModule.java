@@ -1,4 +1,4 @@
-package chat.rocket.reachout.networking;
+package com.reachout.nexgen.networking;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
