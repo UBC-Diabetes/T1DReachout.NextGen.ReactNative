@@ -36,9 +36,9 @@ export const createStyles = ({ theme }: { theme: any }) =>
 			right: -10 // Less to the right than 3:30
 		},
 		playButton: {
-			width: 36,
-			height: 36,
-			borderRadius: 18,
+			width: 40,
+			height: 40,
+			borderRadius: 22,
 			backgroundColor: colors[theme].nextGenPrimary,
 			justifyContent: 'center',
 			alignItems: 'center',
@@ -90,13 +90,13 @@ export const createStyles = ({ theme }: { theme: any }) =>
 		// Connect button - small dark blue oval
 		connectButton: {
 			backgroundColor: colors[theme].nextGenPrimary,
-			paddingHorizontal: 16,
-			paddingVertical: 8,
-			borderRadius: 16,
+			paddingHorizontal: 24,
+			paddingVertical: 12,
+			borderRadius: 20,
 			alignSelf: 'flex-start'
 		},
 		connectButtonText: {
-			fontSize: 14,
+			fontSize: 16,
 			fontWeight: '600',
 			color: colors[theme].nextGenSurface,
 			textAlign: 'center'
