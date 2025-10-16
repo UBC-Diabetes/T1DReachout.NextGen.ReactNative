@@ -243,49 +243,47 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 			<ScrollView>
 				{/* Profile Header Section - Gray Background */}
 				<View style={styles.profileHeaderSection}>
-					<View style={styles.profileRow}>
-						{/* Left: Circular Profile Picture with Play Button */}
-						<View style={styles.avatarContainer}>
-							{username && (
-								<>
-									<Avatar text={username} style={styles.circularAvatar} size={150} server={server} borderRadius={100} />
-									{isVideoUrlPresent && (
-										<TouchableOpacity
-											style={styles.playButtonContainer}
-											onPress={() => {
-												navigation.navigate('VideoPlayerView', { videoUrl: `${videoUrl}` });
-											}}>
-											<View style={styles.playButton}>
-												<CustomIcon name='play' size={30} color={colors[theme].nextGenSurface} />
-											</View>
-										</TouchableOpacity>
-									)}
-								</>
-							)}
-						</View>
-
-						{/* Right: Name, Age, Online Status, Hometown, Connect Button */}
-						<View style={styles.profileInfoContainer}>
-							{/* Name, Age, and Online Status */}
-							<View style={styles.nameRow}>
-								<Text style={styles.nameText}>{age ? `${name}, ${age}` : `${name ?? ''}`}</Text>
-								<View style={styles.onlineStatusDot}>
-									<Status size={12} id={user._id} />
-								</View>
-							</View>
-
-							{/* Pronouns (if present) */}
-							{isPronounsPresent && <Text style={styles.pronounsText}>{`(${pronouns})`}</Text>}
-
-							{/* Hometown */}
-							<Text style={styles.hometownText}>{location ?? ''}</Text>
-
-							{/* Connect Button */}
-							<TouchableOpacity style={styles.connectButton} onPress={() => handleCreateDirectMessage(goToRoom)}>
-								<Text style={styles.connectButtonText}>Connect</Text>
-							</TouchableOpacity>
-						</View>
+					{/* Centered Avatar with Play Button */}
+					<View style={styles.avatarContainer}>
+						{username && (
+							<>
+								<Avatar text={username} style={styles.circularAvatar} size={200} server={server} borderRadius={100} />
+								{isVideoUrlPresent && (
+									<TouchableOpacity
+										style={styles.playButtonContainer}
+										onPress={() => {
+											navigation.navigate('VideoPlayerView', { videoUrl: `${videoUrl}` });
+										}}>
+										<View style={styles.playButton}>
+											<CustomIcon name='play' size={30} color={colors[theme].nextGenSurface} />
+										</View>
+									</TouchableOpacity>
+								)}
+							</>
+						)}
 					</View>
+
+					{/* Name, Age, and Location Info - Centered */}
+					<View style={styles.profileInfoContainer}>
+						{/* Name, Age, and Online Status */}
+						<View style={styles.nameRow}>
+							{name && <Text style={styles.nameText}>{age ? `${name}, ${age}` : `${name ?? ''}`}</Text>}
+							<View style={styles.onlineStatusDot}>
+								<Status size={12} id={user._id} />
+							</View>
+						</View>
+
+						{/* Pronouns (if present) */}
+						{isPronounsPresent && <Text style={styles.pronounsText}>{`(${pronouns})`}</Text>}
+
+						{/* Hometown */}
+						<Text style={styles.hometownText}>{location ?? ''}</Text>
+					</View>
+
+					{/* Large Connect Button - Centered */}
+					<TouchableOpacity style={styles.connectButton} onPress={() => handleCreateDirectMessage(goToRoom)}>
+						<Text style={styles.connectButtonText}>Connect</Text>
+					</TouchableOpacity>
 				</View>
 
 				{/* T1D Info Section - White Background */}
@@ -321,7 +319,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 							{bioDescription && <Text style={styles.aboutText}>{bioDescription}</Text>}
 						</>
 					) : (
-						<Text style={styles.aboutText}>{bioDescription}</Text>
+						<>{bioDescription && <Text style={styles.aboutText}>{bioDescription}</Text>}</>
 					)}
 				</View>
 			</ScrollView>

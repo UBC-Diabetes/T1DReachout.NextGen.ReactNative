@@ -12,18 +12,19 @@ export const createStyles = ({ theme }: { theme: any }) =>
 		// Profile Header Section (Gray background)
 		profileHeaderSection: {
 			backgroundColor: colors[theme].nextGenBackground,
-			paddingHorizontal: 20,
+			paddingHorizontal: 15,
 			paddingVertical: 24
 		},
 		profileRow: {
-			flexDirection: 'row',
-			alignItems: 'flex-start'
+			flexDirection: 'column',
+			alignItems: 'center'
 		},
 
 		// Avatar container with circular profile picture
 		avatarContainer: {
 			position: 'relative',
-			marginRight: 24 // Increased to give more space for content on right
+			alignItems: 'center',
+			marginBottom: 24
 		},
 		circularAvatar: {
 			// Avatar component handles the circular shape via borderRadius prop
@@ -32,8 +33,8 @@ export const createStyles = ({ theme }: { theme: any }) =>
 		// Play button positioned to bisect the profile picture edge at 4:30 position (half on, half off)
 		playButtonContainer: {
 			position: 'absolute',
-			bottom: -5, // Much lower for 4:30 angle
-			right: -10 // Less to the right than 3:30
+			bottom: 5, // Adjusted for 200px avatar
+			right: 100 // Adjusted for 200px avatar
 		},
 		playButton: {
 			width: 40,
@@ -49,11 +50,10 @@ export const createStyles = ({ theme }: { theme: any }) =>
 			elevation: 5
 		},
 
-		// Profile info container (right side)
+		// Profile info container (centered)
 		profileInfoContainer: {
-			flex: 1,
-			justifyContent: 'flex-start',
-			paddingLeft: 8 // Additional padding to move content further right
+			alignItems: 'center',
+			marginBottom: 24
 		},
 
 		// Name and age row with online status
@@ -87,16 +87,17 @@ export const createStyles = ({ theme }: { theme: any }) =>
 			marginBottom: 12
 		},
 
-		// Connect button - small dark blue oval
+		// Connect button - large centered button
 		connectButton: {
 			backgroundColor: colors[theme].nextGenPrimary,
-			paddingHorizontal: 24,
-			paddingVertical: 12,
-			borderRadius: 20,
-			alignSelf: 'flex-start'
+			paddingHorizontal: 48,
+			paddingVertical: 16,
+			borderRadius: 24,
+			alignSelf: 'center',
+			minWidth: 200
 		},
 		connectButtonText: {
-			fontSize: 16,
+			fontSize: 20,
 			fontWeight: '600',
 			color: colors[theme].nextGenSurface,
 			textAlign: 'center'
@@ -118,8 +119,7 @@ export const createStyles = ({ theme }: { theme: any }) =>
 		infoLabel: {
 			fontSize: 16,
 			fontWeight: '500',
-			color: colors[theme].nextGenText,
-			flex: 1
+			color: colors[theme].nextGenText
 		},
 		infoValue: {
 			fontSize: 16,
