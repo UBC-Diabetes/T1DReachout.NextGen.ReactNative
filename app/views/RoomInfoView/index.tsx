@@ -272,12 +272,34 @@ const RoomInfoView = (): React.ReactElement => {
 		}
 	};
 
+	const isRoomCorrupted = (room: any) => {
+		const epochDate = '1970-01-01T00:00:00.000Z';
+		return room?.roomUpdatedAt === epochDate || room?.ts === epochDate || !room?.roomUpdatedAt || !room?.ts;
+	};
+
+	const hasEssentialData = (room: any) => {
+		return room?.rid && room?.t && (room?.uids || room?.name) && room?.roomUpdatedAt !== '1970-01-01T00:00:00.000Z';
+	};
+
 	const handleCreateDirectMessage = async () => {
 		try {
+			// Check for room corruption
+			const roomCorrupted = isRoomCorrupted(room);
+			const hasEssential = hasEssentialData(room);
 			let r = room;
 			if (isDirect) {
-				const direct = await createDirect();
-				if (direct) r = direct;
+				// If room is corrupted or missing essential data, force DM creation
+				if (roomCorrupted || !hasEssential) {
+					// Force createDirect by temporarily making member appear empty
+					const originalMember = member;
+					member = {};
+					const direct = await createDirect();
+					member = originalMember; // Restore member
+					if (direct) r = direct;
+				} else {
+					const direct = await createDirect();
+					if (direct) r = direct;
+				}
 			}
 			handleGoRoom(r);
 		} catch (e: any) {
@@ -325,18 +347,13 @@ const RoomInfoView = (): React.ReactElement => {
 							rid={room?.rid}
 							userId={roomUser?._id}
 							handleEditAvatar={() => {
-								console.log('Avatar edit - itsMe:', itsMe, 'isDirect:', isDirect, 'roomUser:', roomUser, 'user:', user);
-
 								// Check if it's the user's own profile (itsMe param or comparing user IDs)
 								const isOwnProfile = itsMe || (isDirect && user?.id === roomUser?._id);
-								console.log('isOwnProfile:', isOwnProfile, 'user.id:', user?.id, 'roomUser._id:', roomUser?._id);
 
 								if (isOwnProfile && isDirect) {
-									console.log('Avatar edit: Navigating to ProfileView for own profile');
 									navigate('ProfileView' as never);
 								} else {
 									// Otherwise navigate to ChangeAvatarView
-									console.log('Avatar edit: Navigating to ChangeAvatarView for other user');
 									navigate('ChangeAvatarView', { titleHeader: I18n.t('Room_Info'), room, t, context: 'room' });
 								}
 							}}
