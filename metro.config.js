@@ -11,10 +11,19 @@ const sourceExts = [...defaultSourceExts, 'mjs'];
 
 const config = {
 	transformer: {
-		unstable_allowRequireContext: true
+		unstable_allowRequireContext: true,
+		minifierConfig: {
+			// Reduce warning output during bundling
+			keep_fnames: true,
+			mangle: {
+				keep_fnames: true,
+			},
+		},
 	},
 	resolver: {
-		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
+		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts,
+		// Add platform-specific resolvers to reduce browser/node warning noise
+		platforms: ['native', 'android', 'ios'],
 	}
 };
 
