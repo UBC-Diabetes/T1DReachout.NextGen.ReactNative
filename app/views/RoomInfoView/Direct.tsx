@@ -18,14 +18,13 @@ const Direct = ({ roomUser }: { roomUser: IUser }): React.ReactElement => {
 	const glucoseMethod = customFields['Glucose Monitoring Method'] || '';
 	const insulinMethod = customFields['Insulin Delivery Method'] || '';
 
-
 	return (
 		<>
 			{/* Main Info Section - White background extending all the way down */}
 			<View style={[styles.infoSection, { backgroundColor: colors.nextGenSurface }]}>
 				{t1dSince && t1dSince.length && (
 					<View style={styles.infoRow}>
-						<Text style={[styles.infoLabel, { color: colors.nextGenText }]}>T1D Since</Text>
+						<Text style={[styles.infoLabel, { color: colors.nextGenText }]}>Age at diagnosis</Text>
 						<Text style={[styles.infoValue, { color: colors.nextGenText }]}>{t1dSince || ''}</Text>
 					</View>
 				)}

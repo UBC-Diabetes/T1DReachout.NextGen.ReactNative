@@ -289,7 +289,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 				{/* T1D Info Section - White Background */}
 				<View style={styles.infoSection}>
 					<View style={styles.infoRow}>
-						<Text style={styles.infoLabel}>T1D Since</Text>
+						<Text style={styles.infoLabel}>Age at diagnosis</Text>
 						<Text style={styles.infoValue}>{t1dSince !== '' ? t1dSince : '-'}</Text>
 					</View>
 					<View style={styles.infoRow}>
