@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../../../theme';
 import MessageContext from '../../../../containers/message/Context';
@@ -95,18 +96,18 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		autoTranslateLanguage,
 		useRealName = false
 	} = props;
-	
+
 	// Force re-render when WatermelonDB model changes
 	const [reactiveReactions, setReactiveReactions] = useState(item.reactions);
-	
+
 	useEffect(() => {
-		const subscription = item.observe().subscribe((updatedItem) => {
+		const subscription = item.observe().subscribe(updatedItem => {
 			setReactiveReactions(updatedItem.reactions);
 		});
-		
+
 		return () => subscription.unsubscribe();
-	}, [item]);
-	
+	}, [item.id]);
+
 	const context = useContext(MessageContext);
 	const { theme, colors } = useTheme();
 	const styles = createStyles({ theme, colors });
@@ -116,6 +117,16 @@ const Room247Message = (props: IRoom247MessageProps) => {
 	// Check if the message is from the current user
 	const isOwn = isMock || item?.u?.username === user?.username;
 	const otherUserMessage = item.u?.username !== user?.username;
+
+	// Debug message ownership
+	console.log('Room247Message ownership check:', {
+		messageContent: item.msg,
+		messageId: item.id,
+		messageUsername: item?.u?.username,
+		currentUserUsername: user?.username,
+		isOwn,
+		isMock
+	});
 
 	// Determine if translation is needed (similar to Message container logic)
 	const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && otherUserMessage;
@@ -267,7 +278,8 @@ const Room247Message = (props: IRoom247MessageProps) => {
 
 	return (
 		<MessageContext.Provider value={messageContextValue}>
-			<View
+			<SafeAreaView
+				edges={['bottom']}
 				style={[
 					styles.container,
 					{ flexDirection: 'row', justifyContent: isOwn ? 'flex-end' : 'flex-start', alignItems: 'flex-start' }
@@ -335,7 +347,11 @@ const Room247Message = (props: IRoom247MessageProps) => {
 						</View>
 						{/* Reply button and icons row below the reactions row */}
 						{!props.isThreadRoom && (
-							<View style={[styles.replyRow, { marginLeft: 12 }]}>
+							<View
+								style={[
+									styles.replyRow,
+									isOwn ? { marginRight: 12, justifyContent: 'flex-end' } : { marginLeft: 12, justifyContent: 'flex-start' }
+								]}>
 								<TouchableOpacity
 									style={styles.replyButton}
 									onPress={() => {
@@ -410,7 +426,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 					</View>
 				</View>
 				{isOwn && <Avatar text={displayName} size={32} borderRadius={16} style={{ marginLeft: 2 }} onPress={handleAvatarPress} />}
-			</View>
+			</SafeAreaView>
 		</MessageContext.Provider>
 	);
 };

@@ -1,5 +1,6 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { themes } from '../../../../lib/constants';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
@@ -18,11 +19,6 @@ interface IRoom247ListProps {
 	fetchMessages: () => void;
 	jumpToMessageId?: string;
 }
-
-// DEVELOPMENT: Toggle to enable/disable mock own message
-const SHOW_MOCK_OWN_MESSAGE = false;
-
-// Scroll button constants imported from RoomView/List/constants
 
 const createStyles = ({ theme }: { theme: any }) =>
 	StyleSheet.create({
@@ -116,192 +112,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages, jump
 		flatListRef.current?.scrollToOffset({ offset: info.averageItemLength * info.index, animated: true });
 	};
 
-	// Mock own message for development
 	let displayMessages = messages;
-	if (SHOW_MOCK_OWN_MESSAGE && messages.length > 0) {
-		const mockOwnMessage = {
-			id: 'mock-own-message',
-			_id: 'mock-own-message',
-			u: { username: 'myself', _id: 'myself' },
-			msg: 'This is a mock message from me (own message) for development.',
-			ts: new Date(),
-			tcount: 1,
-			replies: ['user1'],
-			rid: 'mock-room',
-			_updatedAt: new Date(),
-			tlm: new Date(), // Thread last message - triggers bell notification
-			dml: new Date().toISOString(),
-			t: 'rm', // workaround for type checking; treat as user message
-			// Add reactions in the correct array format
-			reactions: [
-				{
-					_id: 'mock-own-message-smile',
-					emoji: '😊',
-					usernames: ['user1', 'user2', 'user3']
-				},
-				{
-					_id: 'mock-own-message-thumbsup',
-					emoji: '👍',
-					usernames: ['user4', 'user5']
-				},
-				{
-					_id: 'mock-own-message-heart',
-					emoji: '❤️',
-					usernames: ['user6']
-				},
-				{
-					_id: 'mock-own-message-smile',
-					emoji: '😊',
-					usernames: ['user1', 'user2', 'user3']
-				},
-				{
-					_id: 'mock-own-message-thumbsup',
-					emoji: '👍',
-					usernames: ['user4', 'user5']
-				},
-				{
-					_id: 'mock-own-message-heart',
-					emoji: '❤️',
-					usernames: ['user6']
-				}
-			]
-			// Add any other fields as needed for rendering
-		} as unknown as TAnyMessageModel;
-		const mockOtherMessage = {
-			id: 'mock-other-message',
-			_id: 'mock-other-message',
-			u: { username: 'others', _id: 'othrs' },
-			msg: 'This is a mock message from someone else for development.',
-			ts: new Date(),
-			tcount: 3,
-			tlm: new Date(), // Thread last message - triggers bell notification
-			replies: ['user1', 'user2', 'user3'],
-			rid: 'mock-room',
-			_updatedAt: new Date(),
-			dml: new Date().toISOString(),
-			t: 'rm', // workaround for type checking; treat as user message
-			// Add reactions in the correct array format
-			reactions: [
-				{
-					_id: 'mock-own-message-smile',
-					emoji: '😊',
-					usernames: ['user1', 'user2', 'user3']
-				},
-				{
-					_id: 'mock-own-message-thumbsup',
-					emoji: '👍',
-					usernames: ['user4', 'user5']
-				},
-				{
-					_id: 'mock-own-message-heart',
-					emoji: '❤️',
-					usernames: ['user6']
-				},
-				{
-					_id: 'mock-own-message-smile',
-					emoji: '😊',
-					usernames: ['user1', 'user2', 'user3']
-				},
-				{
-					_id: 'mock-own-message-thumbsup',
-					emoji: '👍',
-					usernames: ['user4', 'user5']
-				},
-				{
-					_id: 'mock-own-message-heart',
-					emoji: '❤️',
-					usernames: ['user6']
-				}
-			]
-			// Add any other fields as needed for rendering
-		} as unknown as TAnyMessageModel;
-
-		const mockPollMessage = {
-			id: 'mock-poll-message',
-			_id: 'mock-poll-message',
-			u: { username: 'admin', _id: 'admin-id', name: 'Admin User' },
-			msg: '', // Empty for poll messages
-			ts: new Date(Date.now() - 60000), // 1 minute ago
-			rid: 'mock-room',
-			_updatedAt: new Date(),
-			dml: new Date().toISOString(),
-			t: 'rm',
-			blocks: [
-				// Title block
-				{
-					type: 'section',
-					text: {
-						text: 'What is your favorite programming language?',
-						type: 'mrkdwn'
-					}
-				},
-				// Option 1
-				{
-					type: 'section',
-					text: {
-						text: 'JavaScript',
-						type: 'mrkdwn'
-					},
-					accessory: {
-						type: 'button',
-						action_id: 'vote_js',
-						text: {
-							type: 'plain_text',
-							text: 'Vote'
-						}
-					}
-				},
-				// Result for option 1
-				{
-					type: 'context',
-					elements: [
-						{
-							text: '45.5% (5)',
-							type: 'mrkdwn'
-						}
-					]
-				},
-				// Option 2
-				{
-					type: 'section',
-					text: {
-						text: 'TypeScript',
-						type: 'mrkdwn'
-					},
-					accessory: {
-						type: 'button',
-						action_id: 'vote_ts',
-						text: {
-							type: 'plain_text',
-							text: 'Vote'
-						}
-					}
-				},
-				// Result for option 2
-				{
-					type: 'context',
-					elements: [
-						{
-							text: '54.5% (6)',
-							type: 'mrkdwn'
-						}
-					]
-				},
-				// Voters summary
-				{
-					type: 'context',
-					elements: [
-						{
-							text: '11 votes - Alice, Bob, Carol, Dave, Eve, Frank, Grace, Henry, Ivy, Jack, Kate',
-							type: 'mrkdwn'
-						}
-					]
-				}
-			]
-		} as unknown as TAnyMessageModel;
-
-		displayMessages = [mockPollMessage, mockOtherMessage, mockOwnMessage, ...messages];
-	}
 
 	if (loading && !displayMessages.length) {
 		return (
@@ -362,7 +173,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages, jump
 	};
 
 	return (
-		<View style={dynamicStyles.container}>
+		<SafeAreaView style={dynamicStyles.container}>
 			<FlatList
 				ref={flatListRef}
 				testID='room-view-messages-247'
@@ -401,7 +212,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages, jump
 					<CustomIcon name='chevron-down' size={24} color={themes[theme].nextGenSurface} />
 				</TouchableOpacity>
 			)}
-		</View>
+		</SafeAreaView>
 	);
 };
 
