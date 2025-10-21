@@ -123,7 +123,8 @@ const MainStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<MainStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), headerShadowVisible: false }}>
+		<MainStack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), headerShadowVisible: false, headerTransparent: true }}>
 			{/* Tab Navigator for main screens */}
 			<MainStack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
 
