@@ -55,7 +55,7 @@ function shouldUseWhatsAppUI(room: any): boolean {
 	if (room.t === 'l' || room.broadcast) {
 		return false;
 	}
-	
+
 	// Apply WhatsApp UI to chat-like rooms: direct messages, private groups, and channels
 	return ['d', 'p', 'c'].includes(room.t);
 }
@@ -830,7 +830,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		hideActionSheet();
 	};
 
-
 	onMessageLongPress = (message: TAnyMessageModel) => {
 		const { action } = this.state;
 		if (action && action !== 'quote') {
@@ -865,7 +864,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				shortname = emoji.name;
 			}
-			
+
 			await Services.setReaction(shortname, msgId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
@@ -1537,7 +1536,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	render() {
-		console.count(`${this.constructor.name}.render calls`);
 		const { room, loading, action, selectedMessages } = this.state;
 		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled, useRealName } = this.props;
 		const { rid, t } = room;

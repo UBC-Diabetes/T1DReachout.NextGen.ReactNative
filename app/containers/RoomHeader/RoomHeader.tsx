@@ -192,7 +192,7 @@ const Header = React.memo(
 					styles.container,
 					{
 						opacity: disabled ? 0.5 : 1,
-						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0)
+						width: width - rightButtonsWidth - 80 - (isMasterDetail ? 350 : 0)
 					}
 				]}
 				disabled={disabled}
