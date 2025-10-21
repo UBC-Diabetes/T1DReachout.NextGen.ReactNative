@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerNavigationState } from '@react-navigation/native';
-import { Alert, View, Linking, KeyboardAvoidingView, Platform } from 'react-native';
+import { Alert, View, Linking, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Dispatch } from 'redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
@@ -12,12 +13,10 @@ import userPreferences from '../../lib/methods/userPreferences';
 import { NOTIFICATION_PRESENCE_CAP, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/navigation/appNavigation';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import { IApplicationState, IUser, TSVStatus } from '../../definitions';
-import * as List from '../../containers/List';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
 
@@ -167,12 +166,11 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (isMasterDetail) {
 			return;
 		}
-		
+
 		// Navigate to RoomInfoView showing the user's own profile
 		// Create a direct message room ID with the user themselves
 		const directRoomId = `${user.id}${user.id}`;
-		
-		
+
 		Navigation.navigate('RoomInfoView', {
 			rid: directRoomId,
 			t: 'd', // direct message type
@@ -218,7 +216,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		}
 
 		return (
-			<View style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+			<SafeAreaView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 				<View
 					style={[
 						styles.container,
@@ -258,7 +256,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					{/* T1D Branding Footer */}
 					<BrandingFooter theme={theme!} />
 				</View>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }
