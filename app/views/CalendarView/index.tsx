@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Touchable from 'react-native-platform-touchable';
 import { useDispatch, useSelector } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme';
 import { createEventDraft, fetchEventRequest } from '../../actions/calendarEvents';
@@ -39,13 +40,13 @@ const CalendarView = (): React.ReactElement => {
 	const styles = makeStyles(theme);
 
 	useEffect(() => {
-		navigation.setOptions({ 
-			title: 'Calendar', 
-			headerStyle: { 
+		navigation.setOptions({
+			title: 'Calendar',
+			headerStyle: {
 				backgroundColor: colors.nextGenBackground,
-				shadowColor: 'transparent' 
+				shadowColor: 'transparent'
 			},
-			headerTitleStyle: { 
+			headerTitleStyle: {
 				color: colors.nextGenText,
 				fontSize: 18,
 				fontWeight: '400'
@@ -74,12 +75,12 @@ const CalendarView = (): React.ReactElement => {
 	const todaysDate = useMemo(() => new Date().toISOString().split('T')[0], []);
 
 	return (
-		<View style={{ flex: 1, backgroundColor: colors.backgroundColor }} testID='calendar-view'>
+		<SafeAreaView style={{ flex: 1, backgroundColor: colors.backgroundColor }} testID='calendar-view'>
 			<StatusBar />
 			<CalendarProvider date={todaysDate}>
 				<ExpandableCalendar
 					testID={testIDs.expandableCalendar.CONTAINER}
-					theme={{ 
+					theme={{
 						backgroundColor: colors.nextGenBackground,
 						calendarBackground: colors.nextGenBackground,
 						textSectionTitleColor: colors.nextGenTextSecondary,
@@ -129,7 +130,7 @@ const CalendarView = (): React.ReactElement => {
 					</Touchable>
 				</View>
 			)}
-		</View>
+		</SafeAreaView>
 	);
 };
 
