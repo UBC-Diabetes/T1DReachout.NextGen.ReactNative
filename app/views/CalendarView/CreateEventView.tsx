@@ -10,6 +10,7 @@ import {
 	StyleSheet,
 	TouchableOpacity
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Touchable from 'react-native-platform-touchable';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -145,83 +146,91 @@ const CreateEventView = () => {
 	};
 
 	return (
-		<KeyboardAvoidingView
-			style={{ flex: 1, ...styles.container }}
-			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-			keyboardVerticalOffset={Platform.OS === 'ios' ? 15 : 0}>
-			<ScrollView style={styles.container} contentInset={{ bottom: 100 }} ref={scrollViewRef}>
-				<Text style={styles.label}>Title</Text>
-				<TextInput
-					style={styles.input}
-					value={draftEvent?.title || ''}
-					onChangeText={onTitleChange}
-					placeholder='Enter event title'
-					placeholderTextColor={colors.placeholderText}
-				/>
-				<View style={styles.rowContainer}>
-					<Text style={styles.label}>Date</Text>
-					<TouchableOpacity style={styles.dateTimeButton} onPress={() => setShowDatePicker(true)}>
-						<Text style={styles.dateTimeText}>{formattedDate}</Text>
-					</TouchableOpacity>
-				</View>
-				{showDatePicker && (
-					<DateTimePicker value={dateTime} mode='date' display='spinner' onChange={onDateChange} textColor={colors.controlText} />
-				)}
-				<View style={styles.rowContainer}>
-					<Text style={styles.label}>Time</Text>
-					<TouchableOpacity style={styles.dateTimeButton} onPress={() => setShowTimePicker(true)}>
-						<Text style={styles.dateTimeText}>{formattedTime}</Text>
-					</TouchableOpacity>
-				</View>
-				{showTimePicker && (
-					<DateTimePicker
-						value={dateTime}
-						mode='time'
-						is24Hour={true}
-						display='spinner'
-						onChange={onTimeChange}
-						textColor={colors.controlText}
+		<SafeAreaView style={{ flex: 1 }} edges={['top']}>
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+				keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 50}>
+				<ScrollView style={styles.container} ref={scrollViewRef} contentInsetAdjustmentBehavior='automatic'>
+					<Text style={styles.label}>Title</Text>
+					<TextInput
+						style={styles.input}
+						value={draftEvent?.title || ''}
+						onChangeText={onTitleChange}
+						placeholder='Enter event title'
+						placeholderTextColor={colors.placeholderText}
 					/>
-				)}
-				<Text style={styles.label}>Description</Text>
-				<TextInput
-					style={[styles.input, styles.textArea]}
-					placeholder='Describe your event'
-					placeholderTextColor={colors.placeholderText}
-					value={draftEvent.description || ''}
-					onChangeText={onDescriptionChange}
-					multiline
-					numberOfLines={4}
-				/>
-				<Text style={styles.label}>Meeting Link</Text>
-				<TextInput
-					style={styles.input}
-					placeholder='Enter Meeting link'
-					placeholderTextColor={colors.placeholderText}
-					value={draftEvent.meetingLink}
-					onChangeText={onMeetingLinkChange}
-					onFocus={onLastInputFocus}
-				/>
-				<View style={styles.rowContainer}>
-					<Text style={styles.sectionTitle}>Peer Mentors</Text>
-					<TouchableOpacity style={styles.addPeersButton} onPress={() => navigation.navigate('SearchPeersView')}>
-						<Text style={styles.addPeersButtonText}>Add Peers</Text>
-					</TouchableOpacity>
-				</View>
-				{draftEvent?.peers?.map((peer, index) => (
-					<View key={index} style={styles.peerItem}>
-						<Avatar text={peer.username} size={36} borderRadius={18} />
-						<Text style={styles.peerName}>{peer.username}</Text>
-						<TouchableOpacity onPress={() => removePeer(peer.username)} style={styles.removePeerButton}>
-							<Text style={styles.removePeerButtonText}>x</Text>
+					<View style={styles.rowContainer}>
+						<Text style={styles.label}>Date</Text>
+						<TouchableOpacity style={styles.dateTimeButton} onPress={() => setShowDatePicker(true)}>
+							<Text style={styles.dateTimeText}>{formattedDate}</Text>
 						</TouchableOpacity>
 					</View>
-				))}
-				<TouchableOpacity style={styles.createEventButton} onPress={() => createOrUpdateEvent()}>
-					<Text style={styles.createEventButtonText}>{isEditing ? 'Save' : 'Create Event'}</Text>
-				</TouchableOpacity>
-			</ScrollView>
-		</KeyboardAvoidingView>
+					{showDatePicker && (
+						<DateTimePicker
+							value={dateTime}
+							mode='date'
+							display='spinner'
+							onChange={onDateChange}
+							textColor={colors.controlText}
+						/>
+					)}
+					<View style={styles.rowContainer}>
+						<Text style={styles.label}>Time</Text>
+						<TouchableOpacity style={styles.dateTimeButton} onPress={() => setShowTimePicker(true)}>
+							<Text style={styles.dateTimeText}>{formattedTime}</Text>
+						</TouchableOpacity>
+					</View>
+					{showTimePicker && (
+						<DateTimePicker
+							value={dateTime}
+							mode='time'
+							is24Hour={true}
+							display='spinner'
+							onChange={onTimeChange}
+							textColor={colors.controlText}
+						/>
+					)}
+					<Text style={styles.label}>Description</Text>
+					<TextInput
+						style={[styles.input, styles.textArea]}
+						placeholder='Describe your event'
+						placeholderTextColor={colors.placeholderText}
+						value={draftEvent.description || ''}
+						onChangeText={onDescriptionChange}
+						multiline
+						numberOfLines={4}
+					/>
+					<Text style={styles.label}>Meeting Link</Text>
+					<TextInput
+						style={styles.input}
+						placeholder='Enter Meeting link'
+						placeholderTextColor={colors.placeholderText}
+						value={draftEvent.meetingLink}
+						onChangeText={onMeetingLinkChange}
+						onFocus={onLastInputFocus}
+					/>
+					<View style={styles.rowContainer}>
+						<Text style={styles.sectionTitle}>Peer Mentors</Text>
+						<TouchableOpacity style={styles.addPeersButton} onPress={() => navigation.navigate('SearchPeersView')}>
+							<Text style={styles.addPeersButtonText}>Add Peers</Text>
+						</TouchableOpacity>
+					</View>
+					{draftEvent?.peers?.map((peer, index) => (
+						<View key={index} style={styles.peerItem}>
+							<Avatar text={peer.username} size={36} borderRadius={18} />
+							<Text style={styles.peerName}>{peer.username}</Text>
+							<TouchableOpacity onPress={() => removePeer(peer.username)} style={styles.removePeerButton}>
+								<Text style={styles.removePeerButtonText}>x</Text>
+							</TouchableOpacity>
+						</View>
+					))}
+					<TouchableOpacity style={styles.createEventButton} onPress={() => createOrUpdateEvent()}>
+						<Text style={styles.createEventButtonText}>{isEditing ? 'Save' : 'Create Event'}</Text>
+					</TouchableOpacity>
+				</ScrollView>
+			</KeyboardAvoidingView>
+		</SafeAreaView>
 	);
 };
 
@@ -231,6 +240,7 @@ const makeStyles = (colors: any) => {
 			flex: 1,
 			padding: 20,
 			paddingBottom: 10,
+			paddingTop: Platform.OS === 'android' ? 60 : 20,
 			backgroundColor: colors.nextGenBackground
 		},
 		input: {
