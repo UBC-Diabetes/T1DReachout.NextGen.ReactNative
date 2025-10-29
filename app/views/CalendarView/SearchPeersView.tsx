@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -20,6 +20,8 @@ export interface IUser {
 	};
 }
 
+const leftArrow = require('../../static/images/discussionboard/arrow_left.png');
+
 const SearchPeersView = () => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
@@ -32,15 +34,19 @@ const SearchPeersView = () => {
 	const { peers } = useSelector((state: IApplicationState) => getDraftEventSelector(state));
 
 	useEffect(() => {
-		navigation.setOptions({ 
-			title: '', 
-			headerStyle: { 
-				backgroundColor: colors.nextGenSurface,
-				shadowColor: 'transparent' 
-			}
+		navigation.setOptions({
+			title: '',
+			headerStyle: {
+				backgroundColor: colors.nextGenBackground
+			},
+			headerLeft: () => (
+				<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
+					<Image source={leftArrow} style={{ width: 11, height: 19, tintColor: colors.nextGenText }} resizeMode='contain' />
+				</TouchableOpacity>
+			)
 		});
 		loadPeers({});
-	}, [colors.nextGenSurface]);
+	}, [colors.nextGenBackground]);
 
 	useEffect(() => {
 		if (peers) {
