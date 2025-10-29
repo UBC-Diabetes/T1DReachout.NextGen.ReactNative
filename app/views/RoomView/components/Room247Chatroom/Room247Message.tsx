@@ -350,7 +350,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 							<View
 								style={[
 									styles.replyRow,
-									isOwn ? { marginRight: 12, justifyContent: 'flex-end' } : { marginLeft: 12, justifyContent: 'flex-start' }
+									isOwn ? { marginRight: -10, justifyContent: 'flex-end' } : { marginLeft: 12, justifyContent: 'flex-start' }
 								]}>
 								<TouchableOpacity
 									style={styles.replyButton}
@@ -370,7 +370,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 									<Text style={styles.iconText}>{item.replies ? item.replies.length : 0}</Text>
 								</View>
 								{/* Spacer to push icons to the right */}
-								<View style={{ flex: 1 }} />
+								{isOwn ? null : <View style={{ flex: 1 }} />}
 								{/* Bell notification - only for threads with replies */}
 								{shouldShowBell && (
 									<TouchableOpacity
