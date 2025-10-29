@@ -107,7 +107,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 		pronouns = customFields.Pronouns;
 		t1dSince = customFields['T1D Since'];
 		videoUrl = customFields.VideoUrl;
-		videoUrl = videoUrl.replace('https://youtu.be/', 'https://www.youtube.com/embed/');
+		videoUrl = videoUrl.replace('https://youtu.be/', 'https://www.youtube-nocookie.com/embed/');
 		videoUrl = `${videoUrl}?autoplay=1`;
 		if (customFields['Glucose Monitoring Method'] !== '') {
 			devices.push(customFields['Glucose Monitoring Method']);
