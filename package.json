@@ -11,7 +11,7 @@
 		"ios": "npx react-native run-ios",
 		"android": "npx react-native run-android --mode=experimentalPlayDebug --main-activity com.reachout.nexgen.MainActivity",
 		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --mode=experimentalPlayDebug --appId",
-		"android-release": "cd android && ./gradlew assembleExperimentalPlayDebug && cd ..",
+		"android-release": "cd android && ./gradlew bundleExperimentalPlayRelease && cd ..",
 		"android-test-release": "cd android && ./gradlew assembleRelease && cd ..",
 		"android-prod-release": "cd android && ./gradlew bundleRelease && cd ..",
 		"clean:android": "cd android && ./gradlew clean && cd .. && rm -rf android/build & rm -rf android/app/build",
