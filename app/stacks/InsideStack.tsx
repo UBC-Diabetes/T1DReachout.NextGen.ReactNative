@@ -160,7 +160,14 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 			{/* ProfileLibraryStackNavigator */}
 			<MainStack.Screen name='ProfileLibraryView' component={ProfileLibraryView} options={ProfileLibraryView.navigationOptions} />
-			<MainStack.Screen name='ConnectView' component={ConnectView} options={{ title: '' }} />
+			<MainStack.Screen
+				name='ConnectView'
+				component={ConnectView}
+				options={() => ({
+					title: '',
+					headerLeft: () => <LeftCaret theme={theme} />
+				})}
+			/>
 			{/* ProfileStackNavigator */}
 			<MainStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<MainStack.Screen name='UserPreferencesView' component={UserPreferencesView} />

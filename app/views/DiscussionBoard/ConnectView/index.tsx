@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Dimensions, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
@@ -12,16 +12,13 @@ import { getRoomTitle, getUidDirectMessage } from '../../../lib/methods/helpers'
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
 import { createStyles } from './styles';
 import { CustomIcon } from '../../../containers/CustomIcon';
+import LeftCaret from '../../../components/LeftCaret';
 
 import { withTheme } from '../../../theme';
 import { themes, colors } from '../../../lib/constants';
 
-const leftArrow = require('../../../static/images/discussionboard/arrow_left.png');
-const playIcon = require('../../../static/images/discussionboard/play_icon.png');
-const screenWidth = Dimensions.get('window').width;
-
 const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) => {
-	const navigation = useNavigation<StackNavigationProp<any>>();
+	const navigation = useNavigation<NativeStackNavigationProp<any>>();
 	const server = useSelector((state: IApplicationState) => state.server.server);
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 
@@ -53,11 +50,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 	useEffect(() => {
 		navigation.setOptions({
 			title: '',
-			headerLeft: () => (
-				<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
-					<Image source={leftArrow} style={{ width: 11, height: 19, tintColor: colors.nextGenText }} resizeMode='contain' />
-				</TouchableOpacity>
-			)
+			headerLeft: () => <LeftCaret onPress={() => navigation.goBack()} theme={theme} />
 		});
 	}, []);
 
