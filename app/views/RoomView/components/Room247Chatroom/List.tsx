@@ -173,7 +173,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages, jump
 	};
 
 	return (
-		<SafeAreaView style={dynamicStyles.container}>
+		<View style={dynamicStyles.container}>
 			<FlatList
 				ref={flatListRef}
 				testID='room-view-messages-247'
@@ -204,6 +204,10 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages, jump
 				onViewableItemsChanged={onViewableItemsChanged}
 				viewabilityConfig={viewabilityConfig}
 				onScrollToIndexFailed={handleScrollToIndexFailed}
+				maintainVisibleContentPosition={{
+					minIndexForVisible: 0,
+					autoscrollToTopThreshold: 0
+				}}
 				{...scrollPersistTaps}
 			/>
 			{/* Scroll to bottom button - only show when scrolled up */}
@@ -212,7 +216,7 @@ const Room247List = ({ theme, messages, renderItem, loading, fetchMessages, jump
 					<CustomIcon name='chevron-down' size={24} color={themes[theme].nextGenSurface} />
 				</TouchableOpacity>
 			)}
-		</SafeAreaView>
+		</View>
 	);
 };
 

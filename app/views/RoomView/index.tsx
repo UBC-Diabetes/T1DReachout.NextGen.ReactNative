@@ -48,6 +48,7 @@ import styles from './styles';
 import JoinCode, { IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
+import Room247MessageSeparator from './components/Room247Chatroom/Room247MessageSeparator';
 
 // Room classification function to determine UI style
 function shouldUseWhatsAppUI(room: any): boolean {
@@ -1382,54 +1383,57 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			const useWhatsAppUI = shouldUseWhatsAppUI(room);
 
-			const MessageComponent = useWhatsAppUI ? Room247Message : Message;
+			const MessageComponent = true ? Room247Message : Message;
 
 			content = (
-				<MessageComponent
-					item={item}
-					user={user as any}
-					rid={room.rid}
-					archived={'id' in room && room.archived}
-					broadcast={'id' in room && room.broadcast}
-					status={item.status}
-					isThreadRoom={!!this.tmid}
-					isIgnored={this.isIgnored(item)}
-					previousItem={previousItem}
-					fetchThreadName={this.fetchThreadName}
-					onReactionPress={this.onReactionPress}
-					onReactionLongPress={this.onReactionLongPress}
-					onLongPress={this.onMessageLongPress}
-					onEncryptedPress={this.onEncryptedPress}
-					onDiscussionPress={this.onDiscussionPress}
-					onThreadPress={this.onThreadPress}
-					onAnswerButtonPress={this.handleSendMessage}
-					showAttachment={this.showAttachment}
-					reactionInit={this.onReactionInit}
-					replyBroadcast={this.replyBroadcast}
-					errorActionsShow={this.errorActionsShow}
-					isSystemMessage={room.sysMes as boolean}
-					baseUrl={baseUrl}
-					Message_GroupingPeriod={Message_GroupingPeriod}
-					timeFormat={Message_TimeFormat}
-					useRealName={useRealName}
-					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
-					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
-					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
-					navToRoomInfo={this.navToRoomInfo}
-					getCustomEmoji={this.getCustomEmoji}
-					handleEnterCall={this.handleEnterCall}
-					blockAction={this.blockAction}
-					threadBadgeColor={this.getBadgeColor(item?.id)}
-					toggleFollowThread={this.toggleFollowThread}
-					jumpToMessage={this.jumpToMessageByUrl}
-					highlighted={highlightedMessage === item.id}
-					theme={theme}
-					closeEmojiAndAction={this.handleCloseEmoji}
-					isBeingEdited={isBeingEdited}
-					dateSeparator={dateSeparator}
-					showUnreadSeparator={showUnreadSeparator}
-					useWhatsAppUI={useWhatsAppUI}
-				/>
+				<>
+					{useWhatsAppUI && dateSeparator && <Room247MessageSeparator ts={dateSeparator} />}
+					<MessageComponent
+						item={item}
+						user={user as any}
+						rid={room.rid}
+						archived={'id' in room && room.archived}
+						broadcast={'id' in room && room.broadcast}
+						status={item.status}
+						isThreadRoom={!!this.tmid}
+						isIgnored={this.isIgnored(item)}
+						previousItem={previousItem}
+						fetchThreadName={this.fetchThreadName}
+						onReactionPress={this.onReactionPress}
+						onReactionLongPress={this.onReactionLongPress}
+						onLongPress={this.onMessageLongPress}
+						onEncryptedPress={this.onEncryptedPress}
+						onDiscussionPress={this.onDiscussionPress}
+						onThreadPress={this.onThreadPress}
+						onAnswerButtonPress={this.handleSendMessage}
+						showAttachment={this.showAttachment}
+						reactionInit={this.onReactionInit}
+						replyBroadcast={this.replyBroadcast}
+						errorActionsShow={this.errorActionsShow}
+						isSystemMessage={room.sysMes as boolean}
+						baseUrl={baseUrl}
+						Message_GroupingPeriod={Message_GroupingPeriod}
+						timeFormat={Message_TimeFormat}
+						useRealName={useRealName}
+						isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+						autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+						autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
+						navToRoomInfo={this.navToRoomInfo}
+						getCustomEmoji={this.getCustomEmoji}
+						handleEnterCall={this.handleEnterCall}
+						blockAction={this.blockAction}
+						threadBadgeColor={this.getBadgeColor(item?.id)}
+						toggleFollowThread={this.toggleFollowThread}
+						jumpToMessage={this.jumpToMessageByUrl}
+						highlighted={highlightedMessage === item.id}
+						theme={theme}
+						closeEmojiAndAction={this.handleCloseEmoji}
+						isBeingEdited={isBeingEdited}
+						dateSeparator={dateSeparator}
+						showUnreadSeparator={showUnreadSeparator}
+						useWhatsAppUI={useWhatsAppUI}
+					/>
+				</>
 			);
 		}
 
@@ -1438,7 +1442,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	renderFooter = () => {
 		const { joined, room, readOnly, loading } = this.state;
-		const { theme, airGappedRestrictionRemainingDays } = this.props;
+		const { theme, airGappedRestrictionRemainingDays, insets } = this.props;
 
 		if (!this.rid) {
 			return null;
@@ -1498,12 +1502,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
-		}
-
-		// WhatsApp UI rooms use standard MessageComposer
-		const useWhatsAppUI = shouldUseWhatsAppUI(room);
-		if (useWhatsAppUI) {
-			return <MessageComposerContainer ref={this.messageComposerRef} />;
 		}
 
 		return <MessageComposerContainer ref={this.messageComposerRef} />;
@@ -1576,11 +1574,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getText: this.getText,
 					useWhatsAppUI
 				}}>
-				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
+				<SafeAreaView style={{ backgroundColor: themes[theme].nextGenBackground }} testID='room-view'>
 					<StatusBar />
 					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 
-					{useWhatsAppUI ? (
+					{false ? (
 						<Room247Chatroom
 							theme={theme}
 							rid={rid}
