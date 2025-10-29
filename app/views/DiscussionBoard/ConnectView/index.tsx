@@ -16,6 +16,7 @@ import { CustomIcon } from '../../../containers/CustomIcon';
 import { withTheme } from '../../../theme';
 import { themes, colors } from '../../../lib/constants';
 
+const leftArrow = require('../../../static/images/discussionboard/arrow_left.png');
 const playIcon = require('../../../static/images/discussionboard/play_icon.png');
 const screenWidth = Dimensions.get('window').width;
 
@@ -48,6 +49,17 @@ const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) 
 			setUsername(result.user.username);
 		}
 	};
+
+	useEffect(() => {
+		navigation.setOptions({
+			title: '',
+			headerLeft: () => (
+				<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
+					<Image source={leftArrow} style={{ width: 11, height: 19, tintColor: colors.nextGenText }} resizeMode='contain' />
+				</TouchableOpacity>
+			)
+		});
+	}, []);
 
 	useEffect(() => {
 		if (route.params?.user) {
