@@ -34,10 +34,10 @@ export const getUpcomingEvents = (eventGroups: EventGroup[]): EventItem[] => {
 					const eventDayStart = startOfDay(eventDate);
 
 					// Check if event is within the next 2 weeks (including today)
-					if (
-						(isAfter(eventDayStart, now) || eventDayStart.getTime() === now.getTime()) &&
-						isBefore(eventDayStart, twoWeeksFromNow)
-					) {
+					const isAfterNow = isAfter(eventDayStart, now) || eventDayStart.getTime() === now.getTime();
+					const isBeforeTwoWeeks = isBefore(twoWeeksFromNow, eventDayStart);
+					const isInRange = isAfterNow && isBeforeTwoWeeks;
+					if (isInRange) {
 						upcomingEvents.push(event);
 					}
 				} catch (error) {
