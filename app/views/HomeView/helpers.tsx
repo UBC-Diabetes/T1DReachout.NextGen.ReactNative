@@ -23,7 +23,7 @@ export const navToTechSupport = async (Navigation: any): Promise<void> => {
 		} else {
 			const result = await Services.createDirectMessage(TECH_SUPPORT_USERNAME);
 			if (result.success) {
-				const item = { tmid: result.room?._id, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT };
+				const item = { rid: result.room?._id, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT };
 				await Navigation.navigate('RoomView');
 				goRoom({ item, isMasterDetail: true });
 			}
