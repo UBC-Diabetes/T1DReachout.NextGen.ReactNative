@@ -123,16 +123,15 @@ const MainStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<MainStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), headerShadowVisible: false, headerTransparent: true }}>
+		<MainStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), headerShadowVisible: false }}>
 			{/* Tab Navigator for main screens */}
 			<MainStack.Screen name='BottomTabNavigator' component={BottomTabNavigator} options={{ headerShown: false }} />
 
 			{/* Other screens */}
-			<MainStack.Screen name='RoomView' component={RoomView} options={{ headerBackVisible: false }} />
-			<MainStack.Screen name='CalendarView' component={CalendarView} />
-			<MainStack.Screen name='CreateEventView' component={CreateEventView} />
-			<MainStack.Screen name='SearchPeersView' component={SearchPeersView} />
+			<MainStack.Screen name='RoomView' component={RoomView} options={{ headerBackVisible: false, headerTransparent: true }} />
+			<MainStack.Screen name='CalendarView' component={CalendarView} options={{ headerTransparent: true, title: '' }} />
+			<MainStack.Screen name='CreateEventView' component={CreateEventView} options={{ headerTransparent: true, title: '' }} />
+			<MainStack.Screen name='SearchPeersView' component={SearchPeersView} options={{ title: '' }} />
 			<MainStack.Screen name='EventDetailsView' component={EventDetailsView} />
 			<MainStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 			<MainStack.Screen name='RoomInfoView' component={RoomInfoView} />
@@ -161,7 +160,7 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 			{/* ProfileLibraryStackNavigator */}
 			<MainStack.Screen name='ProfileLibraryView' component={ProfileLibraryView} options={ProfileLibraryView.navigationOptions} />
-			<MainStack.Screen name='ConnectView' component={ConnectView} options={{ title: 'Profile' }} />
+			<MainStack.Screen name='ConnectView' component={ConnectView} options={{ title: '' }} />
 			{/* ProfileStackNavigator */}
 			<MainStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<MainStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
@@ -182,10 +181,7 @@ const MainStackNavigator = () => {
 				options={ScreenLockConfigView.navigationOptions}
 			/>
 			{/* DiscussionStackNavigator */}
-			<MainStack.Screen
-				name='DiscussionBoardView'
-				component={DiscussionBoardView}
-			/>
+			<MainStack.Screen name='DiscussionBoardView' component={DiscussionBoardView} />
 			<MainStack.Screen
 				name='DiscussionPostView'
 				component={DiscussionPostView}
