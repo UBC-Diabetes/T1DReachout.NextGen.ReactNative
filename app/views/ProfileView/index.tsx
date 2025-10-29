@@ -9,6 +9,7 @@ import { dequal } from 'dequal';
 import omit from 'lodash/omit';
 import FastImage from 'react-native-fast-image';
 
+import { useTheme } from '../../theme';
 import Touch from '../../containers/Touch';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
@@ -592,7 +593,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				<StatusBar />
 				<SafeAreaView testID='profile-view'>
 					<ScrollView
-						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].surfaceTint }]}
+						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].nextGenBackground }]}
 						testID='profile-view-list'
 						{...scrollPersistTaps}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
