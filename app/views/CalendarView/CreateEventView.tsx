@@ -1,15 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-	KeyboardAvoidingView,
-	Platform,
-	Image,
-	ScrollView,
-	View,
-	Text,
-	TextInput,
-	StyleSheet,
-	TouchableOpacity
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Touchable from 'react-native-platform-touchable';
 import { useNavigation } from '@react-navigation/native';
@@ -19,15 +9,12 @@ import { format, parseISO } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { cancelEventEdit, createEventDraft, createEventRequest, updateEventRequest } from '../../actions/calendarEvents';
 import { getUserSelector } from '../../selectors/login';
 import { getCalendarEventsSelector, getDraftEventSelector } from '../../selectors/event';
 import { IApplicationState } from '../../definitions';
 import Avatar from '../../containers/Avatar';
-
-const leftArrow = require('../../static/images/discussionboard/arrow_left.png');
 
 const CreateEventView = () => {
 	const [showDatePicker, setShowDatePicker] = useState(false);
@@ -64,11 +51,6 @@ const CreateEventView = () => {
 				fontWeight: '400'
 			},
 			headerTitleAlign: 'center',
-			headerLeft: () => (
-				<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => backAction()}>
-					<Image source={leftArrow} style={{ width: 11, height: 19, tintColor: colors.nextGenText }} resizeMode='contain' />
-				</TouchableOpacity>
-			),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<Touchable style={{ marginRight: 20 }} onPress={() => navigation.navigate('ProfileView')}>

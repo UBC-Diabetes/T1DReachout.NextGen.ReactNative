@@ -20,8 +20,6 @@ export interface IUser {
 	};
 }
 
-const leftArrow = require('../../static/images/discussionboard/arrow_left.png');
-
 const SearchPeersView = () => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
@@ -38,12 +36,7 @@ const SearchPeersView = () => {
 			title: '',
 			headerStyle: {
 				backgroundColor: colors.nextGenBackground
-			},
-			headerLeft: () => (
-				<TouchableOpacity style={{ marginLeft: 20 }} onPress={() => navigation.goBack()}>
-					<Image source={leftArrow} style={{ width: 11, height: 19, tintColor: colors.nextGenText }} resizeMode='contain' />
-				</TouchableOpacity>
-			)
+			}
 		});
 		loadPeers({});
 	}, [colors.nextGenBackground]);

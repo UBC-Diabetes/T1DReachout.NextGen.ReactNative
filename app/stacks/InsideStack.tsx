@@ -130,8 +130,23 @@ const MainStackNavigator = () => {
 			{/* Other screens */}
 			<MainStack.Screen name='RoomView' component={RoomView} options={{ headerBackVisible: false, headerTransparent: true }} />
 			<MainStack.Screen name='CalendarView' component={CalendarView} options={{ headerTransparent: true, title: '' }} />
-			<MainStack.Screen name='CreateEventView' component={CreateEventView} options={{ headerTransparent: true, title: '' }} />
-			<MainStack.Screen name='SearchPeersView' component={SearchPeersView} options={{ title: '' }} />
+			<MainStack.Screen
+				name='CreateEventView'
+				component={CreateEventView}
+				options={() => ({
+					title: '',
+					headerTransparent: true,
+					headerLeft: () => <LeftCaret theme={theme} />
+				})}
+			/>
+			<MainStack.Screen
+				name='SearchPeersView'
+				component={SearchPeersView}
+				options={() => ({
+					title: '',
+					headerLeft: () => <LeftCaret theme={theme} />
+				})}
+			/>
 			<MainStack.Screen name='EventDetailsView' component={EventDetailsView} />
 			<MainStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 			<MainStack.Screen name='RoomInfoView' component={RoomInfoView} />
