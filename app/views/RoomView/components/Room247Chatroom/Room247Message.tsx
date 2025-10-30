@@ -278,8 +278,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 
 	return (
 		<MessageContext.Provider value={messageContextValue}>
-			<SafeAreaView
-				edges={['bottom']}
+			<View
 				style={[
 					styles.container,
 					{ flexDirection: 'row', justifyContent: isOwn ? 'flex-end' : 'flex-start', alignItems: 'flex-start' }
@@ -426,7 +425,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 					</View>
 				</View>
 				{isOwn && <Avatar text={displayName} size={32} borderRadius={16} style={{ marginLeft: 2 }} onPress={handleAvatarPress} />}
-			</SafeAreaView>
+			</View>
 		</MessageContext.Provider>
 	);
 };
