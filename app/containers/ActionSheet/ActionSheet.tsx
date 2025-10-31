@@ -142,7 +142,7 @@ const ActionSheet = React.memo(
 
 		// Must need this prop to avoid keyboard dismiss
 		// when is android tablet and the input text is focused
-		const androidTablet: any = isTablet && !isIOS ? { android_keyboardInputMode: 'adjustResize' } : {};
+		const androidTablet: any = isTablet && !isIOS ? { android_keyboardInputMode: 'adjustPan' } : {};
 
 		return (
 			<>
