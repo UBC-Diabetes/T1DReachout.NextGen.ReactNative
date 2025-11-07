@@ -3,9 +3,6 @@ import { FlatList, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Q } from '@nozbe/watermelondb';
-
-import database from '../../../lib/database';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { MESSAGE_TYPE_ANY_LOAD, SortBy, themes } from '../../../lib/constants';
 import { withTheme } from '../../../theme';
@@ -21,18 +18,8 @@ import { loadMissedMessages } from '../../../lib/methods';
 import moment from 'moment';
 import { handleStar } from '../helpers';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
+import * as Services from '../../../lib/services/restApi';
 
-// const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-// const CHATS_HEADER = 'Chats';
-// const UNREAD_HEADER = 'Unread';
-// const FAVORITES_HEADER = 'Favorites';
-// const DISCUSSIONS_HEADER = 'Discussions';
-// const TEAMS_HEADER = 'Teams';
-// const CHANNELS_HEADER = 'Channels';
-// const DM_HEADER = 'Direct_Messages';
-// const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
-// const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
-const QUERY_SIZE = 20;
 const VIRTUAL_HUDDLE = {
 	ROOM_RID: 'jRXA42HyPKpjAmZpX'
 };
@@ -45,11 +32,9 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 	const server = useSelector((state: IApplicationState) => state.server.server);
 
 	const [selectedTab, setSelectedTab] = useState(route?.params?.selectedTab ?? DiscussionTabs.DISCUSSION_BOARDS);
-	const [searchCount, setSearchCount] = useState(0);
 	const [boards, setBoards] = useState([]);
 	const [starredPosts, setStarredPosts] = useState([]);
 	const isFocused = useIsFocused();
-	const db = database.active;
 
 	const themeColors = themes[theme];
 	const styles = makeStyles(themeColors);
@@ -85,71 +70,49 @@ const DiscussionHomeView: React.FC = ({ route, theme }) => {
 	}, [isFocused]);
 
 	useEffect(() => {
-		let subscription: any;
-		const getSubscriptions = async () => {
-			const isGrouping = showUnread || showFavorites || groupByType;
-			let observable;
-
-			const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)];
-
-			if (sortBy === SortBy.Alphabetical) {
-				defaultWhereClause.push(Q.sortBy(`${useRealName ? 'fname' : 'name'}`, Q.asc));
-			} else {
-				defaultWhereClause.push(Q.sortBy('room_updated_at', Q.desc));
-			}
-
-			// When we're grouping by something
-			if (isGrouping) {
-				observable = await db
-					.get('subscriptions')
-					.query(...defaultWhereClause)
-					.observeWithColumns(['alert', 'on_hold']);
-				// When we're NOT grouping
-			} else {
-				setSearchCount(searchCount + QUERY_SIZE);
-				observable = await db
-					.get('subscriptions')
-					.query(...defaultWhereClause, Q.skip(0), Q.take(searchCount))
-					.observeWithColumns(['on_hold']);
-			}
-
-			subscription = observable.subscribe(data => {
-				const formattedData = data.map(d => {
-					const jsonObject = {
-						...d,
-						title: d.fname,
-						description: d.topic,
-						_raw: { ...d._raw, uids: JSON.parse(d._raw.uids), usernames: JSON.parse(d._raw.usernames) },
-						...d._raw,
-						uids: JSON.parse(d._raw.uids),
-						usernames: JSON.parse(d._raw.usernames),
-						usersCount: JSON.parse(d._raw.users_count)
-					};
-
-					return {
-						...jsonObject,
-						avatar: getRoomAvatar(jsonObject),
-						isGrouChat: isGroupChat(jsonObject)
-					};
+		const getPublicChannels = async () => {
+			try {
+				const response = await Services.getChannelsList({
+					offset: 0,
+					count: 50,
+					sort: sortBy === SortBy.Alphabetical ? { name: 1 } : { usersCount: -1 }
 				});
 
-				const boards = formattedData.filter(d => {
-					// removing direct messages
-					return d.t !== 'd' && d.id !== 'GENERAL' && d.rid !== VIRTUAL_HUDDLE.ROOM_RID;
-					// return true;
-				});
+				if (response.success && response.channels) {
+					const formattedData = response.channels.map((d: any) => {
+						return {
+							...d,
+							id: d._id,
+							rid: d._id,
+							title: d.fname || d.name,
+							description: d.topic,
+							avatar: getRoomAvatar(d),
+							isGrouChat: isGroupChat(d),
+							_raw: {
+								id: d._id,
+								...d
+							}
+						};
+					});
 
-				setBoards(boards);
-			});
-		};
+					// Filter out unwanted channels
+					const boards = formattedData.filter((d: any) => {
+						// Keep public channels, exclude specific rooms
+						return d._id !== 'GENERAL' && d._id !== VIRTUAL_HUDDLE.ROOM_RID;
+					});
 
-		getSubscriptions();
-		return () => {
-			if (subscription?.unsubscribe) {
-				subscription.unsubscribe();
+					setBoards(boards);
+				}
+			} catch (error) {
+				console.log('Error fetching public channels:', error);
+				setBoards([]);
 			}
 		};
-	}, [isFocused]);
+
+		if (selectedTab === DiscussionTabs.DISCUSSION_BOARDS) {
+			getPublicChannels();
+		}
+	}, [isFocused, selectedTab, sortBy]);
 
 	const getSavedChat = async () => {
 		const messagesObservable = db.get('messages').query(Q.where('starred', true), Q.sortBy('ts', Q.desc), Q.skip(0)).observe();

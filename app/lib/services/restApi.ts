@@ -490,6 +490,23 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
+export const getChannelsList = ({ offset = 0, count = 25, sort = { name: 1 }, query = {} }: {
+	offset?: number;
+	count?: number;
+	sort?: { [key: string]: number };
+	query?: { [key: string]: any };
+}) => {
+	const params = {
+		offset,
+		count,
+		sort: JSON.stringify(sort),
+		...(Object.keys(query).length > 0 && { query: JSON.stringify(query) })
+	};
+
+	// RC channels.list API endpoint
+	return sdk.get('channels.list', params);
+};
+
 export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
 	if (block) {
 		// RC 0.49.0
