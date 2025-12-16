@@ -118,16 +118,6 @@ const Room247Message = (props: IRoom247MessageProps) => {
 	const isOwn = isMock || item?.u?.username === user?.username;
 	const otherUserMessage = item.u?.username !== user?.username;
 
-	// Debug message ownership
-	console.log('Room247Message ownership check:', {
-		messageContent: item.msg,
-		messageId: item.id,
-		messageUsername: item?.u?.username,
-		currentUserUsername: user?.username,
-		isOwn,
-		isMock
-	});
-
 	// Determine if translation is needed (similar to Message container logic)
 	const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && otherUserMessage;
 
@@ -292,7 +282,7 @@ const Room247Message = (props: IRoom247MessageProps) => {
 				]}>
 				{/* Avatar on left for others, right for self */}
 				{!isOwn && (
-					<Avatar text={displayName} size={32} borderRadius={16} style={{ marginRight: 2 }} onPress={handleAvatarPress} />
+					<Avatar text={item.u?.username} size={32} borderRadius={16} style={{ marginRight: 2 }} onPress={handleAvatarPress} />
 				)}
 				{/* Message bubble and reply/icons row stacked vertically */}
 				<View style={{ flex: 1, flexDirection: 'column', alignItems: isOwn ? 'flex-end' : 'flex-start' }}>
@@ -431,7 +421,9 @@ const Room247Message = (props: IRoom247MessageProps) => {
 						)}
 					</View>
 				</View>
-				{isOwn && <Avatar text={displayName} size={32} borderRadius={16} style={{ marginLeft: 2 }} onPress={handleAvatarPress} />}
+				{isOwn && (
+					<Avatar text={item.u?.username} size={32} borderRadius={16} style={{ marginLeft: 2 }} onPress={handleAvatarPress} />
+				)}
 			</View>
 		</MessageContext.Provider>
 	);
