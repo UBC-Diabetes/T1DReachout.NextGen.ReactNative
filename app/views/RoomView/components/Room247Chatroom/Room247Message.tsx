@@ -237,13 +237,20 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		}
 	};
 
+	// Reaction long press wrapper that provides the message item
+	const handleReactionLongPress = () => {
+		if (props.onReactionLongPress) {
+			props.onReactionLongPress(item);
+		}
+	};
+
 	// Create a message context with all necessary values, including proper translateLanguage
 	const messageContextValue = {
 		user,
 		onPress: handlePress,
 		onLongPress: handleLongPress,
 		onReactionPress: handleReactionPress,
-		onReactionLongPress: props.onReactionLongPress,
+		onReactionLongPress: handleReactionLongPress,
 		reactionInit: handleReactionInit,
 		translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 		rid: props.rid,
