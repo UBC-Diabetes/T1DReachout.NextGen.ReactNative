@@ -4,6 +4,7 @@ import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import { TAnyMessageModel } from '../../definitions';
 import { themeColors } from '../../lib/constants';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 
 export const getColor = (color: string) => {
 	const colorRegex = /^(#([A-Fa-f0-9]{3}){1,2}|(rgb|hsl)a?\([-.\d\s%,]+\))$/i;
@@ -94,7 +95,28 @@ export const getIcon = (icon: string) => {
 
 export const handleStar = async (message: TAnyMessageModel, callback?: () => void) => {
 	try {
-		await Services.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
+		const wasSaved = message.starred as boolean;
+		await Services.toggleStarMessage(message.id, wasSaved);
+
+		// Track post save/unsave for analytics
+		try {
+			if (wasSaved) {
+				// Was saved, now unsaving
+				logEvent(events.POST_UNSAVED, {
+					message_id: message.id,
+					room_id: message.rid
+				});
+			} else {
+				// Was not saved, now saving
+				logEvent(events.POST_SAVED, {
+					message_id: message.id,
+					room_id: message.rid
+				});
+			}
+		} catch (e) {
+			console.log('Analytics error:', e);
+		}
+
 		if (callback) {
 			callback();
 		}

@@ -79,6 +79,7 @@
 		"expo-local-authentication": "^13.8.0",
 		"expo-video-thumbnails": "^7.9.0",
 		"expo-web-browser": "^12.8.2",
+		"gender-detection": "^0.1.0",
 		"hoist-non-react-statics": "3.3.2",
 		"i18n-js": "3.9.2",
 		"js-base64": "3.6.1",

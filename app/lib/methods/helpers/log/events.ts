@@ -370,5 +370,15 @@ export default {
 
 	// DELETE OWN ACCOUNT ACCOUNT
 	DELETE_OWN_ACCOUNT: 'delete_own_account',
-	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f'
+	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f',
+
+	// ANALYTICS - ROOM TIME TRACKING
+	ROOM_ENTER: 'room_enter',
+	ROOM_EXIT: 'room_exit',
+
+	// ANALYTICS - BEHAVIORAL TRACKING
+	MESSAGE_VIEWED: 'message_viewed',
+	POST_SAVED: 'post_saved',
+	POST_UNSAVED: 'post_unsaved',
+	SAVED_POSTS_VIEWED: 'saved_posts_viewed'
 };

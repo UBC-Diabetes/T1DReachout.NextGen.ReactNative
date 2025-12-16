@@ -17,6 +17,7 @@ import { getUpcomingEvents, formatEventDate } from './calendarHelpers';
 import { fetchEventRequest, pressEventRequest } from '../../actions/calendarEvents';
 import { observeSavedPosts } from './savedPostsHelpers';
 import SavedPostCard from '../DiscussionBoard/Components/SavedPostCard';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 
 const HomeView: React.FC = ({ theme, switchTab }) => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -43,6 +44,12 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 	// Subscribe to saved posts updates when screen is focused
 	useFocusEffect(
 		React.useCallback(() => {
+			// Track saved posts section view
+			logEvent(events.SAVED_POSTS_VIEWED, {
+				location: 'home',
+				timestamp: Date.now()
+			});
+
 			const subscription = observeSavedPosts(5, posts => {
 				setSavedPosts(posts);
 			});

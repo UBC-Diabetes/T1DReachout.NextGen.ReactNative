@@ -19,6 +19,7 @@ import MessageActions, { IMessageActions } from '../../containers/MessageActions
 import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
+import { getRoomType, getSanitizedRoomName, roomTimeTracker } from '../../lib/methods/helpers/roomAnalytics';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
@@ -342,6 +343,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	async componentWillUnmount() {
 		this.mounted = false;
+
+		// Track room exit for analytics
+		try {
+			const { room } = this.state;
+			if (room && this.rid) {
+				const roomType = getRoomType(room);
+				const roomName = getSanitizedRoomName(room);
+				const durationSeconds = roomTimeTracker.exit(this.rid);
+				logEvent(events.ROOM_EXIT, {
+					room_id: this.rid,
+					room_type: roomType,
+					room_name: roomName,
+					duration_seconds: durationSeconds,
+					timestamp: Date.now()
+				});
+			}
+		} catch (e) {
+			log(e);
+		}
+
 		// Wait for any pending subscription updates to finish
 		if (this.subSubscription) {
 			await new Promise(resolve => {
@@ -667,6 +688,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const subCollection = await db.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
+
+			// Track room entry for analytics
+			try {
+				const roomType = getRoomType(room);
+				const roomName = getSanitizedRoomName(room);
+				roomTimeTracker.enter(rid);
+				logEvent(events.ROOM_ENTER, {
+					room_id: rid,
+					room_type: roomType,
+					room_name: roomName,
+					timestamp: Date.now()
+				});
+			} catch (e) {
+				log(e);
+			}
+
 			if (!this.tmid) {
 				this.setHeader();
 			}
@@ -1037,7 +1074,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	handleSendMessage = (message: string, tshow?: boolean) => {
-		logEvent(events.ROOM_SEND_MESSAGE);
+		const { room } = this.state;
+		const roomType = getRoomType(room);
+		const roomName = getSanitizedRoomName(room);
+
+		logEvent(events.ROOM_SEND_MESSAGE, {
+			room_id: room.rid,
+			room_type: roomType,
+			room_name: roomName,
+			message_length: message.length,
+			is_thread: !!this.tmid
+		});
+
 		const { rid } = this.state.room;
 		const { user } = this.props;
 		sendMessage(rid, message, this.tmid, user, tshow).then(() => {

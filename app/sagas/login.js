@@ -10,8 +10,9 @@ import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
-import log, { events, logEvent } from '../lib/methods/helpers/log';
+import log, { events, logEvent, analytics } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
+import { detectGender, getAgeGroup, getT1DDuration } from '../lib/methods/helpers/genderDetection';
 import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
@@ -225,6 +226,35 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
+
+		// Set Firebase Analytics user properties
+		try {
+			const { gender, firstName } = detectGender(user.name);
+			const customFields = user.customFields || {};
+
+			analytics().setUserId(user.id);
+
+			const userProperties = {
+				age_group: getAgeGroup(customFields.Age),
+				t1d_duration: getT1DDuration(customFields['T1D Since']),
+				glucose_method: customFields['Glucose Monitoring Method'] || 'unknown',
+				insulin_method: customFields['Insulin Delivery Method'] || 'unknown',
+				stage_of_life: customFields['Stage of Life'] || 'unknown',
+				location: customFields.Location || 'unknown'
+			};
+
+			// Add gender, include first name if unisex/unknown
+			if (gender === 'male' || gender === 'female') {
+				userProperties.gender = gender;
+			} else if (gender === 'unisex' || gender === 'unknown') {
+				userProperties.gender = gender;
+				userProperties.first_name = firstName;
+			}
+
+			analytics().setUserProperties(userProperties);
+		} catch (e) {
+			log(e);
+		}
 
 		const server = yield select(getServer);
 		yield put(encryptionInit());
