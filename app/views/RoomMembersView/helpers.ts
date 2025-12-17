@@ -17,7 +17,7 @@ import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErro
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
-	goRoom({ item, isMasterDetail, popToRoot: true });
+	goRoom({ item, isMasterDetail, popToRoot: false });
 };
 
 export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IGetRoomRoles[]): boolean => {
@@ -79,17 +79,12 @@ export const handleModerator = async (
 
 export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): Promise<void> => {
 	try {
-		const db = database.active;
-		const subsCollection = db.get('subscriptions');
-		const query = await subsCollection.query(Q.where('name', item.username)).fetch();
-		if (query.length) {
-			const [room] = query;
-			handleGoRoom(room, isMasterDetail);
+		const result = await Services.createDirectMessage(item.username);
+		if (result.success && result.room?.rid) {
+			const goRoomParams = { rid: result.room.rid, name: item.username, t: SubscriptionType.DIRECT };
+			handleGoRoom(goRoomParams, true); // Hardcode true to use reset-based navigation (like ConnectView)
 		} else {
-			const result = await Services.createDirectMessage(item.username);
-			if (result.success) {
-				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
-			}
+			console.log('NAV TO DM - FAILED: No success or no room.rid');
 		}
 	} catch (e: any) {
 		emitErrorCreateDirectMessage(e?.data);
