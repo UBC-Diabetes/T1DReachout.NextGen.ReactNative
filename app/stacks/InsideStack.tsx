@@ -34,6 +34,7 @@ import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
+import DiscussionsView from '../views/DiscussionsView';
 // Profile Stack
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
@@ -153,6 +154,7 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='ReportUserView' component={ReportUserView} />
 			<MainStack.Screen name='RoomInfoEditView' component={RoomInfoEditView} options={RoomInfoEditView.navigationOptions} />
 			<MainStack.Screen name='RoomMembersView' component={RoomMembersView} />
+			<MainStack.Screen name='DiscussionsView' component={DiscussionsView} />
 			<MainStack.Screen name='SearchMessagesView' component={SearchMessagesView} options={SearchMessagesView.navigationOptions} />
 			<MainStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
 			<MainStack.Screen name='InviteUsersView' component={InviteUsersView} />

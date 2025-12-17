@@ -58,8 +58,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 
 		setLoading(true);
 		try {
-			const result = await Services.getDiscussions({
-				roomId: rid,
+			const result = await Services.getThreadsList({
+				rid: rid,
 				offset: offset.current,
 				count: API_FETCH_COUNT,
 				text: searchText.current
@@ -69,9 +69,9 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 				offset.current += result.count;
 				total.current = result.total;
 				if (isSearching) {
-					setSearch(prevState => (offset.current ? [...prevState, ...result.messages] : result.messages));
+					setSearch(prevState => (offset.current ? [...prevState, ...result.threads] : result.threads));
 				} else {
-					setDiscussions(result.messages);
+					setDiscussions(result.threads);
 				}
 			}
 			setLoading(false);
@@ -143,7 +143,17 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	}, [navigation, isSearching]);
 
 	const onDiscussionPress = (item: TThreadModel) => {
-		if (item.drid && item.t) {
+		// For threads, navigate directly to RoomView with tmid to open the thread conversation
+		if (item._id) {
+			navigation.push('RoomView', {
+				rid,
+				tmid: item._id,
+				name: item.msg || 'Thread',
+				t
+			});
+		}
+		// Legacy discussions support
+		else if (item.drid && item.t) {
 			navigation.push('RoomView', {
 				rid: item.drid,
 				prid: item.rid,
