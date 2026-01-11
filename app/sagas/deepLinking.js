@@ -157,7 +157,7 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!connected) {
 			yield localAuthenticate(host);
 			yield put(selectServerRequest(host, serverRecord.version, true));
-			yield take(types.LOGIN.SUCCESS);
+			yield take(types.SERVER.SELECT_SUCCESS);
 		}
 		yield navigate({ params });
 	} else {
@@ -166,7 +166,7 @@ const handleOpen = function* handleOpen({ params }) {
 			if (user && serverRecord) {
 				yield localAuthenticate(host);
 				yield put(selectServerRequest(host, serverRecord.version, true, true));
-				yield take(types.LOGIN.SUCCESS);
+				yield take(types.SERVER.SELECT_SUCCESS);
 				yield navigate({ params });
 				return;
 			}

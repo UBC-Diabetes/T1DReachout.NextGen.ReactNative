@@ -13,15 +13,25 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 	try {
 		const params = rid ? { roomId: rid } : { roomName: name };
 
-		// if it's a direct link without rid we'll create a new dm
-		// if the dm already exists it'll return the existent
-		if (type === ERoomTypes.DIRECT && !rid) {
-			const result = await Services.createDirectMessage(name);
-			if (result.success) {
-				const { room } = result;
+		// if it's a direct message
+		if (type === ERoomTypes.DIRECT) {
+			if (!rid) {
+				// create a new dm or get existing one
+				const result = await Services.createDirectMessage(name);
+				if (result.success) {
+					const { room } = result;
+					return {
+						...room,
+						rid: room._id
+					};
+				}
+			} else {
+				// for DM notifications with rid, construct room object with username
 				return {
-					...room,
-					rid: room._id
+					rid,
+					t: 'd',
+					name,
+					usernames: [name]
 				};
 			}
 		}
@@ -80,18 +90,35 @@ export async function canOpenRoom({ rid, path }: { rid: string; path: string }):
 					usernames: room.usernames
 				};
 			} catch (e) {
-				// Do nothing
+				// If subscription not found locally, try to open via API if path is available
+				if (path) {
+					const [type, name] = path.split('/');
+					const t = type as ERoomTypes;
+					try {
+						const result = await open({ type: t, rid, name });
+						return result;
+					} catch (error) {
+						// If API call also fails, still return the rid to attempt navigation
+						return { rid };
+					}
+				}
+				// If no path available, still return the rid to attempt navigation
+				return { rid };
 			}
 		}
 
-		const [type, name] = path.split('/');
-		const t = type as ERoomTypes;
-		try {
-			const result = await open({ type: t, rid, name });
-			return result;
-		} catch (e) {
-			return false;
+		if (path) {
+			const [type, name] = path.split('/');
+			const t = type as ERoomTypes;
+			try {
+				const result = await open({ type: t, rid, name });
+				return result;
+			} catch (e) {
+				return false;
+			}
 		}
+
+		return false;
 	} catch (e) {
 		return false;
 	}
