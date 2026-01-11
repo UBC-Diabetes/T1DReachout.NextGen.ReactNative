@@ -18,6 +18,7 @@ import Blocks from '../../../../containers/message/Blocks';
 import PollBubble247 from './PollBubble247';
 import { Services } from '../../../../lib/services';
 import { getIcon } from '../../../DiscussionBoard/helpers';
+import { useUserData } from './useUserRoles';
 
 interface IRoom247MessageProps {
 	item: TAnyMessageModel;
@@ -68,14 +69,30 @@ const USERNAME_COLORS = [
 	'#FF5722' // deep orange
 ];
 
-// Simple hash function to assign a color index based on username
-function getUsernameColor(username: string): string {
-	let hash = 0;
-	for (let i = 0; i < username.length; i++) {
-		hash = username.charCodeAt(i) + ((hash << 5) - hash);
+// Get username color based on user role and age
+function getUsernameColor(roles: string[], age?: number): string | undefined {
+	// Peer Mentors - Hot Pink
+	if (
+		roles.includes('Peer Mentor') ||
+		roles.includes('Peer Supporter') ||
+		roles.some((role: string) => role.toLowerCase().includes('peer mentor') || role.toLowerCase().includes('peer supporter'))
+	) {
+		return '#FF1493'; // Hot Pink (DeepPink)
 	}
-	const index = Math.abs(hash) % USERNAME_COLORS.length;
-	return USERNAME_COLORS[index];
+	// Health care team - Green
+	if (
+		roles.includes('Research Team') ||
+		roles.some((role: string) => role.toLowerCase().includes('health') || role.toLowerCase().includes('provider'))
+	) {
+		return '#00C853'; // Green
+	}
+	// Teens (age 13-19) - Blue
+	if (age !== undefined && age >= 13 && age <= 19) {
+		return '#2196F3'; // Blue
+	}
+
+	// Default - undefined (uses default text color)
+	return undefined;
 }
 
 function isPollBlock(blocks: any[]) {
@@ -113,6 +130,9 @@ const Room247Message = (props: IRoom247MessageProps) => {
 	const styles = createStyles({ theme, colors });
 	const navigation: any = useNavigation();
 
+	// Fetch user data (roles and age) from API (with caching)
+	const { roles: userRoles, age: userAge } = useUserData(item.u?._id);
+
 	const isMock = item.id === 'mock-own-message';
 	// Check if the message is from the current user
 	const isOwn = isMock || item?.u?.username === user?.username;
@@ -146,15 +166,6 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		navigation.navigate('ConnectView', { user: item.u, fromRid: item.rid });
 	};
 
-	// Skip special styling for system messages
-	if (props.isInfo || (item.t && ['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(item.t))) {
-		return (
-			<View style={[styles.systemMessageContainer, { backgroundColor: themes[theme].messageboxBackground }]}>
-				<Text style={{ color: themes[theme].bodyText }}>{item.msg}</Text>
-			</View>
-		);
-	}
-
 	// Determine if we should show the tail (first message or different sender from previous)
 	const showTail = isMock || !previousItem || previousItem.u?.username !== item.u?.username;
 
@@ -164,8 +175,8 @@ const Room247Message = (props: IRoom247MessageProps) => {
 	// Get display name or username
 	const displayName = (useRealName && item.u?.name) || item.u?.username;
 
-	// Get username color
-	const usernameColor = displayName ? getUsernameColor(displayName) : '#000000';
+	// Get username color based on role and age
+	const usernameColor = getUsernameColor(userRoles, userAge);
 
 	// Determine if user is following this thread (using existing ThreadDetails logic)
 	const initialFollowState = item.replies?.find((u: string) => u === user?.id);
@@ -247,11 +258,19 @@ const Room247Message = (props: IRoom247MessageProps) => {
 		baseUrl: props.baseUrl
 	};
 
+	// Skip special styling for system messages
+	if (props.isInfo || (item.t && ['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(item.t))) {
+		return (
+			<View style={[styles.systemMessageContainer, { backgroundColor: themes[theme].messageboxBackground }]}>
+				<Text style={{ color: themes[theme].bodyText }}>{item.msg}</Text>
+			</View>
+		);
+	}
+
 	// Show blocks (e.g., polls) if present
 	if (item.blocks && item.blocks.length > 0) {
 		if (isPollBlock(item.blocks)) {
 			// DEBUG: Use our custom component to analyze block structure
-			console.log('Rendering poll with PollBubble247 for block analysis');
 			return (
 				<View style={styles.bubbleMessageContent}>
 					<PollBubble247
@@ -301,7 +320,9 @@ const Room247Message = (props: IRoom247MessageProps) => {
 										style={
 											isOwn
 												? [styles.userName, styles.ownMessageText]
-												: [styles.userName, styles.otherMessageText, { color: usernameColor as string }]
+												: usernameColor
+												? [styles.userName, styles.otherMessageText, { color: usernameColor }]
+												: [styles.userName, styles.otherMessageText]
 										}>
 										{displayName}
 									</Text>
