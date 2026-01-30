@@ -20,6 +20,7 @@ import MessageErrorActions, { IMessageErrorActions } from '../../containers/Mess
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { getRoomType, getSanitizedRoomName, roomTimeTracker } from '../../lib/methods/helpers/roomAnalytics';
+import { withDemographics } from '../../lib/methods/helpers/userDemographics';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
@@ -227,6 +228,30 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { selectedMessages } = this.state;
 		dispatch(clearInAppFeedback());
 		this.mounted = true;
+
+		// Track room entry for analytics (initial mount)
+		try {
+			const { room } = this.state;
+			if (room && this.rid) {
+				console.log('[componentDidMount] Tracking initial room entry for:', this.rid);
+				const roomType = getRoomType(room);
+				const roomName = getSanitizedRoomName(room);
+				roomTimeTracker.enter(this.rid);
+				logEvent(
+					events.ROOM_ENTER,
+					withDemographics({
+						room_id: this.rid,
+						room_type: roomType,
+						room_name: roomName,
+						timestamp: Date.now()
+					})
+				);
+				console.log('[componentDidMount] room_enter event logged');
+			}
+		} catch (e) {
+			console.log('[componentDidMount] Error logging room_enter:', e);
+			log(e);
+		}
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
 			this.setHeader();
@@ -297,8 +322,61 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined, rightButtonsWidth } = this.state;
+		const { roomUpdate, joined, rightButtonsWidth, room } = this.state;
 		const { insets, route } = this.props;
+
+		// Track room changes for analytics
+		const prevRid = prevProps.route?.params?.rid;
+		const currentRid = route?.params?.rid;
+		if (currentRid && prevRid && currentRid !== prevRid) {
+			console.log('[componentDidUpdate] Room changed from', prevRid, 'to', currentRid);
+
+			// Track exit from previous room
+			try {
+				const prevRoom = prevState.room;
+				if (prevRoom) {
+					const prevRoomType = getRoomType(prevRoom);
+					const prevRoomName = getSanitizedRoomName(prevRoom);
+					const durationSeconds = roomTimeTracker.exit(prevRid);
+					console.log('[componentDidUpdate] Logging room_exit for previous room');
+					logEvent(
+						events.ROOM_EXIT,
+						withDemographics({
+							room_id: prevRid,
+							room_type: prevRoomType,
+							room_name: prevRoomName,
+							duration_seconds: durationSeconds,
+							timestamp: Date.now()
+						})
+					);
+				}
+			} catch (e) {
+				console.log('[componentDidUpdate] Error logging room_exit:', e);
+				log(e);
+			}
+
+			// Track entry to new room
+			try {
+				if (room) {
+					const roomType = getRoomType(room);
+					const roomName = getSanitizedRoomName(room);
+					roomTimeTracker.enter(currentRid);
+					console.log('[componentDidUpdate] Logging room_enter for new room');
+					logEvent(
+						events.ROOM_ENTER,
+						withDemographics({
+							room_id: currentRid,
+							room_type: roomType,
+							room_name: roomName,
+							timestamp: Date.now()
+						})
+					);
+				}
+			} catch (e) {
+				console.log('[componentDidUpdate] Error logging room_enter:', e);
+				log(e);
+			}
+		}
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
@@ -351,13 +429,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const roomType = getRoomType(room);
 				const roomName = getSanitizedRoomName(room);
 				const durationSeconds = roomTimeTracker.exit(this.rid);
-				logEvent(events.ROOM_EXIT, {
-					room_id: this.rid,
-					room_type: roomType,
-					room_name: roomName,
-					duration_seconds: durationSeconds,
-					timestamp: Date.now()
-				});
+				logEvent(
+					events.ROOM_EXIT,
+					withDemographics({
+						room_id: this.rid,
+						room_type: roomType,
+						room_name: roomName,
+						duration_seconds: durationSeconds,
+						timestamp: Date.now()
+					})
+				);
 			}
 		} catch (e) {
 			log(e);
@@ -683,26 +764,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	findAndObserveRoom = async (rid: string) => {
+		console.log('[findAndObserveRoom] CALLED with rid:', rid);
 		try {
 			const db = database.active;
 			const subCollection = await db.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
-
-			// Track room entry for analytics
-			try {
-				const roomType = getRoomType(room);
-				const roomName = getSanitizedRoomName(room);
-				roomTimeTracker.enter(rid);
-				logEvent(events.ROOM_ENTER, {
-					room_id: rid,
-					room_type: roomType,
-					room_name: roomName,
-					timestamp: Date.now()
-				});
-			} catch (e) {
-				log(e);
-			}
 
 			if (!this.tmid) {
 				this.setHeader();
@@ -727,13 +794,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	observeRoom = (room: TSubscriptionModel) => {
+		console.log('[observeRoom] CALLED - mounted:', this.mounted, 'rid:', this.rid);
+
 		if (this.subSubscription) {
 			this.subSubscription.unsubscribe();
 			this.subSubscription = undefined;
 		}
 
 		// Only observe if we're mounted
-		if (!this.mounted) return;
+		if (!this.mounted) {
+			console.log('[observeRoom] EXITING - not mounted');
+			return;
+		}
 
 		const observable = room.observe();
 		this.subSubscription = observable.subscribe(changes => {
@@ -1078,13 +1150,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const roomType = getRoomType(room);
 		const roomName = getSanitizedRoomName(room);
 
-		logEvent(events.ROOM_SEND_MESSAGE, {
-			room_id: room.rid,
-			room_type: roomType,
-			room_name: roomName,
-			message_length: message.length,
-			is_thread: !!this.tmid
-		});
+		logEvent(
+			events.ROOM_SEND_MESSAGE,
+			withDemographics({
+				room_id: room.rid,
+				room_type: roomType,
+				room_name: roomName,
+				message_length: message.length,
+				is_thread: !!this.tmid
+			})
+		);
 
 		const { rid } = this.state.room;
 		const { user } = this.props;

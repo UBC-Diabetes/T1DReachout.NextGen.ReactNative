@@ -13,6 +13,7 @@ import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent, analytics } from '../lib/methods/helpers/log';
 import I18n, { setLanguage } from '../i18n';
 import { detectGender, getAgeGroup, getT1DDuration } from '../lib/methods/helpers/genderDetection';
+import { setUserDemographics, clearUserDemographics } from '../lib/methods/helpers/userDemographics';
 import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
@@ -252,6 +253,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 
 			analytics().setUserProperties(userProperties);
+
+			// Cache demographics for inclusion in event parameters
+			setUserDemographics(userProperties);
+			console.log(userProperties);
 		} catch (e) {
 			log(e);
 		}
@@ -330,6 +335,9 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer, message }) {
+	// Clear cached demographics on logout
+	clearUserDemographics();
+
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
