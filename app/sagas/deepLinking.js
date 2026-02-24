@@ -1,4 +1,7 @@
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
+import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
@@ -63,6 +66,21 @@ const navigate = function* navigate({ params }) {
 				const jumpToMessageId = params.messageId;
 
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
+			} else {
+				// BLANK SCREEN - canOpenRoom returned null
+				const error = new Error('Notification blank screen: canOpenRoom returned null');
+				error.stack = [
+					`Platform: ${Platform.OS} ${Platform.Version}`,
+					`Device: ${DeviceInfo.getModel()}`,
+					`App Version: ${DeviceInfo.getVersion()}`,
+					`rid: ${params.rid}`,
+					`type: ${type}`,
+					`roomName: ${name}`,
+					`path: ${params.path}`,
+					`host: ${params.host}`,
+					`messageId: ${params.messageId}`
+				].join('\n');
+				crashlytics().recordError(error);
 			}
 		} else {
 			yield handleInviteLink({ params });
