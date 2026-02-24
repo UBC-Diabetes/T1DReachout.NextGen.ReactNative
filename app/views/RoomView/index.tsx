@@ -343,16 +343,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					const prevRoomName = getSanitizedRoomName(prevRoom);
 					const durationSeconds = roomTimeTracker.exit(prevRid);
 					console.log('[componentDidUpdate] Logging room_exit for previous room');
-					logEvent(
-						events.ROOM_EXIT,
-						withDemographics({
-							room_id: prevRid,
-							room_type: prevRoomType,
-							room_name: prevRoomName,
-							duration_seconds: durationSeconds,
-							timestamp: Date.now()
-						})
-					);
+
+					const exitData = withDemographics({
+						room_id: prevRid,
+						room_type: prevRoomType,
+						room_name: prevRoomName,
+						duration_seconds: durationSeconds,
+						timestamp: Date.now()
+					});
+
+					// Log generic exit event
+					logEvent(events.ROOM_EXIT, exitData);
+
+					// Log specific room type event for easier Firebase segmentation
+					if (prevRoomType === '247_chat') {
+						logEvent(events.CHAT_247_SESSION_END, exitData);
+					} else if (prevRoomType === 'discussion_board') {
+						logEvent(events.DISCUSSION_BOARD_SESSION_END, exitData);
+					} else if (prevRoomType === 'direct_message') {
+						logEvent(events.DIRECT_MESSAGE_SESSION_END, exitData);
+					}
 				}
 			} catch (e) {
 				console.log('[componentDidUpdate] Error logging room_exit:', e);
@@ -437,16 +447,26 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const roomType = getRoomType(room);
 				const roomName = getSanitizedRoomName(room);
 				const durationSeconds = roomTimeTracker.exit(this.rid);
-				logEvent(
-					events.ROOM_EXIT,
-					withDemographics({
-						room_id: this.rid,
-						room_type: roomType,
-						room_name: roomName,
-						duration_seconds: durationSeconds,
-						timestamp: Date.now()
-					})
-				);
+
+				const exitData = withDemographics({
+					room_id: this.rid,
+					room_type: roomType,
+					room_name: roomName,
+					duration_seconds: durationSeconds,
+					timestamp: Date.now()
+				});
+
+				// Log generic exit event
+				logEvent(events.ROOM_EXIT, exitData);
+
+				// Log specific room type event for easier Firebase segmentation
+				if (roomType === '247_chat') {
+					logEvent(events.CHAT_247_SESSION_END, exitData);
+				} else if (roomType === 'discussion_board') {
+					logEvent(events.DISCUSSION_BOARD_SESSION_END, exitData);
+				} else if (roomType === 'direct_message') {
+					logEvent(events.DIRECT_MESSAGE_SESSION_END, exitData);
+				}
 			}
 		} catch (e) {
 			log(e);

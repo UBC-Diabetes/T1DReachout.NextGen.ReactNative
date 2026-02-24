@@ -376,6 +376,11 @@ export default {
 	ROOM_ENTER: 'room_enter',
 	ROOM_EXIT: 'room_exit',
 
+	// ANALYTICS - SPECIFIC ROOM TYPE SESSIONS (for easier Firebase segmentation)
+	CHAT_247_SESSION_END: 'chat_247_session_end',
+	DISCUSSION_BOARD_SESSION_END: 'discussion_board_session_end',
+	DIRECT_MESSAGE_SESSION_END: 'direct_message_session_end',
+
 	// ANALYTICS - BEHAVIORAL TRACKING
 	MESSAGE_VIEWED: 'message_viewed',
 	POST_SAVED: 'post_saved',
