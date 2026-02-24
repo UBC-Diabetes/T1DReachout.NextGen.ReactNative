@@ -21,6 +21,7 @@ import RoomServices from './../../RoomView/services';
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { getUserSelector } from '../../../selectors/login';
+import { setCurrentScreen } from '../../../lib/methods/helpers/log';
 
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
 const QUERY_SIZE = 10;
@@ -50,6 +51,9 @@ const DiscussionView: React.FC<ScreenProps> = ({ route }) => {
 		const room = route.params?.item;
 		if (room) {
 			setTitle(room.title);
+			// Sanitize board name for Firebase (lowercase, replace spaces with underscores)
+			const sanitizedBoardName = room.title.toLowerCase().replace(/\s+/g, '_');
+			setCurrentScreen('DiscussionBoardView', { roomName: sanitizedBoardName, roomType: 'discussion_board' });
 			loadMessages();
 		}
 	}, [route.params]);

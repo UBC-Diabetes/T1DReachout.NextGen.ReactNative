@@ -51,10 +51,16 @@ export const logEvent = (eventName: string, payload?: { [key: string]: any }): v
 	}
 };
 
-export const setCurrentScreen = (currentScreen: string): void => {
+export const setCurrentScreen = (currentScreen: string, context?: { roomName?: string; roomType?: string }): void => {
 	if (!isFDroidBuild) {
-		analytics().logScreenView({ screen_class: currentScreen, screen_name: currentScreen });
-		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
+		// If room context is provided, append room name to screen name
+		const screenName = context?.roomName ? `${currentScreen}_${context.roomName}` : currentScreen;
+
+		analytics().logScreenView({
+			screen_class: currentScreen,
+			screen_name: screenName
+		});
+		bugsnag.leaveBreadcrumb(screenName, { type: 'navigation' });
 	}
 };
 

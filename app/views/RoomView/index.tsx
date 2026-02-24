@@ -17,7 +17,7 @@ import Message from '../../containers/message';
 import Room247Chatroom, { Room247Message } from './components/Room247Chatroom';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent, setCurrentScreen } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { getRoomType, getSanitizedRoomName, roomTimeTracker } from '../../lib/methods/helpers/roomAnalytics';
 import { withDemographics } from '../../lib/methods/helpers/userDemographics';
@@ -237,6 +237,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const roomType = getRoomType(room);
 				const roomName = getSanitizedRoomName(room);
 				roomTimeTracker.enter(this.rid);
+
+				// Update Firebase screen tracking with room context
+				setCurrentScreen('RoomView', { roomName, roomType });
+
 				logEvent(
 					events.ROOM_ENTER,
 					withDemographics({
@@ -361,6 +365,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					const roomType = getRoomType(room);
 					const roomName = getSanitizedRoomName(room);
 					roomTimeTracker.enter(currentRid);
+
+					// Update Firebase screen tracking with new room context
+					setCurrentScreen('RoomView', { roomName, roomType });
+
 					console.log('[componentDidUpdate] Logging room_enter for new room');
 					logEvent(
 						events.ROOM_ENTER,

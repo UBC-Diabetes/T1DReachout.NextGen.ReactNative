@@ -15,7 +15,7 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { debounce } from '../../lib/methods/helpers/debounce';
-import log, { logEvent, events } from '../../lib/methods/helpers/log';
+import log, { logEvent, events, setCurrentScreen } from '../../lib/methods/helpers/log';
 import { CustomIcon } from '../../containers/CustomIcon';
 import { withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
@@ -87,6 +87,7 @@ class ProfileLibraryView extends React.Component {
 	};
 
 	componentDidMount() {
+		setCurrentScreen('ProfileLibraryView', { roomName: 'peer_mentor_library', roomType: 'library' });
 		this.load({});
 		logEvent(events.DIRECTORY_SEARCH_USERS);
 	}
