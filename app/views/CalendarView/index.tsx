@@ -40,18 +40,8 @@ const CalendarView = (): React.ReactElement => {
 	const styles = makeStyles(theme);
 
 	useEffect(() => {
+		navigation.setOptions({ title: '', headerStyle: { shadowColor: 'transparent' } });
 		navigation.setOptions({
-			title: 'Calendar',
-			headerStyle: {
-				backgroundColor: colors.nextGenBackground,
-				shadowColor: 'transparent'
-			},
-			headerTitleStyle: {
-				color: colors.nextGenText,
-				fontSize: 18,
-				fontWeight: '400'
-			},
-			headerTitleAlign: 'center',
 			headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='calendar-view-drawer' />,
 			headerRight: () => (
 				<HeaderButton.Container>
@@ -80,6 +70,7 @@ const CalendarView = (): React.ReactElement => {
 			<CalendarProvider date={todaysDate}>
 				<ExpandableCalendar
 					testID={testIDs.expandableCalendar.CONTAINER}
+					hideArrows={true}
 					theme={{
 						backgroundColor: colors.nextGenBackground,
 						calendarBackground: colors.nextGenBackground,
