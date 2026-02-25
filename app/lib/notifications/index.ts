@@ -49,7 +49,11 @@ export const onNotification = (push: INotification): void => {
 					host,
 					rid,
 					messageId,
-					path: `${types[type]}/${roomName}`
+					path: `${types[type]}/${roomName}`,
+					senderUsername: sender?.username,
+					senderName: sender?.name,
+					senderId: sender?._id,
+					roomDisplayName: name
 				};
 				store.dispatch(deepLinkingOpen(params));
 				return;

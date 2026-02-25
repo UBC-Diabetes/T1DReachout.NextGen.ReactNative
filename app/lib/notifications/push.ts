@@ -13,6 +13,7 @@ import { INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
+import { Services } from '../services';
 
 import { backgroundNotificationHandler, setBackgroundNotificationHandler } from './backgroundNotifications';
 
@@ -57,8 +58,18 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		Notifications.registerRemoteNotifications();
 	}
 
-	Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {
+	Notifications.events().registerRemoteNotificationsRegistered(async (event: Registered) => {
+		const wasEmpty = !deviceToken;
 		deviceToken = event.deviceToken;
+
+		// If this is the first time receiving a token, register it with the server
+		if (wasEmpty && deviceToken) {
+			try {
+				await Services.registerPushToken();
+			} catch (e) {
+				console.log('Failed to register push token from callback:', e);
+			}
+		}
 	});
 
 	Notifications.events().registerRemoteNotificationsRegistrationFailed((event: RegistrationError) => {

@@ -75,7 +75,11 @@ const navigate = function* navigate({ params }) {
 					roomName: String(name || ''),
 					path: String(params.path || ''),
 					host: String(params.host || ''),
-					messageId: String(params.messageId || '')
+					messageId: String(params.messageId || ''),
+					senderUsername: String(params.senderUsername || ''),
+					senderName: String(params.senderName || ''),
+					senderId: String(params.senderId || ''),
+					roomDisplayName: String(params.roomDisplayName || '')
 				});
 				const error = new Error('Notification blank screen: canOpenRoom returned null');
 				crashlytics().recordError(error);
