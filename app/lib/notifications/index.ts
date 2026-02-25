@@ -56,16 +56,12 @@ export const onNotification = (push: INotification): void => {
 			}
 		} catch (e) {
 			// Report parsing errors with full context
+			crashlytics().setAttributes({
+				appVersion: DeviceInfo.getVersion(),
+				payload: JSON.stringify(push?.payload),
+				originalError: e instanceof Error ? e.message : String(e)
+			});
 			const error = new Error(`Notification parsing failed: ${e instanceof Error ? e.message : 'Unknown error'}`);
-			if (error.stack) {
-				error.stack = [
-					`Platform: ${Platform.OS} ${Platform.Version}`,
-					`Device: ${DeviceInfo.getModel()}`,
-					`App Version: ${DeviceInfo.getVersion()}`,
-					`Payload: ${JSON.stringify(push?.payload)}`,
-					e instanceof Error ? e.stack : ''
-				].join('\n');
-			}
 			crashlytics().recordError(error);
 			console.warn(e);
 		}
