@@ -10,15 +10,10 @@
       "client_info": {
         "mobilesdk_app_id": "1:224331746637:android:7f6705ea426fbf3a043b04",
         "android_client_info": {
-          "package_name": "com.reachout.nexgen"
+          "package_name": "chat.rocket.reachout"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "224331746637-9mdt8ihgjahp7bhcnqa369ln6jl1n5uc.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyA9s6ADH3-sEMcYEeYFmcajppXWWbAWjF4"
@@ -28,14 +23,10 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "224331746637-9mdt8ihgjahp7bhcnqa369ln6jl1n5uc.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "224331746637-gj78fkpj7ora9kas8etsj3ev2k3u0bhj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.reachout.nexgen"
+                "bundle_id": "chat.rocket.reachout"
               }
             }
           ]
@@ -49,12 +40,7 @@
           "package_name": "com.reachout.nexgen"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "224331746637-9mdt8ihgjahp7bhcnqa369ln6jl1n5uc.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyA9s6ADH3-sEMcYEeYFmcajppXWWbAWjF4"
@@ -64,14 +50,10 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "224331746637-9mdt8ihgjahp7bhcnqa369ln6jl1n5uc.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
               "client_id": "224331746637-gj78fkpj7ora9kas8etsj3ev2k3u0bhj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.reachout.nexgen"
+                "bundle_id": "chat.rocket.reachout"
               }
             }
           ]
