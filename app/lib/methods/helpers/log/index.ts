@@ -12,21 +12,19 @@ let reportAnalyticsEvents = true;
 export const getReportCrashErrorsValue = (): boolean => reportCrashErrors;
 export const getReportAnalyticsEventsValue = (): boolean => reportAnalyticsEvents;
 
-if (!isFDroidBuild) {
-	bugsnag = require('@bugsnag/react-native').default;
-	bugsnag.start({
-		onBreadcrumb() {
-			return reportAnalyticsEvents;
-		},
-		onError(error: { breadcrumbs: string[] }) {
-			if (!reportAnalyticsEvents) {
-				error.breadcrumbs = [];
-			}
-			return reportCrashErrors;
+bugsnag = require('@bugsnag/react-native').default;
+bugsnag.start({
+	onBreadcrumb() {
+		return reportAnalyticsEvents;
+	},
+	onError(error: { breadcrumbs: string[] }) {
+		if (!reportAnalyticsEvents) {
+			error.breadcrumbs = [];
 		}
-	});
-	crashlytics = require('@react-native-firebase/crashlytics').default;
-}
+		return reportCrashErrors;
+	}
+});
+crashlytics = require('@react-native-firebase/crashlytics').default;
 
 export { analytics };
 export const loggerConfig = bugsnag.config;
@@ -42,26 +40,22 @@ export const logServerVersion = (serverVersion: string): void => {
 
 export const logEvent = (eventName: string, payload?: { [key: string]: any }): void => {
 	try {
-		if (!isFDroidBuild) {
-			analytics().logEvent(eventName, payload);
-			bugsnag.leaveBreadcrumb(eventName, payload);
-		}
+		analytics().logEvent(eventName, payload);
+		bugsnag.leaveBreadcrumb(eventName, payload);
 	} catch {
 		// Do nothing
 	}
 };
 
 export const setCurrentScreen = (currentScreen: string, context?: { roomName?: string; roomType?: string }): void => {
-	if (!isFDroidBuild) {
-		// If room context is provided, append room name to screen name
-		const screenName = context?.roomName ? `${currentScreen}_${context.roomName}` : currentScreen;
+	// If room context is provided, append room name to screen name
+	const screenName = context?.roomName ? `${currentScreen}_${context.roomName}` : currentScreen;
 
-		analytics().logScreenView({
-			screen_class: currentScreen,
-			screen_name: screenName
-		});
-		bugsnag.leaveBreadcrumb(screenName, { type: 'navigation' });
-	}
+	analytics().logScreenView({
+		screen_class: currentScreen,
+		screen_name: screenName
+	});
+	bugsnag.leaveBreadcrumb(screenName, { type: 'navigation' });
 };
 
 export const toggleCrashErrorsReport = (value: boolean): boolean => {
@@ -75,14 +69,11 @@ export const toggleAnalyticsEventsReport = (value: boolean): boolean => {
 };
 
 export default (e: any): void => {
-	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
+	if (e instanceof Error && bugsnag && e.message !== 'Aborted') {
 		bugsnag.notify(e, (event: { addMetadata: (arg0: string, arg1: {}) => void }) => {
 			event.addMetadata('details', { ...metadata });
 		});
-		if (!isFDroidBuild) {
-			crashlytics().recordError(e);
-		}
-	} else {
-		console.error(e);
+		crashlytics().recordError(e);
 	}
+	console.error(e);
 };
