@@ -1,5 +1,6 @@
 import { delay, put, select, takeLatest } from 'redux-saga/effects';
 import { parseISO, format } from 'date-fns';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { CREATE_EVENT, DELETE_EVENT, FETCH_EVENT, REGISTER_EVENT, DE_REGISTER_EVENT, UPDATE_EVENT } from '../actions/actionsTypes';
 import { Services } from '../lib/services';
@@ -81,9 +82,32 @@ const handleFetchRequest = function* handleFetchCalendarEvents() {
 };
 
 const handleCreateRequest = function* handleCreateCalendarEvent() {
+  const draftEvent = yield select(state => state.calendarEvents.draftEvent);
+  const user = yield select(state => state.login.user);
 
+  // Log what we're about to send
+  crashlytics().log(`Creating calendar event: ${JSON.stringify(draftEvent)}`);
+  crashlytics().setAttributes({
+    calendar_event_user: user?.username || 'unknown',
+    calendar_event_title: draftEvent?.title || 'none',
+    calendar_event_datetime: draftEvent?.dateTime || 'none',
+    calendar_event_location: draftEvent?.location || 'none'
+  });
   const response = yield Services.createCalendarEvent();
   const { success, error } = response;
+
+  // Log the server response details
+  crashlytics().log(`Server response - Success: ${success}, Error: ${JSON.stringify(error)}, Full response: ${JSON.stringify(response)}`);
+  // Set additional attributes with response data
+  crashlytics().setAttributes({
+    calendar_event_response_success: String(success),
+    calendar_event_has_error: String(!!error),
+    calendar_event_error_message: error?.message || error?.error || 'none'
+  });
+
+  // Record as error for easier tracking in Crashlytics dashboard
+  const trackingError = new Error(`Calendar event creation - User: ${user?.username}, Title: ${draftEvent?.title}, Success: ${success}, Error: ${error?.message || error?.error || 'none'}`);
+  crashlytics().recordError(trackingError);
 
   if (success) {
 		yield put(createEventSuccess());
