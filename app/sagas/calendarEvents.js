@@ -53,7 +53,12 @@ function groupEventsByDate(events) {
             return acc;
         }, {});
 
-        return Object.entries(grouped).map(([title, data]) => ({ title, data }));
+        return Object.entries(grouped)
+            .sort(([dateA], [dateB]) => dateB.localeCompare(dateA))
+            .map(([title, data]) => ({
+                title,
+                data: data.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
+            }));
     } catch (error) {
         console.error('Error in groupEventsByDate:', error);
         return [];
