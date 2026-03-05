@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { logout } from '../../actions/login';
-import { appStart, appInit } from '../../actions/app';
+import { appStart } from '../../actions/app';
 import { selectServerRequest } from '../../actions/server';
 import * as HeaderButton from '../../containers/HeaderButton';
 import NewWindowIcon from '../../containers/NewWindowIcon';
@@ -29,7 +29,6 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
-import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -78,7 +77,6 @@ const SettingsView = (): React.ReactElement => {
 				});
 			} else {
 				dispatch(logout());
-				dispatch(appInit());
 			}
 		} catch {
 			// Do nothing: user not found
