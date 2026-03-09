@@ -37,6 +37,9 @@ const CalendarView = (): React.ReactElement => {
 		getPopupSelector(state)
 	);
 
+	// Get authentication state
+	const isAuthenticated = useSelector((state: IApplicationState) => state.login.isAuthenticated);
+
 	const styles = makeStyles(theme);
 
 	useEffect(() => {
@@ -52,8 +55,11 @@ const CalendarView = (): React.ReactElement => {
 			)
 		});
 
-		dispatch(fetchEventRequest());
-	}, [navigation, userName, dispatch, colors.nextGenSurface, colors.nextGenText]);
+		// Only fetch calendar events when authenticated
+		if (isAuthenticated) {
+			dispatch(fetchEventRequest());
+		}
+	}, [navigation, userName, dispatch, colors.nextGenSurface, colors.nextGenText, isAuthenticated]);
 
 	const createEvent = useCallback(() => {
 		dispatch(createEventDraft({ author: userName }));

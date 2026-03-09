@@ -6,8 +6,9 @@ import * as Keychain from 'react-native-keychain';
 
 import moment from 'moment';
 import * as types from '../actions/actionsTypes';
-import { appStart } from '../actions/app';
-import { selectServerRequest, serverFinishAdd } from '../actions/server';
+import { appStart, appInit } from '../actions/app';
+import { selectServerRequest, serverFinishAdd, serverRequest } from '../actions/server';
+import SERVER_URL from './serverConfig';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent, analytics } from '../lib/methods/helpers/log';
@@ -347,7 +348,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
-				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+           	    yield put(appInit());
 				if (message) {
 					showErrorAlert(I18n.t(message), I18n.t('Oops'));
 				}
@@ -371,9 +372,10 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 					}
 				}
 				// if there's no servers, go outside
-				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+           	    yield put(appInit());
 			}
 		} catch (e) {
+			yield put(serverRequest(SERVER_URL));
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);
 		}
