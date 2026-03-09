@@ -154,7 +154,8 @@ const handleOpen = function* handleOpen({ params }) {
 	// if deep link is from same server
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		if (!connected || !isAuthenticated) {
 			yield localAuthenticate(host);
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
@@ -241,7 +242,8 @@ const handleClickCallPush = function* handleClickCallPush({ params }) {
 
 	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
-		if (!connected) {
+		const isAuthenticated = yield select(state => state.login.isAuthenticated);
+		if (!connected || !isAuthenticated) {
 			yield localAuthenticate(host);
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);

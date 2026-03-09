@@ -32,10 +32,15 @@ const HomeView: React.FC = ({ theme, switchTab }) => {
 	// Get server information for Avatar component
 	const server = useSelector((state: IApplicationState) => state.server.server);
 
-	// Fetch calendar events when component mounts
+	// Get authentication state
+	const isAuthenticated = useSelector((state: IApplicationState) => state.login.isAuthenticated);
+
+	// Fetch calendar events only after user is authenticated
 	useEffect(() => {
-		dispatch(fetchEventRequest());
-	}, [dispatch]);
+		if (isAuthenticated) {
+			dispatch(fetchEventRequest());
+		}
+	}, [dispatch, isAuthenticated]);
 
 	// State for saved posts
 	const [savedPosts, setSavedPosts] = useState([]);

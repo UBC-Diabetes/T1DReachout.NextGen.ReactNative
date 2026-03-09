@@ -61,7 +61,8 @@ const navigate = ({
 	}
 
 	if (popToRoot) {
-		Navigation.navigate('RoomsListView');
+		// Navigate to BottomTabNavigator with RoomsListView as the initial tab
+		Navigation.navigate('BottomTabNavigator', { initialTab: 'RoomsListView' });
 	}
 	// Use regular navigation instead of reset to preserve navigation stack
 	return Navigation.navigate('RoomView', routeParams);
