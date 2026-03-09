@@ -13,8 +13,8 @@ import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
-import { canOpenRoom, getServerInfo } from '../lib/methods';
-import { getUidDirectMessage } from '../lib/methods/helpers';
+import { callJitsi, canOpenRoom, getServerInfo } from '../lib/methods';
+import { compareServerVersion, getUidDirectMessage } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
@@ -229,11 +229,23 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 			const uid = params.caller._id;
 			const { rid, callId, event } = params;
 			if (event === 'accept') {
-				yield call(Services.notifyUser, `${uid}/video-conference`, {
-					action: 'accepted',
-					params: { uid, rid, callId }
-				});
-				yield videoConfJoin(callId, true, false, true);
+				// Check server version to determine which video conference API to use
+				const serverVersion = yield select(state => state.server.version);
+				const isServer5OrNewer = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0');
+
+				if (isServer5OrNewer) {
+					// Server >= 5.0: Use new video conference API
+					yield call(Services.notifyUser, `${uid}/video-conference`, {
+						action: 'accepted',
+						params: { uid, rid, callId }
+					});
+					yield videoConfJoin(callId, true, false, true);
+				} else {
+					// Server < 5.0: Use legacy Jitsi integration
+					// Don't send WebSocket notification (server doesn't support it)
+					// Just open JitsiMeetView with the same room
+					yield call(callJitsi, { room, cam: true });
+				}
 			} else if (event === 'decline') {
 				yield call(Services.notifyUser, `${uid}/video-conference`, {
 					action: 'rejected',

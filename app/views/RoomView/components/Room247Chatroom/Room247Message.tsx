@@ -16,9 +16,13 @@ import { CustomIcon } from '../../../../containers/CustomIcon';
 import CustomReactions from './CustomReactions';
 import Blocks from '../../../../containers/message/Blocks';
 import PollBubble247 from './PollBubble247';
+import CallButton from './CallButton';
 import { Services } from '../../../../lib/services';
+import { callJitsi } from '../../../../lib/methods';
 import { getIcon } from '../../../DiscussionBoard/helpers';
 import { useUserData } from './useUserRoles';
+import i18n from '../../../../i18n';
+import { showErrorAlert } from '../../../../lib/methods/helpers';
 
 interface IRoom247MessageProps {
 	item: TAnyMessageModel;
@@ -260,6 +264,28 @@ const Room247Message = (props: IRoom247MessageProps) => {
 
 	// Skip special styling for system messages
 	if (props.isInfo || (item.t && ['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(item.t))) {
+		// Handle jitsi_call_started with CallButton
+		if (item.t === 'jitsi_call_started') {
+			const handleEnterCall = () => {
+				// Check if call has ended (jitsiTimeout)
+				const jitsiTimeout = (item as any).jitsiTimeout;
+				if (jitsiTimeout && new Date(jitsiTimeout) < new Date()) {
+					showErrorAlert(i18n.t('Call_already_ended'));
+				} else {
+					// Get room from props and call jitsi
+					const room = props.room || { rid: props.rid, t: props.roomType };
+					callJitsi({ room, cam: false });
+				}
+			};
+
+			return (
+				<View style={[styles.systemMessageContainer, { backgroundColor: themes[theme].messageboxBackground }]}>
+					<Text style={{ color: themes[theme].bodyText }}>{item.msg}</Text>
+					<CallButton onPress={handleEnterCall} />
+				</View>
+			);
+		}
+
 		return (
 			<View style={[styles.systemMessageContainer, { backgroundColor: themes[theme].messageboxBackground }]}>
 				<Text style={{ color: themes[theme].bodyText }}>{item.msg}</Text>
@@ -269,6 +295,13 @@ const Room247Message = (props: IRoom247MessageProps) => {
 
 	// Show blocks (e.g., polls) if present
 	if (item.blocks && item.blocks.length > 0) {
+		// Filter out video_conf blocks (Server >= 5.0 feature, not supported on Server 3.18)
+		const hasVideoConfBlock = item.blocks.some((block: any) => block.type === 'video_conf');
+		if (hasVideoConfBlock) {
+			// Skip rendering video_conf blocks - these require Server >= 5.0 API
+			return null;
+		}
+
 		if (isPollBlock(item.blocks)) {
 			// DEBUG: Use our custom component to analyze block structure
 			return (

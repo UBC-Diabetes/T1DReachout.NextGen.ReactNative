@@ -65,6 +65,7 @@ import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
+import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
@@ -102,6 +103,7 @@ import { HeaderBackButton } from '@react-navigation/elements';
 import LeftCaret from '../components/LeftCaret';
 
 import { themes } from '../lib/constants';
+import { isIOS } from '../lib/methods/helpers';
 
 // DisplayPreferenceNavigator
 const DisplayPrefStack = createNativeStackNavigator<DisplayPrefStackParamList>();
@@ -175,6 +177,7 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='QueueListView' component={QueueListView} />
 			<MainStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 			<MainStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
+			<MainStack.Screen name='JitsiMeetView' component={JitsiMeetView} options={{ headerShown: false }} />
 			{/* ProfileLibraryStackNavigator */}
 			<MainStack.Screen name='ProfileLibraryView' component={ProfileLibraryView} options={ProfileLibraryView.navigationOptions} />
 			<MainStack.Screen
