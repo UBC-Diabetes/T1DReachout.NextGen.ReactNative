@@ -1,6 +1,6 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { ResizeMode, Video } from 'expo-av';
+import { Audio, ResizeMode, Video } from 'expo-av';
 import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -23,6 +23,7 @@ import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
+import { AUDIO_MODE } from '../lib/constants/audio';
 
 const RenderContent = ({
 	setLoading,
@@ -54,6 +55,13 @@ const RenderContent = ({
 			blurSub();
 		};
 	}, [navigation]);
+
+	// Set audio mode to allow video sound to play even when iPhone ringer is off
+	React.useEffect(() => {
+		if (attachment.video_url) {
+			Audio.setAudioModeAsync(AUDIO_MODE);
+		}
+	}, [attachment.video_url]);
 
 	if (attachment.image_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
