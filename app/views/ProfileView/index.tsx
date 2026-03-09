@@ -47,6 +47,7 @@ import { TwoFactorMethods } from '../../definitions/ITotp';
 import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSheet';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
+import { PronounSelector } from '../../components/PronounSelector';
 
 import { clearCache } from '../../lib/methods';
 import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
@@ -466,6 +467,24 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 			return Object.keys(filteredCustomFields).map((key, index, array) => {
 				const isFieldRequired = filteredCustomFields[key].required;
+
+				// Special handling for Pronouns field
+				if (key === 'Pronouns') {
+					return (
+						<PronounSelector
+							key={key}
+							value={customFields[key] || ''}
+							onChange={value => {
+								const newValue: { [key: string]: string } = {};
+								newValue[key] = value;
+								this.setState({ customFields: { ...customFields, ...newValue } });
+							}}
+							label={isFieldRequired ? `${key} *` : key}
+							required={isFieldRequired}
+						/>
+					);
+				}
+
 				if (filteredCustomFields[key].type === 'select') {
 					const options = filteredCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
 					return (
