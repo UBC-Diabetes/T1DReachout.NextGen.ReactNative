@@ -1,6 +1,8 @@
 import { Audio } from 'expo-av';
 import React, { useEffect, useRef } from 'react';
 
+import { AUDIO_MODE } from '../../lib/constants';
+
 export enum ERingerSounds {
 	DIALTONE = 'dialtone',
 	RINGTONE = 'ringtone'
@@ -28,6 +30,9 @@ const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
 
 				// If we were unmounted or superseded, ignore
 				if (cancelled || seqRef.current !== thisSeq) return;
+
+				// Set audio mode to play in silent mode on iOS
+				await Audio.setAudioModeAsync(AUDIO_MODE);
 
 				const file = ringer === ERingerSounds.DIALTONE ? require('./dialtone.mp3') : require('./ringtone.mp3');
 
