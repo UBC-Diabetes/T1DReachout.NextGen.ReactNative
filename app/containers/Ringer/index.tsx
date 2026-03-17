@@ -6,27 +6,64 @@ export enum ERingerSounds {
 	RINGTONE = 'ringtone'
 }
 
+let seq = 0; // monotonic id to ignore stale async completions
+
 const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
-	const sound = useRef(new Audio.Sound());
+	const soundRef = useRef<Audio.Sound | null>(null);
+	const seqRef = useRef(0);
 
 	useEffect(() => {
+		let cancelled = false;
+		const thisSeq = ++seq;
+		seqRef.current = thisSeq;
+
+		const ensureSound = () => {
+			if (!soundRef.current) soundRef.current = new Audio.Sound();
+			return soundRef.current;
+		};
+
 		const loadAndPlay = async () => {
 			try {
-				const soundFile = ringer === ERingerSounds.DIALTONE ? require(`./dialtone.mp3`) : require(`./ringtone.mp3`);
-				await sound.current.loadAsync(soundFile);
-				await sound.current.playAsync();
-				await sound.current.setIsLoopingAsync(true);
-			} catch (error) {
-				console.error('Error loading sound:', error);
+				const s = ensureSound();
+
+				// If we were unmounted or superseded, ignore
+				if (cancelled || seqRef.current !== thisSeq) return;
+
+				const file = ringer === ERingerSounds.DIALTONE ? require('./dialtone.mp3') : require('./ringtone.mp3');
+
+				// Set looping at load to avoid play→loop reordering races
+				await s.loadAsync(file, { isLooping: true }, true);
+
+				if (cancelled || seqRef.current !== thisSeq) return;
+
+				await s.playAsync();
+			} catch (e) {
+				// swallow; component may be unmounted
 			}
 		};
 
 		loadAndPlay();
 
 		return () => {
-			sound.current?.unloadAsync();
+			cancelled = true;
+
+			// Stop and unload whatever might have started, ignoring errors
+			const s = soundRef.current;
+			if (s) {
+				(async () => {
+					try {
+						await s.setIsLoopingAsync(false);
+					} catch {}
+					try {
+						await s.stopAsync();
+					} catch {}
+					try {
+						await s.unloadAsync();
+					} catch {}
+				})();
+			}
 		};
-	}, []);
+	}, [ringer]);
 
 	return null;
 });
