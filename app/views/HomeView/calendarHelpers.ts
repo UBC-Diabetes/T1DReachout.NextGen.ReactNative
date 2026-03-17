@@ -21,8 +21,9 @@ interface EventGroup {
  * @returns Array of events occurring in the next 14 days
  */
 export const getUpcomingEvents = (eventGroups: EventGroup[]): EventItem[] => {
-	const now = startOfDay(new Date());
-	const twoWeeksFromNow = addDays(now, 14);
+	const now = new Date();
+	const todayStart = startOfDay(now);
+	const twoWeeksFromNow = addDays(todayStart, 14);
 
 	const upcomingEvents: EventItem[] = [];
 
@@ -33,10 +34,10 @@ export const getUpcomingEvents = (eventGroups: EventGroup[]): EventItem[] => {
 					const eventDate = parseISO(event.dateTime);
 					const eventDayStart = startOfDay(eventDate);
 
-					// Check if event is within the next 2 weeks (including today)
-					const isAfterNow = isAfter(eventDayStart, now) || eventDayStart.getTime() === now.getTime();
-					const isBeforeTwoWeeks = isBefore(twoWeeksFromNow, eventDayStart);
-					const isInRange = isAfterNow && isBeforeTwoWeeks;
+					// Check if event is today or within the next 2 weeks
+					const isTodayOrLater = eventDayStart.getTime() >= todayStart.getTime();
+					const isWithinTwoWeeks = isBefore(eventDayStart, twoWeeksFromNow);
+					const isInRange = isTodayOrLater && isWithinTwoWeeks;
 					if (isInRange) {
 						upcomingEvents.push(event);
 					}
