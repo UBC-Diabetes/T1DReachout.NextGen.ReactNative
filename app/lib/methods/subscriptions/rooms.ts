@@ -411,6 +411,11 @@ export default function subscribeRooms() {
 						}
 					}
 				}
+
+				// For Jitsi call notifications, extend the duration
+				if (message?.t === 'jitsi_call_started') {
+					notification.customTime = 60000; // 60 seconds for call notifications
+				}
 			} catch (e) {
 				log(e);
 			}
