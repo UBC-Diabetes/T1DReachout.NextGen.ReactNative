@@ -13,6 +13,8 @@ import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import { callJitsi } from '../../lib/methods';
 
 export interface INotifierComponent {
 	notification: {
@@ -81,11 +83,12 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 	// if sub is not on local database, title and avatar will be null, so we use payload from notification
 	const { title = name, avatar = name } = notification;
 
-	const onPress = () => {
-		const { prid, _id } = payload;
+	const onPress = async () => {
+		const { prid, _id, message } = payload;
 		if (!rid) {
 			return;
 		}
+
 		const item = {
 			rid,
 			name: title,
@@ -93,6 +96,24 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			prid
 		};
 
+		// Special handling for Jitsi call notifications
+		if (message?.t === 'jitsi_call_started') {
+			goRoom({ item, isMasterDetail, jumpToMessageId: _id, popToRoot: true });
+			hideNotification();
+
+			// Automatically join the call
+			try {
+				const sub = await getSubscriptionByRoomId(rid);
+				if (sub) {
+					callJitsi({ room: sub, cam: false });
+				}
+			} catch (error) {
+				console.error('Error joining call from notification:', error);
+			}
+			return;
+		}
+
+		// Default behavior for other notifications
 		goRoom({ item, isMasterDetail, jumpToMessageId: _id, popToRoot: true });
 		hideNotification();
 	};
