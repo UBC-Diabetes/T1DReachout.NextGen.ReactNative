@@ -185,6 +185,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 		const sub = yield* call(getSubscriptionByRoomId, rid);
 		if (sub) {
 			callJitsi({ room: sub, cam });
+			yield call(hideActionSheetRef);
 			yield put(setCalling(false));
 		}
 	}
