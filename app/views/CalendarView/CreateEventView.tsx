@@ -207,10 +207,12 @@ const CreateEventView = () => {
 							</TouchableOpacity>
 						</View>
 					))}
+				</ScrollView>
+				<View style={styles.buttonContainer}>
 					<TouchableOpacity style={styles.createEventButton} onPress={() => createOrUpdateEvent()}>
 						<Text style={styles.createEventButtonText}>{isEditing ? 'Save' : 'Create Event'}</Text>
 					</TouchableOpacity>
-				</ScrollView>
+				</View>
 			</KeyboardAvoidingView>
 		</SafeAreaView>
 	);
@@ -301,13 +303,17 @@ const makeStyles = (colors: any) => {
 			fontSize: 16,
 			marginBottom: 5
 		},
+		buttonContainer: {
+			backgroundColor: colors.nextGenBackground,
+			paddingHorizontal: 20,
+			paddingVertical: 10,
+			paddingBottom: Platform.OS === 'android' ? 20 : 10
+		},
 		createEventButton: {
 			backgroundColor: colors.nextGenPrimary,
 			borderRadius: 25,
 			padding: 15,
-			alignItems: 'center',
-			marginTop: 20,
-			marginBottom: 20
+			alignItems: 'center'
 		},
 		createEventButtonText: {
 			color: colors.fontWhite,
