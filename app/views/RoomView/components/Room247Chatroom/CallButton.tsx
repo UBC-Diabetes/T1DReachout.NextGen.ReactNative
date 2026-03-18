@@ -7,19 +7,34 @@ import i18n from '../../../../i18n';
 
 interface ICallButtonProps {
 	onPress: () => void;
+	disabled?: boolean;
 }
 
-const CallButton = ({ onPress }: ICallButtonProps) => {
+const CallButton = ({ onPress, disabled = false }: ICallButtonProps) => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={styles.buttonContainer}>
 			<TouchableOpacity
-				onPress={onPress}
-				style={[styles.button, { backgroundColor: colors.badgeBackgroundLevel2 }]}
+				onPress={disabled ? undefined : onPress}
+				disabled={disabled}
+				style={[
+					styles.button,
+					{ backgroundColor: disabled ? colors.strokeLight : colors.badgeBackgroundLevel2 }
+				]}
 			>
-				<CustomIcon name='camera' size={16} style={styles.buttonIcon} color={colors.fontWhite} />
-				<Text style={[styles.buttonText, { color: colors.fontWhite }]}>{i18n.t('Click_to_join')}</Text>
+				<CustomIcon
+					name='camera'
+					size={16}
+					style={styles.buttonIcon}
+					color={disabled ? colors.fontSecondaryInfo : colors.fontWhite}
+				/>
+				<Text style={[
+					styles.buttonText,
+					{ color: disabled ? colors.fontSecondaryInfo : colors.fontWhite }
+				]}>
+					{disabled ? i18n.t('Call_ended') : i18n.t('Click_to_join')}
+				</Text>
 			</TouchableOpacity>
 		</View>
 	);

@@ -23,6 +23,7 @@ import { getIcon } from '../../../DiscussionBoard/helpers';
 import { useUserData } from './useUserRoles';
 import i18n from '../../../../i18n';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 
 interface IRoom247MessageProps {
 	item: TAnyMessageModel;
@@ -266,22 +267,45 @@ const Room247Message = (props: IRoom247MessageProps) => {
 	if (props.isInfo || (item.t && ['e2e', 'discussion-created', 'jitsi_call_started', 'videoconf'].includes(item.t))) {
 		// Handle jitsi_call_started with CallButton
 		if (item.t === 'jitsi_call_started') {
-			const handleEnterCall = () => {
-				// Check if call has ended (jitsiTimeout)
-				const jitsiTimeout = (item as any).jitsiTimeout;
-				if (jitsiTimeout && new Date(jitsiTimeout) < new Date()) {
-					showErrorAlert(i18n.t('Call_already_ended'));
-				} else {
-					// Get room from props and call jitsi
-					const room = props.room || { rid: props.rid, t: props.roomType };
-					callJitsi({ room, cam: false });
-				}
+			const [callEnded, setCallEnded] = useState(false);
+
+			useEffect(() => {
+				const checkCallStatus = () => {
+					const now = new Date();
+					const messageTime = new Date(item.ts);
+					const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+
+					// If message is older than 1 hour, call has ended
+					if (messageTime < oneHourAgo) {
+						setCallEnded(true);
+					} else {
+						setCallEnded(false);
+					}
+				};
+				checkCallStatus();
+
+				// Check every minute to update expired calls
+				const interval = setInterval(checkCallStatus, 60000);
+				return () => clearInterval(interval);
+			}, [item.ts]);
+
+			const handleEnterCall = async () => {
+				if (callEnded) return;
+
+				const room = props.room || { rid: props.rid, t: props.roomType };
+				callJitsi({ room, cam: false });
 			};
+
+			const messageText = callEnded
+				? i18n.t('Call_has_ended')
+				: i18n.t('Started_call', { userBy: item.u?.username || i18n.t('Someone') });
 
 			return (
 				<View style={[styles.systemMessageContainer, { backgroundColor: themes[theme].messageboxBackground }]}>
-					<Text style={{ color: themes[theme].bodyText }}>{item.msg}</Text>
-					<CallButton onPress={handleEnterCall} />
+					<Text style={{ color: themes[theme].bodyText }}>
+						{messageText}
+					</Text>
+					<CallButton onPress={handleEnterCall} disabled={callEnded} />
 				</View>
 			);
 		}
