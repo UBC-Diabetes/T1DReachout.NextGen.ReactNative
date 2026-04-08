@@ -14,6 +14,7 @@ import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
+import { MessageWithViewTracking } from '../../containers/message/MessageWithViewTracking';
 import Room247Chatroom, { Room247Message } from './components/Room247Chatroom';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';

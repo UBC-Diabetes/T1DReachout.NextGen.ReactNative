@@ -185,6 +185,8 @@ export default {
 
 	// ROOM VIEW
 	ROOM_SEND_MESSAGE: 'room_send_message',
+	MESSAGE_VIEWED: 'message_viewed',
+	VIDEO_HUDDLE_LINK_CLICKED: 'video_huddle_link_clicked',
 	ROOM_ENCRYPTED_PRESS: 'room_encrypted_press',
 	ROOM_OPEN_EMOJI: 'room_open_emoji',
 	ROOM_CLOSE_EMOJI: 'room_close_emoji',
