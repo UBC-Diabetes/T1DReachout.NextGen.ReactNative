@@ -21,6 +21,8 @@ import { getRoomTitle, getUidDirectMessage } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { Services } from '../../lib/services';
 import addToPersonalCalendar from './Permissions';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import { withDemographics } from '../../lib/methods/helpers/userDemographics';
 
 const EventDetailsView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -170,7 +172,23 @@ const EventDetailsView = () => {
 			<View style={styles.zoomContainer}>
 				<Text style={styles.label}>Meeting Link</Text>
 				{meetingLink ? (
-					<Text style={{ color: colors.nextGenAccent }} onPress={() => Linking.openURL(meetingLink)}>
+					<Text
+						style={{ color: colors.nextGenAccent }}
+						onPress={() => {
+							// Track video huddle link click
+							logEvent(
+								events.VIDEO_HUDDLE_LINK_CLICKED,
+								withDemographics({
+									event_id: eventId,
+									event_title: title,
+									meeting_link: meetingLink,
+									attendee_count: attendees.length,
+									timestamp: Date.now()
+								})
+							);
+							Linking.openURL(meetingLink);
+						}}
+					>
 						{meetingLink}
 					</Text>
 				) : (

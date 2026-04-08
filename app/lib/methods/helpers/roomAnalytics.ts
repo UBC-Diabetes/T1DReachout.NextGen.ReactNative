@@ -3,8 +3,6 @@
  * Identifies room types and provides analytics utilities for tracking room usage
  */
 
-const ROOM_247_ID = 'jRXA42HyPKpjAmZpX'; // Virtual Huddle / 24/7 Chat room ID
-
 /**
  * Gets the analytics-friendly room type identifier
  * @param room - Room object with rid, name, and t (type) properties
@@ -13,8 +11,8 @@ const ROOM_247_ID = 'jRXA42HyPKpjAmZpX'; // Virtual Huddle / 24/7 Chat room ID
 export const getRoomType = (room: { rid?: string; name?: string; t?: string }): string => {
 	if (!room) return 'unknown';
 
-	// Check if it's the 24/7 chat room
-	if (room.rid === ROOM_247_ID) {
+	// Check if it's the 24/7 chat room by name (more reliable than hardcoded ID)
+	if (room.name === '24-7-chatroom' || room.name?.toLowerCase().includes('24') && room.name?.toLowerCase().includes('chat')) {
 		return '247_chat';
 	}
 

@@ -58,11 +58,16 @@ const JitsiMeetView = (): React.ReactElement => {
 	}, [goBack, url]);
 
 	const onConferenceJoined = useCallback(() => {
-		logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_JOIN : events.JM_CONFERENCE_JOIN);
+		const conferenceId = getRoomIdFromJitsiCallUrl(url);
+		logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_JOIN : events.JM_CONFERENCE_JOIN, {
+			conference_id: conferenceId,
+			room_id: rid,
+			conference_url: url
+		});
 		if (rid && !videoConf) {
 			initVideoConfTimer(rid);
 		}
-	}, [rid, videoConf]);
+	}, [rid, videoConf, url]);
 
 	const onNavigationStateChange = useCallback(
 		(webViewState: any) => {
@@ -91,11 +96,16 @@ const JitsiMeetView = (): React.ReactElement => {
 		activateKeepAwake();
 
 		return () => {
-			logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE);
+			const conferenceId = getRoomIdFromJitsiCallUrl(url);
+			logEvent(videoConf ? events.LIVECHAT_VIDEOCONF_TERMINATE : events.JM_CONFERENCE_TERMINATE, {
+				conference_id: conferenceId,
+				room_id: rid,
+				conference_url: url
+			});
 			if (!videoConf) endVideoConfTimer();
 			deactivateKeepAwake();
 		};
-	}, [handleJitsiApp, onConferenceJoined, videoConf]);
+	}, [handleJitsiApp, onConferenceJoined, videoConf, url, rid]);
 
 	useEffect(() => {
 		setCookies();
